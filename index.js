@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
       //html: "<b>Hello world?</b>", // html body
     });
 }
-app.post("/send-mail", async (req,res) => {
+app.get("/send-mail", async (req,res) => {
     main().catch(console.error);
     return res.json({
         erro:false,
