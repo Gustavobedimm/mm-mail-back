@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
     }
   });
 
-  async function main() {
+  async function enviaEmail() {
     const info = await transporter.sendMail({
       from: '"Mudanças Mazutti" <central.defretes@hotmail.com>', // sender address
       to: "gustavo_bmazutti@hotmail.com", // list of receivers
@@ -28,11 +28,19 @@ const transporter = nodemailer.createTransport({
     });
 }
 app.post("/send-mail", async (req,res) => {
-    main().catch(console.error);
-    return res.json({
+    try{
+      enviaEmail();
+      return res.json({
         erro:false,
         mensagem: "Email enviado com sucesso"
     });
+    }catch{
+      return res.json({
+        erro:true,
+        mensagem: "Erro"
+    });
+    }
+    
 });
 
 app.listen(PORT, () => {
