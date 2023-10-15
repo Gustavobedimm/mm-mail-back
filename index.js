@@ -1,8 +1,12 @@
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const nodemailer = require("nodemailer");
 const PORT = process.env.PORT || 5000;
+
+app.use(cors('*'));
+app.use(express.json());
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -14,7 +18,7 @@ const transporter = nodemailer.createTransport({
     }
   });
 
-  async function main() {
+  async function enviaEmail() {
     const info = await transporter.sendMail({
       from: '"Mudanças Mazutti" <central.defretes@hotmail.com>', // sender address
       to: "gustavo_bmazutti@hotmail.com", // list of receivers
@@ -23,12 +27,20 @@ const transporter = nodemailer.createTransport({
       //html: "<b>Hello world?</b>", // html body
     });
 }
-app.get("/send-mail", async (req,res) => {
-    main().catch(console.error);
+app.post("/send-mail", async (req,res) => {
+  try{
+  enviaEmail().catch(console.error);
     return res.json({
         erro:false,
         mensagem: "Email enviado com sucesso"
     });
+    }catch{
+      return res.json({
+        erro:true,
+        mensagem: "Erro"
+    });
+    }
+    
 });
 
 app.listen(PORT, () => {
