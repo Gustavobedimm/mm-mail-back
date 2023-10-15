@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -19,12 +18,13 @@ const transporter = nodemailer.createTransport({
   });
 
   async function enviaEmail() {
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: '"Mudanças Mazutti" <central.defretes@hotmail.com>', // sender address
       to: "gustavo_bmazutti@hotmail.com", // list of receivers
       subject: "Orçamento", // Subject line
       text: "Por favor não responder este E-mail." // plain text body
       //html: "<b>Hello world?</b>", // html body
+      
     });
 }
 app.post("/send-mail", async (req,res) => {
