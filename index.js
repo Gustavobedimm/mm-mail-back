@@ -10,8 +10,8 @@ app.post("/send-mail", async (req,res) => {
   const email = req.body.email;
   console.log(nome+email)
     require('./mailService')(nome,email)
-    .then(response => res.status(400).json(response))
-    .catch(error => res.status(500).json(error));
+    .then(response => res.status(200).json(response))
+    .catch(error => res.status(400).json(error));
 });
 
 app.listen(3000, () => {
