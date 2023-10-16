@@ -6,7 +6,10 @@ app.use(cors('*'));
 app.use(express.json());
 
 app.post("/send-mail", async (req,res) => {
-    require('./mailService')()
+  const nome = req.body.nome;
+  const email = req.body.email;
+  console.log(nome+email)
+    require('./mailService')(nome,email)
     .then(response => res.json(response))
     .catch(error => res.status(500).json(error));
 });
