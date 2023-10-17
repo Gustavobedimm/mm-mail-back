@@ -1,6 +1,12 @@
 const nodemailer = require("nodemailer");
+const { jsPDF } = require("jspdf");
 
 module.exports = (nome,doc,email,origem,destino,valor) => {
+
+    const doc = new jsPDF();
+    doc.text("Bem vindo", 10, 10);
+    doc.save('/temp/orcamento.pdf');
+  
 
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -20,7 +26,7 @@ module.exports = (nome,doc,email,origem,destino,valor) => {
         attachments: [{
           filename:'orcamento.pdf', 
           contentType: 'application/pdf',
-          path: './temp/'
+          path: '/temp/'
       }]
       };
       return new Promise((resolve, reject) => {

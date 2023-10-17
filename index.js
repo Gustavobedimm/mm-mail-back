@@ -27,7 +27,7 @@ app.post("/send-mail", async (req,res) => {
   const cb9 = req.body.cb9;
   //MONTAR O PDF DO ORÇAMENTO
 
-  require('./temp/pdfService')();
+  //require('./pdfService')();
   
   console.log(nome+email)
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
