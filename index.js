@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { jsPDF } = require("jspdf");
+
 const app = express();
 
 app.use(cors('*'));
@@ -27,11 +27,7 @@ app.post("/send-mail", async (req,res) => {
   const cb9 = req.body.cb9;
   //MONTAR O PDF DO ORÇAMENTO
 
-  const docPdf = new jsPDF();
-  docPdf.text("Bem vindo", 10, 10);
-  docPdf.save("orcamento.pdf");
-  
-
+  require('./pdfService')();
   
   console.log(nome+email)
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO

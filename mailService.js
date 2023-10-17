@@ -20,17 +20,15 @@ module.exports = (nome,doc,email,origem,destino,valor) => {
         attachments: [{
           filename:'orcamento.pdf', 
           contentType: 'application/pdf',
-          path: '/'
+          path: './'
       }]
       };
       return new Promise((resolve, reject) => {
         transporter.sendMail(info)
         .then(response => {
-            transporter.close();
             return resolve(response);
         })
         .catch(error => {
-            transporter.close();
             return reject(error);
         })
       })
