@@ -15,8 +15,13 @@ module.exports = (nome,doc,email,origem,destino,valor) => {
         from: '"Mudanças Mazutti" <central.defretes@hotmail.com>', // sender address
         to: email, // list of receivers
         subject: "Orçamento ", // Subject line
-        text: "Nome : "+nome+ " Doc : "+doc + "Por favor não responder este E-mail."+"Origem: "+origem+"Destino: "+destino+ "Valor: R$"+valor // plain text body
+        text: "Nome : "+nome+ " Doc : "+doc + "Por favor não responder este E-mail."+"Origem: "+origem+"Destino: "+destino+ "Valor: R$"+valor,// plain text body
         //html: "<b>Hello world?</b>", // html body
+        attachments: [{
+          filename:'orcamento.pdf', 
+          contentType: 'application/pdf',
+          path: '/'
+      }]
       };
       return new Promise((resolve, reject) => {
         transporter.sendMail(info)
