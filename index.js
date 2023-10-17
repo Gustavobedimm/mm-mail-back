@@ -1,13 +1,17 @@
 const express = require('express');
 const cors = require('cors');
-const { jsPDF } = require("jspdf");
+//const { jsPDF } = require("jspdf");
+//const PDFDocument = require('pdfkit');
+//const fs = require('fs'); 
+
+
 
 const app = express();
 
 app.use(cors('*'));
 app.use(express.json());
 
-app.get("/send-mail", async (req,res) => {
+app.post("/send-mail", async (req,res) => {
   //PEGANDO DADOS DA REQUISIÇÃO ENVIADA PELO FORMULARIO
   const nome = req.body.nome;
   const doc = req.body.doc;
@@ -28,9 +32,17 @@ app.get("/send-mail", async (req,res) => {
   const cb9 = req.body.cb9;
   //MONTAR O PDF DO ORÇAMENTO
   
-const docPDF = new jsPDF();
-    docPDF.text("Bem vindo", 10, 10);
-    docPDF.save("orcamento.pdf");
+
+//  const docPDF = new jsPDF();
+//    docPDF.text("Bem vindo", 10, 10);
+//    docPDF.save("orcamento.pdf");
+
+//const docPDF = new PDFDocument();
+  //use the tmp serverless function folder to create the write stream for the pdf
+//  let writeStream = fs.createWriteStream("/tmp/orcamento.pdf");
+//  docPDF.pipe(writeStream);
+//  docPDF.text("teste");
+//  docPDF.end();
 
   //require('./pdfService')();
   
