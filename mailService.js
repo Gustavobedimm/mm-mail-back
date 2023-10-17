@@ -20,7 +20,7 @@ module.exports = (nome,doc,email,origem,destino,valor) => {
         attachments: [{
           filename:'orcamento.pdf', 
           contentType: 'application/pdf',
-          path: './'
+          path: './temp/'
       }]
       };
       return new Promise((resolve, reject) => {
