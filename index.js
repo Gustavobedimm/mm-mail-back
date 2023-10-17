@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const { jsPDF } = require("jspdf");
 
 const app = express();
 
 app.use(cors('*'));
 app.use(express.json());
 
-app.post("/send-mail", async (req,res) => {
+app.get("/send-mail", async (req,res) => {
   //PEGANDO DADOS DA REQUISIÇÃO ENVIADA PELO FORMULARIO
   const nome = req.body.nome;
   const doc = req.body.doc;
@@ -26,6 +27,10 @@ app.post("/send-mail", async (req,res) => {
   const cb8 = req.body.cb8;
   const cb9 = req.body.cb9;
   //MONTAR O PDF DO ORÇAMENTO
+  
+const docPDF = new jsPDF();
+    docPDF.text("Bem vindo", 10, 10);
+    docPDF.save("orcamento.pdf");
 
   //require('./pdfService')();
   
