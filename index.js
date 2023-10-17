@@ -29,7 +29,7 @@ app.post("/send-mail", async (req,res) => {
 
   const docPdf = new jsPDF();
   docPdf.text("Bem vindo", 10, 10);
-  doc.save("orcamento.pdf");
+  docPdf.save("orcamento.pdf");
   
 
   
