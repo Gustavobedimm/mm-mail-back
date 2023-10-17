@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 //const { jsPDF } = require("jspdf");
 //const PDFDocument = require('pdfkit');
-//const fs = require('fs'); 
+//const fs = require('fs');
+const pdf = require("html-pdf"); 
 
 
 
@@ -31,6 +32,14 @@ app.post("/send-mail", async (req,res) => {
   const cb8 = req.body.cb8;
   const cb9 = req.body.cb9;
   //MONTAR O PDF DO ORÇAMENTO
+
+  pdf.create("meu nome e gustavo",{}).toFile("/tmp/orcamento.pdf", (err,res) => {
+    if(err){
+      console.log(err+"um erro aconteceu")
+    }else{
+      console.log(res)
+    }
+  })
   
 
 //  const docPDF = new jsPDF();
