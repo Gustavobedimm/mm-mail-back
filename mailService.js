@@ -3,9 +3,9 @@ const { jsPDF } = require("jspdf");
 
 module.exports = (nome,doc,email,origem,destino,valor) => {
 
-    const doc = new jsPDF();
-    doc.text("Bem vindo", 10, 10);
-    doc.save('/temp/orcamento.pdf');
+    const docPDF = new jsPDF();
+    docPDF.text("Bem vindo", 10, 10);
+    docPDF.save('/temp/orcamento.pdf');
   
 
     const transporter = nodemailer.createTransport({
