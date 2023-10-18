@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 const fs = require('fs');
 const { deepStrictEqual } = require("assert");
 
-module.exports = (nome,doc,email,emailcc,origem,destino,valor) => {
+module.exports = (nome,doc,email,emailcc,origem,destino,valor,data) => {
 
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -25,12 +25,12 @@ module.exports = (nome,doc,email,emailcc,origem,destino,valor) => {
                 <p>Destino : ${destino}</p>
                 <p>Valor : ${valor}</p>
                   `, // html body
-        //attachments: [{
-        //     // stream as an attachment
-        //    filename: 'orcamento.pdf',
-        //    content: fs.readFileSync(`/tmp/orcamento.pdf`)
-       // ,
-      //}]
+                  attachments : [{filename: 'orcamento.pdf', 
+                  content: data,
+                  type: 'application/pdf',
+                  disposition: 'attachment',
+                  contentId: 'orcamento.pdf'
+   }],
       };
       return new Promise((resolve, reject) => {
         transporter.sendMail(info)
