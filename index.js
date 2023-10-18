@@ -7,7 +7,18 @@ app.use(cors('*'));
 app.use(express.json());
 
 app.post("/send-mail", async (req,res) => {
-  //PEGANDO DADOS DA REQUISIÇÃO ENVIADA PELO FORMULARIO
+  //monta data
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const date = new Date();
+  const dia = date.getDate();
+  const mes = date.getMonth() + 1;
+  const ano = date.getFullYear();
+  const month = months[date.getMonth()];
+  const StringdataAtual = dia + "de" + month + "de" + ano;
+
+
+
+//PEGANDO DADOS DA REQUISIÇÃO ENVIADA PELO FORMULARIO
   const nome = req.body.nome;
   const doc = req.body.doc;
   const email = req.body.email;
@@ -15,7 +26,7 @@ app.post("/send-mail", async (req,res) => {
   const origem = req.body.origem;
   const destino = req.body.destino;
   const valor = req.body.valor;
-  const cb0 = req.body.cb0;
+  //const cb0 = req.body.cb0;
   const cb1 = req.body.cb1;
   const cb2 = req.body.cb2;
   const cb3 = req.body.cb3;
@@ -25,7 +36,36 @@ app.post("/send-mail", async (req,res) => {
   const cb7 = req.body.cb7;
   const cb8 = req.body.cb8;
   const cb9 = req.body.cb9;
-  const fileContent = "";
+  let myArrayOfItems2 = [];
+  if(cb1 === true){
+    myArrayOfItems2.push("CARGA");
+  }
+  if(cb2 === true){
+    myArrayOfItems2.push("DESCARGA");
+  }
+  if(cb3 === true){
+    myArrayOfItems2.push("AJUDANTES");
+  }
+  if(cb4 === true){
+    myArrayOfItems2.push("MATERIAL PARA EMBALAGEM");
+  } 
+  if(cb5 === true){
+    myArrayOfItems2.push("EMBALAGEM DE LOUCAS");
+  }
+  if(cb6 === true){
+    myArrayOfItems2.push("EMBALAGEM DE MOVEIS");
+  }
+  if(cb7 === true){
+    myArrayOfItems2.push("DESMONTAGEM DE MOVEIS");
+  }
+  if(cb8 === true){
+    myArrayOfItems2.push("MONTAGEM DE MOVEIS");
+  }
+  if(cb8 === true){
+    myArrayOfItems2.push("SERVICO DE PERSONAL ORGANIZER");
+  }
+  myArrayOfItems2.push("TRANSPORTE DE "+origem+" PARA "+ destino);
+
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
@@ -46,9 +86,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.moveDown(2);
     docpdf.text("Orçamento referente a prestação dos serviços a baixo  : ");
     docpdf.moveDown(1);
-    let local = "TRANSPORTE DE "+origem+" PARA "+ destino;
-    let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM', 'MATERIAL PARA EMBALAGEM','MONTAGEM',local];
-    docpdf.list(myArrayOfItems);
+    docpdf.list(myArrayOfItems2);
     //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
     docpdf.moveDown();
     docpdf.font('Helvetica-Bold').text("O investimento necessário será de R$ : R$ "+ valor);
@@ -63,7 +101,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("________________________________________");
     docpdf.text(nome);
     docpdf.moveDown(3);
-    docpdf.text("Cascavel-PR, 16/10/2023");
+    docpdf.text("Cascavel-PR, "+StringdataAtual);
     //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
