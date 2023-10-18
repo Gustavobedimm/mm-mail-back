@@ -30,10 +30,10 @@ app.post("/send-mail", async (req,res) => {
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
     docpdf.fontSize(11);
-    docpdf.text("Empresa  : Mudaças Mazutti ME - 01.367.190/0001-42" , { align: 'rigth'});
-    docpdf.text("Endereço : Rua Parecis 1699, Cascavel-PR" , { align: 'rigth'});
-    docpdf.text("Responsavel : Claudinei Mazutti - 45 99971-7983" , { align: 'rigth'});
-    docpdf.text("Website : www.mudancasmazutti.com.br" , { align: 'rigth'});
+    docpdf.text("Mudaças Mazutti ME - 01.367.190/0001-42" , { align: 'right'});
+    docpdf.text("Rua Parecis 1699, Cascavel-PR" , { align: 'right'});
+    docpdf.text("Claudinei Mazutti - 45 99971-7983" , { align: 'right'});
+    docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
     
     docpdf.moveDown(2);
     docpdf.fontSize(20);
@@ -42,24 +42,24 @@ app.post("/send-mail", async (req,res) => {
     docpdf.fontSize(11);
     docpdf.text("Cliente : " +nome);
     docpdf.text("E-mail  : " +email);
-    
+
+    docpdf.moveDown(2);
     docpdf.text("Orçamento referente a prestação dos serviços a baixo  : ");
     docpdf.moveDown(1);
     let local = "TRANSPORTE DE "+origem+" PARA "+ destino;
-    let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM',local];
+    let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM', 'MATERIAL PARA EMBALAGEM','MONTAGEM',local];
     docpdf.list(myArrayOfItems);
     //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
     docpdf.moveDown();
-    docpdf.font('Helvetica-Bold').text("Valor total so serviço : R$ "+ valor);
+    docpdf.font('Helvetica-Bold').text("O investimento necessário será de R$ : R$ "+ valor);
     docpdf.font('Helvetica');
-    docpdf.text("O investimento necessário será de R$ "+ valor);
-    docpdf.moveDown();
+    docpdf.moveDown(2);
     docpdf.text("Nossa empresa atua no mercado de transportes a mais de 18 anos, buscando sempre a exelência no atendimento e na prestação de serviços aos nossos clientes. Transportando com qualidade o que é importante para você.");
     
     docpdf.moveDown(3);
     docpdf.text("________________________________________");
     docpdf.text("Mudanças Mazutti - 01.367.190/0001-42");
-    docpdf.moveDown(1);
+    docpdf.moveDown(2);
     docpdf.text("________________________________________");
     docpdf.text(nome);
     docpdf.moveDown(3);
