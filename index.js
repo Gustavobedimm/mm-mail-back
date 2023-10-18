@@ -29,12 +29,16 @@ app.post("/send-mail", async (req,res) => {
   //MONTAR O PDF DO ORÇAMENTO
   
   const docPDF = new jsPDF('p', 'pt', 'a4');
-    docPDF.text("Bem vindo", 10, 10);
+    docPDF.setFontSize(40);
+    docPDF.text(35, 25, "Paranyan loves jsPDF");
     //docPDF.save("orcamento.pdf");
+    //docPDF.save("orcamento.pdf");
+    //var base = docPDF.output('blob');
     var base = docPDF.output('datauri');
+    let ec = base.split('base64,')[1];
 
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
-    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,base)
+    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,ec)
     .then(response => res.status(200).json(response))
     .catch(error => res.status(400).json(error));
 });
