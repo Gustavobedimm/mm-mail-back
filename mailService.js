@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
 const fs = require('fs');
+const { deepStrictEqual } = require("assert");
 
-module.exports = (nome,doc,email,origem,destino,valor) => {
+module.exports = (nome,doc,email,emailcc,origem,destino,valor) => {
 
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -16,14 +17,20 @@ module.exports = (nome,doc,email,origem,destino,valor) => {
         from: '"Mudanças Mazutti" <central.defretes@hotmail.com>', // sender address
         to: email, // list of receivers
         subject: "Orçamento ", // Subject line
-        text: "Nome : "+nome+ " Doc : "+doc + "Por favor não responder este E-mail."+"Origem: "+origem+"Destino: "+destino+ "Valor: R$"+valor,// plain text body
-        //html: "<b>Hello world?</b>", // html body
-        attachments: [{
-             // stream as an attachment
-            filename: 'orcamento.pdf',
-            content: fs.readFileSync(`/tmp/orcamento.pdf`)
-        ,
-      }]
+        //text: "Nome : "+nome+ " Doc : "+doc + "Por favor não responder este E-mail."+"Origem: "+origem+"Destino: "+destino+ "Valor: R$"+valor,// plain text body
+        html: `<b>Cliente : ${nome}</b>
+                <p>Documento : ${doc}</p>
+                <p>Email : ${email}</p>
+                <p>Origem : ${origem}</p>
+                <p>Destino : ${destino}</p>
+                <p>Valor : ${valor}</p>
+                  `, // html body
+        //attachments: [{
+        //     // stream as an attachment
+        //    filename: 'orcamento.pdf',
+        //    content: fs.readFileSync(`/tmp/orcamento.pdf`)
+       // ,
+      //}]
       };
       return new Promise((resolve, reject) => {
         transporter.sendMail(info)
