@@ -77,16 +77,15 @@ app.post("/send-mail", async (req,res) => {
 
     let pdfDoc = pdfmake.createPdfKitDocument(docDefinition, {});
     //let pdfDocGenerator = pdfMake.createPdf(docInfo);
-    let promiseObject = pdfDoc.getBase64((base64Data) => {
-     });
-     promiseObject.then(function(result) {
-        console.log(result);    //in this console log i have base 64 string
-     });
+    let base64;
+    pdfDoc.getBase64((data) => {
+      base64 = data;
+    });
 
 
 
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
-    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,promiseObject)
+    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,base64)
     .then(response => res.status(200).json(response))
     .catch(error => res.status(400).json(error));
 });
