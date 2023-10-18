@@ -34,7 +34,7 @@ app.post("/send-mail", async (req,res) => {
     //docPDF.save("orcamento.pdf");
     //docPDF.save("orcamento.pdf");
     //var base = docPDF.output('blob');
-    var base = docPDF.output('datauri');
+    var base = docPDF.output('datauristring');
     //let ec = base.split('base64,')[1];
 
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
