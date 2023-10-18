@@ -97,26 +97,31 @@ app.post("/send-mail", async (req,res) => {
     //});
 
     var docpdf = new PDFDocument();
+    
+    docpdf.text("Sample text", 100, 100);
+    docpdf.end();
+    const data = docpdf.read();
+    const pdf64 = data.toString("base64")
 
 // write to PDF
 
-var finalString = ''; // contains the base64 string
-var stream = docpdf.pipe(new Base64Encode());
-docpdf.end();
+//var finalString = ''; // contains the base64 string
+//var stream = docpdf.pipe(new Base64Encode());
+//docpdf.end();
 
-stream.on('data', function(chunk) {
-  finalString += chunk;
-});
+//stream.on('data', function(chunk) {
+ // finalString += chunk;
+//});
 
-stream.on('end', function() {
+//stream.on('end', function() {
   // the stream is at its end, so push the resulting base64 string to the response
-  finalString = finalString;
-});
+  //finalString = finalString;
+//});
 
 
 
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
-    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,finalString)
+    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,pdf64)
     .then(response => res.status(200).json(response))
     .catch(error => res.status(400).json(error));
 });
