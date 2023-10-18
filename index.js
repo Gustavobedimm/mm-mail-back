@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { jsPDF } = require("jspdf");
 const Pdfmake = require('pdfmake');
+const PDFDocument = require('pdfkit');
 const { Base64Encode } = require('base64-stream');
 const app = express();
 
@@ -36,64 +37,81 @@ app.post("/send-mail", async (req,res) => {
     //docPDF.text(35, 25, "Paranyan loves jsPDF");
     //var base = docPDF.output('datauristring');
 
-    var fonts = {
-      Courier: {
-        normal: 'Courier',
-        bold: 'Courier-Bold',
-        italics: 'Courier-Oblique',
-        bolditalics: 'Courier-BoldOblique'
-      },
-      Helvetica: {
-        normal: 'Helvetica',
-        bold: 'Helvetica-Bold',
-        italics: 'Helvetica-Oblique',
-        bolditalics: 'Helvetica-BoldOblique'
-      },
-      Times: {
-        normal: 'Times-Roman',
-        bold: 'Times-Bold',
-        italics: 'Times-Italic',
-        bolditalics: 'Times-BoldItalic'
-      },
-      Symbol: {
-        normal: 'Symbol'
-      },
-      ZapfDingbats: {
-        normal: 'ZapfDingbats'
-      }
-    };
+    //var fonts = {
+    //  Courier: {
+    //    normal: 'Courier',
+    //    bold: 'Courier-Bold',
+    //    italics: 'Courier-Oblique',
+    //    bolditalics: 'Courier-BoldOblique'
+    //  },
+    //  Helvetica: {
+    //    normal: 'Helvetica',
+    //    bold: 'Helvetica-Bold',
+    //    italics: 'Helvetica-Oblique',
+    //    bolditalics: 'Helvetica-BoldOblique'
+    //  },
+    //  Times: {
+    //    normal: 'Times-Roman',
+    //    bold: 'Times-Bold',
+    //    italics: 'Times-Italic',
+    //    bolditalics: 'Times-BoldItalic'
+    //  },
+    //  Symbol: {
+    //    normal: 'Symbol'
+    //  },
+    //  ZapfDingbats: {
+    //    normal: 'ZapfDingbats'
+    //  }
+    //};
 
-    let pdfmake = new Pdfmake(fonts);
+    //let pdfmake = new Pdfmake(fonts);
 
-    var docDefinition = {
-      content: [
-        'First paragraph',
-        'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines',
-      ],
-      defaultStyle: {
-        font: 'Helvetica'
-      }
-    };
+    //var docDefinition = {
+    //  content: [
+    //    'First paragraph',
+    //    'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines',
+    //  ],
+    //  defaultStyle: {
+    //    font: 'Helvetica'
+    //  }
+    //};
 
 
-    let pdfDoc = pdfmake.createPdfKitDocument(docDefinition, {});
-    var finalString = ''; // contains the base64 string
-    var finalString2 = '';
-    var stream = pdfDoc.pipe(new Base64Encode());
+    //let pdfDoc = pdfmake.createPdfKitDocument(docDefinition, {});
+    //var finalString = ''; // contains the base64 string
+    //var finalString2 = '';
+    //var stream = pdfDoc.pipe(new Base64Encode());
 
-    stream.on('data', function(chunk) {
-      finalString += chunk;
-    });
-    stream.on('end', function() {
+    //stream.on('data', function(chunk) {
+    //  finalString += chunk;
+    //});
+    //stream.on('end', function() {
        //the stream is at its end, so push the resulting base64 string to the response
-      finalString2 = finalString;
-  });
+     // finalString2 = finalString;
+  //});
     
     //let pdfDocGenerator = pdfMake.createPdf(docInfo);
     //let base64;
     //pdfDoc.getBase64((data) => {
     //  base64 = data;
     //});
+
+    var docpdf = new PDFDocument();
+
+// write to PDF
+
+var finalString = ''; // contains the base64 string
+var stream = docpdf.pipe(new Base64Encode());
+docpdf.end();
+
+stream.on('data', function(chunk) {
+  finalString += chunk;
+});
+
+stream.on('end', function() {
+  // the stream is at its end, so push the resulting base64 string to the response
+  finalString = finalString;
+});
 
 
 
