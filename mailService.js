@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const fs = require('fs');
 
-module.exports = (nome,doc,email,origem,destino,valor,fileContent) => {
+module.exports = (nome,doc,email,origem,destino,valor) => {
 
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -21,7 +21,7 @@ module.exports = (nome,doc,email,origem,destino,valor,fileContent) => {
         attachments: [{
              // stream as an attachment
             filename: 'orcamento.pdf',
-            content: fileContent
+            content: fs.readFileSync(`/tmp/orcamento.pdf`)
         ,
       }]
       };

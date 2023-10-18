@@ -39,11 +39,11 @@ app.post("/send-mail", async (req,res) => {
   docpdf.text("title");
   docpdf.end();
 
-  writeStream.on('finish', function () {
+  //writeStream.on('finish', function () {
     //once the doc stream is completed, read the file from the tmp folder
-    const fileContent = fs.readFileSync(`/tmp/orcamento.pdf`);
-    console.log(fileContent);
-  });
+    //const fileContent = fs.readFileSync(`/tmp/orcamento.pdf`);
+    //console.log(fileContent);
+  //});
 //  const docPDF = new jsPDF();
 //    docPDF.text("Bem vindo", 10, 10);
 //    docPDF.save("orcamento.pdf");
@@ -57,9 +57,9 @@ app.post("/send-mail", async (req,res) => {
 
   //require('./pdfService')();
   
-  console.log(nome+email+"Entrando no metodo enviar email")
+  console.log("Entrando no metodo enviar email")
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
-    require('./mailService')(nome,doc,email,origem,destino,valor,fileContent)
+    require('./mailService')(nome,doc,email,origem,destino,valor)
     .then(response => res.status(200).json(response))
     .catch(error => res.status(400).json(error));
 });
