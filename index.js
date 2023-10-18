@@ -35,15 +35,14 @@ app.post("/send-mail", async (req,res) => {
     //docPDF.text(35, 25, "Paranyan loves jsPDF");
     //var base = docPDF.output('datauristring');
 
-    var fonts = {
+    let fonts = {
       Roboto: {
-        normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
-        bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
-        italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
-        bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
+          normal: 'node_modules/roboto-font/fonts/Roboto/roboto-regular-webfont.ttf',
+          bold: 'node_modules/roboto-font/fonts/Roboto/roboto-bold-webfont.ttf',
+          italics: 'node_modules/roboto-font/fonts/Roboto/roboto-italic-webfont.ttf',
+          bolditalics: 'node_modules/roboto-font/fonts/Roboto/roboto-bolditalic-webfont.ttf'
       }
   };
-
 
     let pdfmake = new Pdfmake(fonts);
 
