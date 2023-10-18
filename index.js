@@ -8,13 +8,13 @@ app.use(express.json());
 
 app.post("/send-mail", async (req,res) => {
   //monta data
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "Outubro", "November", "December"];
   const date = new Date();
   const dia = date.getDate();
   const mes = date.getMonth() + 1;
   const ano = date.getFullYear();
   const month = months[date.getMonth()];
-  const StringdataAtual = dia + "de" + month + "de" + ano;
+  const StringdataAtual = dia + " de " + month + " de " + ano;
 
 
 
