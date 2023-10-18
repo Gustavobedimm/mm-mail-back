@@ -37,10 +37,10 @@ app.post("/send-mail", async (req,res) => {
 
     var fonts = {
       Roboto: {
-          normal: 'fonts/roboto/Roboto-Regular.ttf',
-          bold: 'fonts/roboto/Roboto-Medium.ttf',
-          italics: 'fonts/roboto/Roboto-Italic.ttf',
-          bolditalics: 'fonts/roboto/Roboto-MediumItalic.ttf'
+        normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
+        bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
+        italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
+        bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
       }
   };
 
