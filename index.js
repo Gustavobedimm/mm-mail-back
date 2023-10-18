@@ -33,7 +33,7 @@ app.post("/send-mail", async (req,res) => {
     let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM'];
     docpdf.moveDown(5);
     docpdf.list(myArrayOfItems);
-    docpdf.image('/teste.png', {width: 150, height: 150});
+    docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
     docpdf.moveDown();
     docpdf.text(email);
     
