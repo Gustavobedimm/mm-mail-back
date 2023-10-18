@@ -84,10 +84,10 @@ app.post("/send-mail", async (req,res) => {
     stream.on('data', function(chunk) {
       finalString += chunk;
     });
-    //stream.on('end', function() {
-      // the stream is at its end, so push the resulting base64 string to the response
-    //  finalString2 = finalString;
-  //});
+    stream.on('end', function() {
+       //the stream is at its end, so push the resulting base64 string to the response
+      finalString2 = finalString;
+  });
     
     //let pdfDocGenerator = pdfMake.createPdf(docInfo);
     //let base64;
