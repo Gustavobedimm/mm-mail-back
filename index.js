@@ -29,9 +29,11 @@ app.post("/send-mail", async (req,res) => {
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
+    docpdf.fontSize(30);
     docpdf.text("Orçamento", { align: 'center'})
+    docpdf.fontSize(13);
     let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM'];
-    docpdf.moveDown(5);
+    docpdf.moveDown(3);
     docpdf.list(myArrayOfItems);
     //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
     docpdf.moveDown();
