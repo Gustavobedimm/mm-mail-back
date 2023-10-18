@@ -35,10 +35,17 @@ app.post("/send-mail", async (req,res) => {
     //docPDF.text(35, 25, "Paranyan loves jsPDF");
     //var base = docPDF.output('datauristring');
 
+    var fonts = {
+      Roboto: {
+          normal: 'fonts/roboto/Roboto-Regular.ttf',
+          bold: 'fonts/roboto/Roboto-Medium.ttf',
+          italics: 'fonts/roboto/Roboto-Italic.ttf',
+          bolditalics: 'fonts/roboto/Roboto-MediumItalic.ttf'
+      }
+  };
 
 
-
-    let pdfmake = new Pdfmake();
+    let pdfmake = new Pdfmake(fonts);
 
     let docDefination = {
         content: [
