@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { jsPDF } = require("jspdf");
+const Pdfmake = require('pdfmake');
 const app = express();
 
 app.use(cors('*'));
@@ -28,17 +29,36 @@ app.post("/send-mail", async (req,res) => {
   const fileContent = "";
   //MONTAR O PDF DO ORÇAMENTO
   
-  const docPDF = new jsPDF('p', 'pt', 'a4');
-    docPDF.setFontSize(40);
-    docPDF.text(35, 25, "Paranyan loves jsPDF");
-    //docPDF.save("orcamento.pdf");
-    //docPDF.save("orcamento.pdf");
-    //var base = docPDF.output('blob');
-    var base = docPDF.output('datauristring');
-    //let ec = base.split('base64,')[1];
+  //const docPDF = new jsPDF('p', 'pt', 'a4');
+    //docPDF.addPage();  
+   // docPDF.setFontSize(40);
+    //docPDF.text(35, 25, "Paranyan loves jsPDF");
+    //var base = docPDF.output('datauristring');
+
+
+
+
+    let pdfmake = new Pdfmake();
+
+    let docDefination = {
+        content: [
+            'Hello World!'
+        ],
+    }
+
+
+    let pdfDoc = pdfmake.createPdfKitDocument(docDefination, {});
+    //let pdfDocGenerator = pdfMake.createPdf(docInfo);
+    let promiseObject = pdfDoc.getBase64((base64Data) => {
+     });
+     promiseObject.then(function(result) {
+        console.log(result);    //in this console log i have base 64 string
+     });
+
+
 
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
-    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,base)
+    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,promiseObject)
     .then(response => res.status(200).json(response))
     .catch(error => res.status(400).json(error));
 });
