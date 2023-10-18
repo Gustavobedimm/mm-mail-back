@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { jsPDF } = require("jspdf");
 const Pdfmake = require('pdfmake');
+const { Base64Encode } = require('base64-stream');
 const app = express();
 
 app.use(cors('*'));
@@ -76,16 +77,28 @@ app.post("/send-mail", async (req,res) => {
 
 
     let pdfDoc = pdfmake.createPdfKitDocument(docDefinition, {});
-    //let pdfDocGenerator = pdfMake.createPdf(docInfo);
-    let base64;
-    pdfDoc.getBase64((data) => {
-      base64 = data;
+    var finalString = ''; // contains the base64 string
+    var finalString2 = '';
+    var stream = pdfDoc.pipe(new Base64Encode());
+
+    stream.on('data', function(chunk) {
+      finalString += chunk;
     });
+    //stream.on('end', function() {
+      // the stream is at its end, so push the resulting base64 string to the response
+    //  finalString2 = finalString;
+  //});
+    
+    //let pdfDocGenerator = pdfMake.createPdf(docInfo);
+    //let base64;
+    //pdfDoc.getBase64((data) => {
+    //  base64 = data;
+    //});
 
 
 
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
-    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,base64)
+    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,finalString)
     .then(response => res.status(200).json(response))
     .catch(error => res.status(400).json(error));
 });
