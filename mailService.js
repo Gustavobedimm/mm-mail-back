@@ -1,11 +1,7 @@
 const nodemailer = require("nodemailer");
-const fs = require('fs');
 
 module.exports = (nome,doc,email,emailcc,origem,destino,valor,var64) => {
 
-    function teste(){
-
-    }
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -28,13 +24,12 @@ module.exports = (nome,doc,email,emailcc,origem,destino,valor,var64) => {
                 <p>Valor : ${valor}</p>
                   `, // html body
                   attachments : [{   // encoded string as an attachment
-                    filename: 'orcamento.txt',
+                    filename: 'orcamento.pdf',
                     content: var64,
                     encoding: 'base64'
                 }],
       };
       return new Promise((resolve, reject) => {
-        console.log("teste");
         transporter.sendMail(info)
         .then(response => {
             return resolve(response);

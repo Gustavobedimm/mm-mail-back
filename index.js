@@ -1,12 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const { jsPDF } = require("jspdf");
-//const PDFDocument = require('pdfkit');
-//const fs = require('fs');
-//const pdf = require("html-pdf"); 
-
-
-
 const app = express();
 
 app.use(cors('*'));
@@ -33,39 +27,12 @@ app.post("/send-mail", async (req,res) => {
   const cb9 = req.body.cb9;
   const fileContent = "";
   //MONTAR O PDF DO ORÇAMENTO
-  const docpdf = new PDFDocument();
-  //use the tmp serverless function folder to create the write stream for the pdf
-  let writeStream = fs.createWriteStream(`/tmp/orcamento.pdf`);
-  docpdf.pipe(writeStream);
-  docpdf.text("title");
-  docpdf.end();
-
-  writeStream.on('finish', function () {
-    //once the doc stream is completed, read the file from the tmp folder
-     fileContent = fs.readFileSync(`/orcamento.pdf`);
-  });
-   // const dataTmp;
-   // fs.readFile('/tmp/orcamento.pdf', function(err, data) {
-    //  dataTmp = data;
-    //};
-    //console.log(fileContent);
-  //});
   
   const docPDF = new jsPDF('p', 'pt', 'a4');
     docPDF.text("Bem vindo", 10, 10);
     //docPDF.save("orcamento.pdf");
     var base = docPDF.output('datauri');
 
-//const docPDF = new PDFDocument();
-  //use the tmp serverless function folder to create the write stream for the pdf
-//  let writeStream = fs.createWriteStream("/tmp/orcamento.pdf");
-//  docPDF.pipe(writeStream);
-//  docPDF.text("teste");
-//  docPDF.end();
-
-  //require('./pdfService')();
-  
-  console.log("Entrando no metodo enviar email")
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
     require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,base)
     .then(response => res.status(200).json(response))
