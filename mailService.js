@@ -15,8 +15,7 @@ module.exports = (nome,doc,email,emailcc,origem,destino,valor,var64) => {
         from: '"Mudanças Mazutti" <central.defretes@hotmail.com>', // sender address
         to: email, // list of receivers
         subject: "Orçamento ", // Subject line
-        text: `Não responder este E-Mail.
-        Arquivo em anexo.`,// plain text body
+        text: "Não responder este E-Mail, Arquivo em anexo.",// plain text body
         //html: `<b>Cliente : ${nome}</b>
         //        <p>Documento : ${doc}</p>
         //        <p>Email : ${email}</p>
