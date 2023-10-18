@@ -21,7 +21,7 @@ module.exports = (nome,doc,email,origem,destino,valor,fileContent) => {
         attachments: [{
              // stream as an attachment
             filename: 'orcamento.pdf',
-            content: fs.createReadStream('/tmp/orcamento.txt')
+            content: fileContent
         ,
       }]
       };
