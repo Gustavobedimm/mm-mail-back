@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-//const { jsPDF } = require("jspdf");
-const PDFDocument = require('pdfkit');
-const fs = require('fs');
+const { jsPDF } = require("jspdf");
+//const PDFDocument = require('pdfkit');
+//const fs = require('fs');
 //const pdf = require("html-pdf"); 
 
 
@@ -42,7 +42,7 @@ app.post("/send-mail", async (req,res) => {
 
   writeStream.on('finish', function () {
     //once the doc stream is completed, read the file from the tmp folder
-     fileContent = fs.readFileSync(`/tmp/orcamento.pdf`);
+     fileContent = fs.readFileSync(`/orcamento.pdf`);
   });
    // const dataTmp;
    // fs.readFile('/tmp/orcamento.pdf', function(err, data) {
@@ -50,9 +50,11 @@ app.post("/send-mail", async (req,res) => {
     //};
     //console.log(fileContent);
   //});
-//  const docPDF = new jsPDF();
-//    docPDF.text("Bem vindo", 10, 10);
-//    docPDF.save("orcamento.pdf");
+  
+  const docPDF = new jsPDF('p', 'pt', 'a4');
+    docPDF.text("Bem vindo", 10, 10);
+    //docPDF.save("orcamento.pdf");
+    var base = docPDF.output('datauri');
 
 //const docPDF = new PDFDocument();
   //use the tmp serverless function folder to create the write stream for the pdf
@@ -65,7 +67,7 @@ app.post("/send-mail", async (req,res) => {
   
   console.log("Entrando no metodo enviar email")
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
-    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,fileContent)
+    require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,base)
     .then(response => res.status(200).json(response))
     .catch(error => res.status(400).json(error));
 });
