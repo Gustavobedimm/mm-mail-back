@@ -29,17 +29,21 @@ app.post("/send-mail", async (req,res) => {
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
+    docpdf.fontSize(11);
+    docpdf.text("Empresa  : Mudaças Mazutti ME - 01.367.190/0001-42" , { align: 'rigth'});
+    docpdf.text("Endereço : Rua Parecis 1699, Cascavel-PR" , { align: 'rigth'});
+    docpdf.text("Responsavel : Claudinei Mazutti - 45 99971-7983" , { align: 'rigth'});
+    docpdf.text("Website : www.mudancasmazutti.com.br" , { align: 'rigth'});
+    
+    docpdf.moveDown(2);
     docpdf.fontSize(20);
     docpdf.text("ORÇAMENTO", { align: 'center'});
     docpdf.moveDown(2);
     docpdf.fontSize(11);
-    docpdf.text("Empresa : Mudaças Mazutti ME ");
-    docpdf.text("CNPJ : 01.367.190/0001-42");
-    docpdf.text("Endereço : Rua Parecis 1699, Cascavel-PR");
-    docpdf.text("Responsavel : Claudinei Mazutti");
-    docpdf.text("Celular : (45) 99971-7983");
-    docpdf.moveDown(2);
-    docpdf.text("SERVIÇOS PRESTADOS : ");
+    docpdf.text("Cliente : " +nome);
+    docpdf.text("E-mail  : " +email);
+    
+    docpdf.text("Orçamento referente a prestação dos serviços a baixo  : ");
     docpdf.moveDown(1);
     let local = "TRANSPORTE DE "+origem+" PARA "+ destino;
     let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM',local];
@@ -51,6 +55,13 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("O investimento necessário será de R$ "+ valor);
     docpdf.moveDown();
     docpdf.text("Nossa empresa atua no mercado de transportes a mais de 18 anos, buscando sempre a exelência no atendimento e na prestação de serviços aos nossos clientes. Transportando com qualidade o que é importante para você.");
+    
+    docpdf.moveDown(3);
+    docpdf.text("________________________________________");
+    docpdf.text("Mudanças Mazutti - 01.367.190/0001-42");
+    docpdf.moveDown(1);
+    docpdf.text("________________________________________");
+    docpdf.text(nome);
     docpdf.moveDown(3);
     docpdf.text("Cascavel-PR, 16/10/2023");
     //------------------------------------------------------------
