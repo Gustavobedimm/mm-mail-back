@@ -28,12 +28,16 @@ app.post("/send-mail", async (req,res) => {
   const fileContent = "";
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
-    docpdf.text(`Orçamento`, {
-      width: 410,
-      align: 'center'
-    });
+    //CORPO PDF----------------------------------------------------
+    docpdf.text("Orçamento", { align: 'center'})
+    let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM'];
+    docpdf.moveDown(5);
+    docpdf.list(myArrayOfItems);
+    docpdf.image('teste.png', {width: 150, height: 150});
     docpdf.moveDown();
-    docpdf.text(email, 100, 100);
+    docpdf.text(email);
+    
+    //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
     const pdf64 = data.toString("base64");
