@@ -35,25 +35,47 @@ app.post("/send-mail", async (req,res) => {
     //docPDF.text(35, 25, "Paranyan loves jsPDF");
     //var base = docPDF.output('datauristring');
 
-    let fonts = {
-      Roboto: {
-          normal: 'node_modules/roboto-font/fonts/Roboto/roboto-regular-webfont.ttf',
-          bold: 'node_modules/roboto-font/fonts/Roboto/roboto-bold-webfont.ttf',
-          italics: 'node_modules/roboto-font/fonts/Roboto/roboto-italic-webfont.ttf',
-          bolditalics: 'node_modules/roboto-font/fonts/Roboto/roboto-bolditalic-webfont.ttf'
+    var fonts = {
+      Courier: {
+        normal: 'Courier',
+        bold: 'Courier-Bold',
+        italics: 'Courier-Oblique',
+        bolditalics: 'Courier-BoldOblique'
+      },
+      Helvetica: {
+        normal: 'Helvetica',
+        bold: 'Helvetica-Bold',
+        italics: 'Helvetica-Oblique',
+        bolditalics: 'Helvetica-BoldOblique'
+      },
+      Times: {
+        normal: 'Times-Roman',
+        bold: 'Times-Bold',
+        italics: 'Times-Italic',
+        bolditalics: 'Times-BoldItalic'
+      },
+      Symbol: {
+        normal: 'Symbol'
+      },
+      ZapfDingbats: {
+        normal: 'ZapfDingbats'
       }
-  };
+    };
 
     let pdfmake = new Pdfmake(fonts);
 
-    let docDefination = {
-        content: [
-            'Hello World!'
-        ],
-    }
+    var docDefinition = {
+      content: [
+        'First paragraph',
+        'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines',
+      ],
+      defaultStyle: {
+        font: 'Helvetica'
+      }
+    };
 
 
-    let pdfDoc = pdfmake.createPdfKitDocument(docDefination, {});
+    let pdfDoc = pdfmake.createPdfKitDocument(docDefinition, {});
     //let pdfDocGenerator = pdfMake.createPdf(docInfo);
     let promiseObject = pdfDoc.getBase64((base64Data) => {
      });
