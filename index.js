@@ -28,7 +28,12 @@ app.post("/send-mail", async (req,res) => {
   const fileContent = "";
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
-    docpdf.text("Sample text", 100, 100);
+    docpdf.text(`Orçamento`, {
+      width: 410,
+      align: 'center'
+    });
+    docpdf.moveDown();
+    docpdf.text(email, 100, 100);
     docpdf.end();
     const data = docpdf.read();
     const pdf64 = data.toString("base64");
