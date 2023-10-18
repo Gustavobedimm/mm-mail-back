@@ -40,11 +40,13 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("Celular : 45 999951445");
     docpdf.moveDown(2);
     docpdf.text("SERVIÇOS PRESTADOS : ");
+    docpdf.moveDown(1);
     let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM'];
     docpdf.list(myArrayOfItems);
     //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
     docpdf.moveDown();
-    docpdf.text("Valor total so serviço : R$"+ valor);
+    docpdf.font('Helvetica-Bold').text("Valor total so serviço : R$ "+ valor);
+    docpdf.text("Valor total so serviço : R$ "+ valor);
     
     //------------------------------------------------------------
     docpdf.end();
