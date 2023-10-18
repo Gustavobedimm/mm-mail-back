@@ -33,21 +33,26 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("ORÇAMENTO", { align: 'center'});
     docpdf.moveDown(2);
     docpdf.fontSize(11);
-    docpdf.text("Razão Social : Mudaças Mazutti LTDA ");
-    docpdf.text("CNPJ : 078.879.987/0001-83");
+    docpdf.text("Empresa : Mudaças Mazutti ME ");
+    docpdf.text("CNPJ : 01.367.190/0001-42");
     docpdf.text("Endereço : Rua Parecis 1699, Cascavel-PR");
     docpdf.text("Responsavel : Claudinei Mazutti");
-    docpdf.text("Celular : 45 999951445");
+    docpdf.text("Celular : (45) 99971-7983");
     docpdf.moveDown(2);
     docpdf.text("SERVIÇOS PRESTADOS : ");
     docpdf.moveDown(1);
-    let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM'];
+    let local = "TRANSPORTE DE "+origem+" PARA "+ destino;
+    let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM',local];
     docpdf.list(myArrayOfItems);
     //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
     docpdf.moveDown();
     docpdf.font('Helvetica-Bold').text("Valor total so serviço : R$ "+ valor);
-    docpdf.text("Valor total so serviço : R$ "+ valor);
-    
+    docpdf.font('Helvetica');
+    docpdf.text("O investimento necessário será de R$ "+ valor);
+    docpdf.moveDown();
+    docpdf.text("Nossa empresa atua no mercado de transportes a mais de 18 anos, buscando sempre a exelência no atendimento e na prestação de serviços aos nossos clientes. Transportando com qualidade o que é importante para você.");
+    docpdf.moveDown(3);
+    docpdf.text("Cascavel-PR, 16/10/2023");
     //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
