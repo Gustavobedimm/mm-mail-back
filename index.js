@@ -29,15 +29,22 @@ app.post("/send-mail", async (req,res) => {
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
-    docpdf.fontSize(30);
-    docpdf.text("Orçamento", { align: 'center'})
-    docpdf.fontSize(13);
+    docpdf.fontSize(20);
+    docpdf.text("ORÇAMENTO", { align: 'center'});
+    docpdf.moveDown(2);
+    docpdf.fontSize(11);
+    docpdf.text("Razão Social : Mudaças Mazutti LTDA ");
+    docpdf.text("CNPJ : 078.879.987/0001-83");
+    docpdf.text("Endereço : Rua Parecis 1699, Cascavel-PR");
+    docpdf.text("Responsavel : Claudinei Mazutti");
+    docpdf.text("Celular : 45 999951445");
+    docpdf.moveDown(2);
+    docpdf.text("SERVIÇOS PRESTADOS : ");
     let myArrayOfItems = ['TRANSPORTE', 'CARGA', 'DESCARGA', 'EMBALAGEM'];
-    docpdf.moveDown(3);
     docpdf.list(myArrayOfItems);
     //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
     docpdf.moveDown();
-    docpdf.text(email);
+    docpdf.text("Valor total so serviço : R$"+ valor);
     
     //------------------------------------------------------------
     docpdf.end();
