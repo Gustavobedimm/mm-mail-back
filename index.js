@@ -45,7 +45,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.list(myArrayOfItems);
     //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
     docpdf.moveDown();
-    docpdf.font('Helvetica-Bold').text("Valor total so serviço : R$ "+ valor);
+    //docpdf.font('Helvetica-Bold').text("Valor total so serviço : R$ "+ valor);
     docpdf.text("Valor total so serviço : R$ "+ valor);
     
     //------------------------------------------------------------
