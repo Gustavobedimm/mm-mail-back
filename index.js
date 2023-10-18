@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.post("/send-mail", async (req,res) => {
   //monta data
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "Outubro", "November", "December"];
+  const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
   const date = new Date();
   const dia = date.getDate();
   const mes = date.getMonth() + 1;
@@ -101,7 +101,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("________________________________________");
     docpdf.text(nome);
     docpdf.moveDown(3);
-    docpdf.text("Cascavel-PR, "+StringdataAtual);
+    docpdf.text(StringdataAtual + ", Cascavel-PR");
     //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
