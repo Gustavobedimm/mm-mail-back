@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
+const fs = require('fs');
 
-module.exports = (nome,doc,email,origem,destino,valor) => {
+module.exports = (nome,doc,email,origem,destino,valor,fileContent) => {
 
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -17,11 +18,12 @@ module.exports = (nome,doc,email,origem,destino,valor) => {
         subject: "Orçamento ", // Subject line
         text: "Nome : "+nome+ " Doc : "+doc + "Por favor não responder este E-mail."+"Origem: "+origem+"Destino: "+destino+ "Valor: R$"+valor,// plain text body
         //html: "<b>Hello world?</b>", // html body
-        //attachments: [{
-        //  filename: "orcamento.pdf", 
-        //  contentType: "application/pdf",
-        //  path: "/"
-      //}]
+        attachments: [{
+             // stream as an attachment
+            filename: 'orcamento.pdf',
+            content: fs.createReadStream('/tmp/orcamento.txt')
+        ,
+      }]
       };
       return new Promise((resolve, reject) => {
         transporter.sendMail(info)

@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 //const { jsPDF } = require("jspdf");
-//const PDFDocument = require('pdfkit');
-//const fs = require('fs');
-const pdf = require("html-pdf"); 
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+//const pdf = require("html-pdf"); 
 
 
 
@@ -32,16 +32,18 @@ app.post("/send-mail", async (req,res) => {
   const cb8 = req.body.cb8;
   const cb9 = req.body.cb9;
   //MONTAR O PDF DO ORÇAMENTO
+  const docpdf = new PDFDocument();
+  //use the tmp serverless function folder to create the write stream for the pdf
+  let writeStream = fs.createWriteStream(`/tmp/orcamento.pdf`);
+  docpdf.pipe(writeStream);
+  docpdf.text("title");
+  docpdf.end();
 
-  pdf.create("meu nome e gustavo",{}).toFile("/tmp/orcamento.pdf", (err,res) => {
-    if(err){
-      console.log(err+"um erro aconteceu")
-    }else{
-      console.log(res)
-    }
-  })
-  
-
+  writeStream.on('finish', function () {
+    //once the doc stream is completed, read the file from the tmp folder
+    const fileContent = fs.readFileSync(`/tmp/orcamento.pdf`);
+    console.log(fileContent);
+  });
 //  const docPDF = new jsPDF();
 //    docPDF.text("Bem vindo", 10, 10);
 //    docPDF.save("orcamento.pdf");
@@ -55,9 +57,9 @@ app.post("/send-mail", async (req,res) => {
 
   //require('./pdfService')();
   
-  console.log(nome+email)
+  console.log(nome+email+"Entrando no metodo enviar email")
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
-    require('./mailService')(nome,doc,email,origem,destino,valor)
+    require('./mailService')(nome,doc,email,origem,destino,valor,fileContent)
     .then(response => res.status(200).json(response))
     .catch(error => res.status(400).json(error));
 });
