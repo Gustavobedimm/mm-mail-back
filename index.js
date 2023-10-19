@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const PDFDocument = require('pdfkit');
 const app = express();
-const path = require('path')
 
 app.use(cors('*'));
 app.use(express.json());
@@ -70,9 +69,7 @@ app.post("/send-mail", async (req,res) => {
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
-    const diretorio = path.basename(__dirname);
-    console.log(diretorio+'/mazutti.png')
-    docpdf.image(diretorio+'/mazutti.png', 0, 15, {width: 300})
+    docpdf.image('https://lh5.googleusercontent.com/p/AF1QipN6RPbz6va-JuSZYcew0Amv76AKbi8OV0GXgPKN=w203-h203-k-no', 0, 15, {width: 300})
    .text('Proportional to width', 0, 0);
     docpdf.fontSize(11);
     docpdf.text("Mudaças Mazutti ME - 01.367.190/0001-42" , { align: 'right'});
