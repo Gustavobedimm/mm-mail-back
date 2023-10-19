@@ -69,6 +69,8 @@ app.post("/send-mail", async (req,res) => {
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
+    docpdf.image('images/mazutti.png', 0, 15, {width: 300})
+   .text('Proportional to width', 0, 0);
     docpdf.fontSize(11);
     docpdf.text("Mudaças Mazutti ME - 01.367.190/0001-42" , { align: 'right'});
     docpdf.text("Rua Parecis 1699, Cascavel-PR" , { align: 'right'});
