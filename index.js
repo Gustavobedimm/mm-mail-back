@@ -70,7 +70,7 @@ app.post("/send-mail", async (req,res) => {
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
-    const diretorio = path.dirname();
+    const diretorio = path.basename(__dirname);
     console.log(diretorio+'/images/mazutti.png')
     docpdf.image(diretorio+'/images/mazutti.png', 0, 15, {width: 300})
    .text('Proportional to width', 0, 0);
