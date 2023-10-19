@@ -71,8 +71,8 @@ app.post("/send-mail", async (req,res) => {
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
     const diretorio = path.basename(__dirname);
-    console.log(diretorio+'/images/mazutti.png')
-    docpdf.image(diretorio+'/images/mazutti.png', 0, 15, {width: 300})
+    console.log(diretorio+'/mazutti.png')
+    docpdf.image(diretorio+'/mazutti.png', 0, 15, {width: 300})
    .text('Proportional to width', 0, 0);
     docpdf.fontSize(11);
     docpdf.text("Mudaças Mazutti ME - 01.367.190/0001-42" , { align: 'right'});
