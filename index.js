@@ -69,7 +69,8 @@ app.post("/send-mail", async (req,res) => {
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
-    docpdf.image('https://lh5.googleusercontent.com/p/AF1QipN6RPbz6va-JuSZYcew0Amv76AKbi8OV0GXgPKN=w203-h203-k-no', 0, 15, {width: 300})
+    const logo = await fetchImage("https://lh5.googleusercontent.com/p/AF1QipN6RPbz6va-JuSZYcew0Amv76AKbi8OV0GXgPKN=w203-h203-k-no");
+    docpdf.image(logo, 0, 15, {width: 300})
    .text('Proportional to width', 0, 0);
     docpdf.fontSize(11);
     docpdf.text("Mudaças Mazutti ME - 01.367.190/0001-42" , { align: 'right'});
