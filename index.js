@@ -109,7 +109,7 @@ app.post("/send-mail", async (req,res) => {
 
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
     require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,pdf64)
-    .then(response => res.status(200).json(response))
+    .then(response => res.status(200).json({pdfBase64:pdf64}))
     .catch(error => res.status(400).json(error));
 });
 
