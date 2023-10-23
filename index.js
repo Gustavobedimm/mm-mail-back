@@ -26,6 +26,7 @@ app.post("/send-mail", async (req,res) => {
   const origem = req.body.origem;
   const destino = req.body.destino;
   const valor = req.body.valor;
+  const obs = req.body.obs;
   //const cb0 = req.body.cb0;
   const cb1 = req.body.cb1;
   const cb2 = req.body.cb2;
@@ -72,7 +73,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.fontSize(11);
     docpdf.text("Mudaças Mazutti ME - 01.367.190/0001-42" , { align: 'right'});
     docpdf.text("Rua Parecis 1699, Cascavel-PR" , { align: 'right'});
-    docpdf.text("Claudinei Mazutti - 45 99971-7983" , { align: 'right'});
+    docpdf.text("Claudinei Mazutti - 45 99971-7983 - central.defretes@hotmail.com" , { align: 'right'});
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
     
     docpdf.moveDown(2);
@@ -87,7 +88,9 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("Orçamento referente a prestação dos serviços a baixo  : ");
     docpdf.moveDown(1);
     docpdf.list(myArrayOfItems2);
+    docpdf.moveDown(1);
     //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
+    docpdf.text("Observações: " + obs);
     docpdf.moveDown();
     docpdf.font('Helvetica-Bold').text("O investimento necessário será de R$ : R$ "+ valor);
     docpdf.font('Helvetica');
@@ -101,7 +104,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("________________________________________");
     docpdf.text(nome);
     docpdf.moveDown(3);
-    docpdf.text(StringdataAtual + ", Cascavel-PR");
+    docpdf.text("Cascavel-PR, "+ StringdataAtual);
     //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
