@@ -27,6 +27,7 @@ app.post("/send-mail", async (req,res) => {
   const destino = req.body.destino;
   const valor = req.body.valor;
   const obs = req.body.obs;
+  const envia = req.body.enviaEmail;
   //const cb0 = req.body.cb0;
   const cb1 = req.body.cb1;
   const cb2 = req.body.cb2;
@@ -110,9 +111,13 @@ app.post("/send-mail", async (req,res) => {
     const pdf64 = data.toString("base64");
 
   //ENVIA EMAIL, COM OS DADOS DA REQUISICAO
+  if(envia){
     require('./mailService')(nome,doc,email,emailcc,origem,destino,valor,pdf64)
     .then(response => res.status(200).json({pdfBase64:pdf64}))
     .catch(error => res.status(400).json(error));
+  }else{
+    return res.status(200).json({pdfBase64:pdf64});
+  }
 });
 
 app.listen(3000, () => {
