@@ -26,11 +26,26 @@ app.post("/send-mail", async (req,res) => {
   const cb8 = req.body.cb8;
   const cb9 = req.body.cb9;
   const fileContent = "";
+
+  const fetchImage = async (src) => {
+    const response = await fetch(src);
+    const image = await response.buffer();
+  
+    return image;
+  };
+      
+  const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
+  
+
+
+
+
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
     docpdf.fontSize(20);
     docpdf.text("ORÇAMENTO", { align: 'center'});
+    docpdf.image(logo, 0, 200);
     docpdf.moveDown(2);
     docpdf.fontSize(11);
     docpdf.text("Razão Social : Mudaças Mazutti LTDA ");
