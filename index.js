@@ -66,14 +66,16 @@ app.post("/send-mail", async (req,res) => {
   }
   myArrayOfItems2.push("TRANSPORTE DE "+origem+" PARA "+ destino);
 
-  const fetchImage = async (src) => {
-    const response = await fetch(src);
-    const image = await response.buffer();
-  
-    return image;
-  };
-      
-  const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
+  async function fetchImage(src) {
+    const image = await axios
+        .get(src, {
+            responseType: 'arraybuffer'
+        })
+    return image.data;
+}
+
+const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
+
   
 
 
