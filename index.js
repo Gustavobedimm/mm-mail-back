@@ -50,9 +50,6 @@ app.post("/send-mail", async (req,res) => {
   const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
   
 
-
-
-
   //MONTAR O PDF DO ORÇAMENTO
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
