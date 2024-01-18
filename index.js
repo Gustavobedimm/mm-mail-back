@@ -16,9 +16,7 @@ app.post("/send-mail", async (req,res) => {
   const month = months[date.getMonth()];
   const StringdataAtual = dia + " de " + month + " de " + ano;
 
-
-
-//PEGANDO DADOS DA REQUISIÃÃO ENVIADA PELO FORMULARIO
+//PEGANDO DADOS DA REQUISICAO ENVIADA PELO FORMULARIO
   const nome = req.body.nome;
   const doc = req.body.doc;
   const email = req.body.email;
@@ -68,10 +66,21 @@ app.post("/send-mail", async (req,res) => {
   }
   myArrayOfItems2.push("TRANSPORTE DE "+origem+" PARA "+ destino);
 
-  //MONTAR O PDF DO ORÃAMENTO
+  const fetchImage = async (src) => {
+    const response = await fetch(src);
+    const image = await response.buffer();
+  
+    return image;
+  };
+      
+  const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
+  
+
+
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
     docpdf.fontSize(11);
+    docpdf.image(logo, 0, 200);
     docpdf.text("Mudancas Mazutti ME - 01.367.190/0001-42 - Rua Parecis 1699, Cascavel-PR" , { align: 'right'});
     docpdf.text("Claudinei Mazutti - 45 99971-7983 - central.defretes@hotmail.com" , { align: 'right'});
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
