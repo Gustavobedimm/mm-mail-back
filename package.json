@@ -19,5 +19,8 @@
     "pdfkit": "^0.13.0",
     "pdfmake": "^0.2.7",
     "roboto-font": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.1"
   }
 }
