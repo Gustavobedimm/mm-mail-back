@@ -79,18 +79,6 @@ app.post("/send-mail", async (req,res) => {
   }
   myArrayOfItems2.push("TRANSPORTE DE "+origem+" PARA "+ destino);
 
-  //async function fetchImage(src) {
-   // const image = await axios
-    //    .get(src, {
-    //        responseType: 'arraybuffer'
-    //    })
-   // return image.data;
-//}
-  var image = new Image();
-  image.src = imagemBase64;
-
-//const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
-//pegar imagem transformar em base 64 salvar na base do cliente e enviar pela requisicao
 
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
@@ -100,7 +88,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
     
     docpdf.moveDown(2);
-    docpdf.image(image, 100, 100);
+    //docpdf.image(imagemBase64, 100, 100);
     docpdf.fontSize(20);
     docpdf.text("ORÇAMENTO", { align: 'center'});
     docpdf.moveDown(2);
@@ -129,6 +117,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text(nome);
     docpdf.moveDown(3);
     docpdf.text(empresaCidade+"-"+empresaEstado +" , "+ StringdataAtual);
+    docpdf.text(imagemBase64);
     //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
