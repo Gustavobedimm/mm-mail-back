@@ -78,11 +78,12 @@ app.post("/send-mail", async (req,res) => {
     myArrayOfItems2.push("SERVICO DE PERSONAL ORGANIZER");
   }
   myArrayOfItems2.push("TRANSPORTE DE "+origem+" PARA "+ destino);
-
+  
+  buf = Buffer.from(imagemBase64, 'base64'); // Ta-da
 
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
-    docpdf.image(imagemBase64, 320, 15, {fit: [100, 100]})
+    docpdf.image(buf, 320, 15, {fit: [100, 100]})
  .rect(320, 15, 100, 100)
  .stroke()
  .text('Fit', 320, 0);
