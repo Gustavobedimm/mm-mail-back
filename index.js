@@ -94,8 +94,8 @@ app.post("/send-mail", async (req,res) => {
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
     docpdf.fontSize(11);
-    docpdf.text("Mudaças Mazutti ME - 01.367.190/0001-42 - Rua Parecis 1699, Cascavel-PR" , { align: 'right'});
-    docpdf.text("Claudinei Mazutti - 45 99971-7983 - central.defretes@hotmail.com" , { align: 'right'});
+    docpdf.text(empresaNome+" - " + empresaCnpj + " - "+empresaEndereco+","+empresaCidade+"-"+empresaEstado , { align: 'right'});
+    docpdf.text("Claudinei Mazutti - "+empresaCelular +" - "+empresaEmail , { align: 'right'});
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
     
     docpdf.moveDown(2);
@@ -121,7 +121,7 @@ app.post("/send-mail", async (req,res) => {
     
     docpdf.moveDown(3);
     docpdf.text("________________________________________");
-    docpdf.text("Mudanças Mazutti - 01.367.190/0001-42");
+    docpdf.text(empresaNome+" - "+empresaCnpj);
     docpdf.moveDown(2);
     docpdf.text("________________________________________");
     docpdf.text(nome);
