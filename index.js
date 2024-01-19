@@ -47,7 +47,9 @@ app.post("/send-mail", async (req,res) => {
   const empresaMensagem= req.body.empresaMensagem;
   const empresaCodigo= req.body.empresaCodigo; 
   const empresaImagem= req.body.empresaImagem;
-  const imagemBase64 = req.body.imagemBase64;
+  const empresaResponsavel=req.body.empresaResponsavel;
+  const empresaSite = req.body.empresaSite;
+  //const imagemBase64 = req.body.imagemBase64;
 
   let myArrayOfItems2 = [];
   if(cb1 === true){
@@ -82,15 +84,15 @@ app.post("/send-mail", async (req,res) => {
 
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
-    docpdf.image(imagemBase64, 320, 15, {fit: [100, 100]})
- .rect(320, 15, 100, 100)
- .stroke()
- .text('Fit', 320, 0);
+    //docpdf.image(imagemBase64, 320, 15, {fit: [100, 100]})
+ //.rect(320, 15, 100, 100)
+ //.stroke()
+ //.text('Fit', 320, 0);
 
     docpdf.fontSize(11);
     docpdf.text(empresaNome+" - " + empresaCnpj + " - "+empresaEndereco+","+empresaCidade+"-"+empresaEstado , { align: 'right'});
-    docpdf.text("Claudinei Mazutti - "+empresaCelular +" - "+empresaEmail , { align: 'right'});
-    docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
+    docpdf.text(empresaResponsavel+" - "+empresaCelular +" - "+empresaEmail , { align: 'right'});
+    docpdf.text(empresaSite , { align: 'right'});
     docpdf.moveDown(2);
     docpdf.fontSize(20);
     docpdf.text("ORÇAMENTO", { align: 'center'});
