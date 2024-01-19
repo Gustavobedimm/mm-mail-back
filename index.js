@@ -47,6 +47,7 @@ app.post("/send-mail", async (req,res) => {
   const empresaMensagem= req.body.empresaMensagem;
   const empresaCodigo= req.body.empresaCodigo; 
   const empresaImagem= req.body.empresaImagem;
+  const imagemBase64 = req.body.imagemBase64;
 
   let myArrayOfItems2 = [];
   if(cb1 === true){
@@ -88,25 +89,6 @@ app.post("/send-mail", async (req,res) => {
 
 //const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
 //pegar imagem transformar em base 64 salvar na base do cliente e enviar pela requisicao
-function toDataUrl(url, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function() {
-      var reader = new FileReader();
-      reader.onloadend = function() {
-          callback(reader.result);
-      }
-      reader.readAsDataURL(xhr.response);
-  };
-  xhr.open('GET', url);
-  xhr.responseType = 'blob';
-  xhr.send();
-}
-const myBase64 = "";
-toDataUrl(empresaImagem, function(myBase64) {
- const myBase64 = myBase64;
-});
-
-
 
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
@@ -116,7 +98,7 @@ toDataUrl(empresaImagem, function(myBase64) {
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
     
     docpdf.moveDown(2);
-    docpdf.image(myBase64);
+    docpdf.image(imagemBase64);
     docpdf.fontSize(20);
     docpdf.text("ORÇAMENTO", { align: 'center'});
     docpdf.moveDown(2);
