@@ -38,6 +38,18 @@ app.post("/send-mail", async (req,res) => {
   const cb7 = req.body.cb7;
   const cb8 = req.body.cb8;
   const cb9 = req.body.cb9;
+  const empresaNome = req.body.empresaNome;
+  const empresaCelular= req.body.empresaCelular;
+  const empresaTelefone= req.body.empresaTelefone;
+  const empresaCnpj= req.body.empresaCnpj;
+  const empresaEmail= req.body.empresaEmail;
+  const empresaEndereco= req.body.empresaEndereco;
+  const empresaEstado= req.body.empresaEstado; 
+  const empresaCidade= req.body.empresaCidade; 
+  const empresaMensagem= req.body.empresaMensagem;
+  const empresaCodigo= req.body.empresaCodigo; 
+  const empresaImagem= req.body.empresaImagem;
+
   let myArrayOfItems2 = [];
   if(cb1 === true){
     myArrayOfItems2.push("CARGA");
@@ -72,8 +84,8 @@ app.post("/send-mail", async (req,res) => {
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
     docpdf.fontSize(11);
-    docpdf.text("Mudaças Mazutti ME - 01.367.190/0001-42 - Rua Parecis 1699, Cascavel-PR" , { align: 'right'});
-    docpdf.text("Claudinei Mazutti - 45 99971-7983 - central.defretes@hotmail.com" , { align: 'right'});
+    docpdf.text(empresaNome+" - " + empresaCnpj + " - "+empresaEndereco+","+empresaCidade+"-"+empresaEstado , { align: 'right'});
+    docpdf.text("Claudinei Mazutti - "+empresaCelular +" - "+empresaEmail , { align: 'right'});
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
     
     docpdf.moveDown(2);
@@ -95,16 +107,16 @@ app.post("/send-mail", async (req,res) => {
     docpdf.font('Helvetica-Bold').text("O investimento necessário será de R$ : R$ "+ valor);
     docpdf.font('Helvetica');
     docpdf.moveDown(2);
-    docpdf.text("Nossa empresa atua no mercado de transportes a mais de 18 anos, buscando sempre a exelência no atendimento e na prestação de serviços aos nossos clientes. Transportando com qualidade o que é importante para você.");
+    docpdf.text(empresaMensagem);
     
     docpdf.moveDown(3);
     docpdf.text("________________________________________");
-    docpdf.text("Mudanças Mazutti - 01.367.190/0001-42");
+    docpdf.text(empresaNome+" - "+empresaCnpj);
     docpdf.moveDown(2);
     docpdf.text("________________________________________");
     docpdf.text(nome);
     docpdf.moveDown(3);
-    docpdf.text("Cascavel-PR, "+ StringdataAtual);
+    docpdf.text(empresaCidade+"-"+empresaEstado +" -, "+ StringdataAtual);
     //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
