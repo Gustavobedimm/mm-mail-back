@@ -117,7 +117,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text(nome);
     docpdf.moveDown(3);
     docpdf.text(empresaCidade+"-"+empresaEstado +" , "+ StringdataAtual);
-    docpdf.text(imagemBase64);
+    
     //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
