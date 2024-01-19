@@ -88,7 +88,24 @@ app.post("/send-mail", async (req,res) => {
 
 //const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
 //pegar imagem transformar em base 64 salvar na base do cliente e enviar pela requisicao
-  
+function toDataUrl(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+          callback(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
+}
+const myBase64 = "";
+toDataUrl(empresaImagem, function(myBase64) {
+ const myBase64 = myBase64;
+});
+
 
 
     var docpdf = new PDFDocument();
@@ -99,6 +116,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
     
     docpdf.moveDown(2);
+    docpdf.image(myBase64);
     docpdf.fontSize(20);
     docpdf.text("ORÇAMENTO", { align: 'center'});
     docpdf.moveDown(2);
@@ -126,7 +144,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("________________________________________");
     docpdf.text(nome);
     docpdf.moveDown(3);
-    docpdf.text(empresaCidade+"-"+empresaEstado +" -, "+ StringdataAtual);
+    docpdf.text(empresaCidade+"-"+empresaEstado +" , "+ StringdataAtual);
     //------------------------------------------------------------
     docpdf.end();
     const data = docpdf.read();
