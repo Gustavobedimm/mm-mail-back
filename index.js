@@ -82,13 +82,12 @@ app.post("/send-mail", async (req,res) => {
 
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
+    docpdf.image(imagemBase64, 0, 0, {fit: [100, 100], align: 'center', valign:'center'}).rect(430, 15, 100, 100).stroke();
     docpdf.fontSize(11);
     docpdf.text(empresaNome+" - " + empresaCnpj + " - "+empresaEndereco+","+empresaCidade+"-"+empresaEstado , { align: 'right'});
     docpdf.text("Claudinei Mazutti - "+empresaCelular +" - "+empresaEmail , { align: 'right'});
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
-    
     docpdf.moveDown(2);
-    //docpdf.image(imagemBase64, 100, 100);
     docpdf.fontSize(20);
     docpdf.text("ORÇAMENTO", { align: 'center'});
     docpdf.moveDown(2);
