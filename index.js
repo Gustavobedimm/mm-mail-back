@@ -78,8 +78,8 @@ app.post("/send-mail", async (req,res) => {
     myArrayOfItems2.push("SERVICO DE PERSONAL ORGANIZER");
   }
   myArrayOfItems2.push("TRANSPORTE DE "+origem+" PARA "+ destino);
-  
-  buf = Buffer.from(imagemBase64, 'base64'); // Ta-da
+
+  var buf = Buffer.from(imagemBase64, 'base64'); // Ta-da
 
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
