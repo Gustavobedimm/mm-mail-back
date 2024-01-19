@@ -11,8 +11,9 @@ module.exports = (empresaNome,nome,doc,email,emailcc,origem,destino,valor,var64)
           pass: 'pjri hows xcwl iqzr'
         }
       });
+      
       const info =  {
-        from: empresaNome, // sender address
+        from: `"${empresaNome}" <central.defretes@hotmail.com>`, // sender address
         to: email, // list of receivers
         subject: "Orçamento ", // Subject line
         text: `Não responder este E-Mail. 
