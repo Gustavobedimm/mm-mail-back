@@ -86,6 +86,8 @@ app.post("/send-mail", async (req,res) => {
     //    })
    // return image.data;
 //}
+  var image = new Image();
+  image.src = imagemBase64;
 
 //const logo = await fetchImage("https://i.imgur.com/2ff9bM7.png");
 //pegar imagem transformar em base 64 salvar na base do cliente e enviar pela requisicao
@@ -98,7 +100,7 @@ app.post("/send-mail", async (req,res) => {
     docpdf.text("www.mudancasmazutti.com.br" , { align: 'right'});
     
     docpdf.moveDown(2);
-    docpdf.image(imagemBase64);
+    docpdf.image(image, 100, 100);
     docpdf.fontSize(20);
     docpdf.text("ORÇAMENTO", { align: 'center'});
     docpdf.moveDown(2);
