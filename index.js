@@ -82,7 +82,11 @@ app.post("/send-mail", async (req,res) => {
 
     var docpdf = new PDFDocument();
     //CORPO PDF----------------------------------------------------
-    docpdf.image(imagemBase64, 0, 0, {fit: [100, 100], align: 'center', valign:'center'}).rect(430, 15, 100, 100).stroke();
+    docpdf.image(imagemBase64, 320, 15, {fit: [100, 100]})
+ .rect(320, 15, 100, 100)
+ .stroke()
+ .text('Fit', 320, 0);
+
     docpdf.fontSize(11);
     docpdf.text(empresaNome+" - " + empresaCnpj + " - "+empresaEndereco+","+empresaCidade+"-"+empresaEstado , { align: 'right'});
     docpdf.text("Claudinei Mazutti - "+empresaCelular +" - "+empresaEmail , { align: 'right'});
