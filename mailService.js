@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-module.exports = (nome,doc,email,emailcc,origem,destino,valor,var64) => {
+module.exports = (empresaNome,nome,doc,email,emailcc,origem,destino,valor,var64) => {
 
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -12,7 +12,7 @@ module.exports = (nome,doc,email,emailcc,origem,destino,valor,var64) => {
         }
       });
       const info =  {
-        from: '"Mudanças Mazutti" <central.defretes@hotmail.com>', // sender address
+        from: empresaNome, // sender address
         to: email, // list of receivers
         subject: "Orçamento ", // Subject line
         text: `Não responder este E-Mail. 
