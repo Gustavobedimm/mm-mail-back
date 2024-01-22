@@ -90,7 +90,6 @@ app.post("/send-mail", async (req,res) => {
  //.text('Fit', 320, 0);
 
     docpdf.fontSize(11);
-    docpdf.rect(5,20,560,100).stroke("#000");
     docpdf.text(empresaNome+" - " + empresaCnpj + " - "+empresaEndereco+","+empresaCidade+"-"+empresaEstado , { align: 'right'});
     docpdf.text(empresaResponsavel+" - "+empresaCelular +" - "+empresaEmail , { align: 'right'});
     docpdf.text(empresaSite , { align: 'right'});
