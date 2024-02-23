@@ -76,7 +76,7 @@ app.post("/send-mail", async (req,res) => {
   if(cb8 === true){
     myArrayOfItems2.push("MONTAGEM DE MOVEIS");
   }
-  if(cb8 === true){
+  if(cb9 === true){
     myArrayOfItems2.push("SERVICO DE PERSONAL ORGANIZER");
   }
   myArrayOfItems2.push("TRANSPORTE DE "+origem+" PARA "+ destino);
