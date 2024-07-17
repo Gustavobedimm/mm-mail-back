@@ -86,59 +86,19 @@ app.post("/send-mail", async (req,res) => {
 
   const image_url = "https://scontent-gru2-1.cdninstagram.com/v/t51.2885-19/296477577_428755949187751_5501916957594122246_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_cat=107&_nc_ohc=6pgBUqRlz_wQ7kNvgFSP6lU&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYAoTBd6x02wN-amkJhW9FPdHFJKg7CZ9cQekbT6oBLMdg&oe=669D8186&_nc_sid=8b3546";
   var request = require('request').defaults({ encoding: null });
-  const data64 = "";
   request.get(image_url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-        data64 = "data:" + response.headers["content-type"] + ";base64," + Buffer.from(body).toString('base64');
+        data = "data:" + response.headers["content-type"] + ";base64," + Buffer.from(body).toString('base64');
+    }else{
+        data = "data:";
     }
   });
 
 
-    var docpdf = new PDFDocument();
-    //CORPO PDF----------------------------------------------------
-    //docpdf.image(imagemBase64, 320, 15, {fit: [100, 100]})
- //.rect(320, 15, 100, 100)
- //.stroke()
- //.text('Fit', 320, 0);
-
-    //docpdf.fontSize(11);
-    //docpdf.text(empresaNome+" - " + empresaCnpj + " - "+empresaEndereco+","+empresaCidade+"-"+empresaEstado , { align: 'right'});
-    //docpdf.text(empresaResponsavel+" - "+empresaCelular +" - "+empresaEmail , { align: 'right'});
-    //docpdf.text(empresaSite , { align: 'right'});
-    //docpdf.moveDown(2);
-    //docpdf.fontSize(20);
-    //docpdf.text("ORÇAMENTO", { align: 'center'});
-    //docpdf.moveDown(2);
-    //docpdf.fontSize(11);
-    //docpdf.text("Cliente : " +nome);
-    //docpdf.text("E-mail  : " +email);
-
-    //docpdf.moveDown(1);
-    //docpdf.text("Orçamento referente a prestação dos serviços a baixo  : ");
-    //docpdf.moveDown(1);
-    //docpdf.list(myArrayOfItems2);
-    //docpdf.moveDown(1);
-    //docpdf.image(__dirname+'/teste.png', {width: 150, height: 150});
-    //docpdf.text("Observações: " + obs);
-    //docpdf.moveDown();
-    //docpdf.font('Helvetica-Bold').text("O investimento necessário será de R$ : R$ "+ valor);
-    //docpdf.font('Helvetica');
-    //docpdf.moveDown(2);
-    //docpdf.text(empresaMensagem);
-    
-    //docpdf.moveDown(3);
-    //docpdf.text("________________________________________");
-    //docpdf.text(empresaNome+" - "+empresaCnpj);
-    //docpdf.moveDown(2);
-    //docpdf.text("________________________________________");
-    //docpdf.text(nome);
-    //docpdf.moveDown(3);
-    //docpdf.text(empresaCidade+"-"+empresaEstado +" , "+ StringdataAtual);
-   //novo MODELO
-   
+   var docpdf = new PDFDocument();
    docpdf.fontSize(20);
-   docpdf.font("Helvetica-Bold").text("Base64:"+data64, 75, 50);
-   docpdf.image(data64, 10, 10, {scale: 0.25}).text('Scale', 320, 265);
+   docpdf.font("Helvetica-Bold").text("Base64:"+data, 75, 5);
+   docpdf.image(data, 10, 10, {scale: 0.25});
    docpdf.text("ORÇAMENTO", { align: "center" });
    docpdf.fontSize(11);
    docpdf.rect(70, 119, 480, 15).stroke();
