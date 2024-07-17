@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const fetch = require("node-fetch");
 const PDFDocument = require('pdfkit');
 const app = express();
 
@@ -94,7 +95,7 @@ app.post("/send-mail", async (req,res) => {
       res(reader.result);
     }})
   })
-  console.log(base64);
+
 
 
    var docpdf = new PDFDocument();
