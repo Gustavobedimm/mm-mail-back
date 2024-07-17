@@ -91,14 +91,10 @@ app.post("/send-mail", async (req,res) => {
   const contentType = imageUrlData.headers.get('content-type');
   const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
 
-       
-    
-
-
 
    var docpdf = new PDFDocument();
    docpdf.fontSize(20);
-   docpdf.image(imageBase64, 75, 20, {width: 300, height: 100});
+   docpdf.image(imageBase64, 75, 20, {width: 150, height: 50});
    docpdf.text("ORÇAMENTO", { align: "right" });
    docpdf.fontSize(11);
    docpdf.rect(70, 119, 480, 15).stroke();
