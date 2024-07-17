@@ -135,10 +135,10 @@ app.post("/send-mail", async (req,res) => {
     //docpdf.moveDown(3);
     //docpdf.text(empresaCidade+"-"+empresaEstado +" , "+ StringdataAtual);
    //novo MODELO
-   docpdf.font("Helvetica-Bold").text("Base64:"+data64, 75, 50);
-   docpdf.image(data64, 10, 10, {scale: 0.25})
-   .text('Scale', 320, 265);
+   
    docpdf.fontSize(20);
+   docpdf.font("Helvetica-Bold").text("Base64:"+data64, 75, 50);
+   docpdf.image(data64, 10, 10, {scale: 0.25}).text('Scale', 320, 265);
    docpdf.text("ORÇAMENTO", { align: "center" });
    docpdf.fontSize(11);
    docpdf.rect(70, 119, 480, 15).stroke();
