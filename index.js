@@ -107,7 +107,7 @@ app.post("/send-mail", async (req,res) => {
    var docpdf = new PDFDocument();
    docpdf.fontSize(20);
    //docpdf.font("Helvetica-Bold").text("Base64:"+imageBase64, 75, 5);
-   docpdf.image(imageBase64, 10, 10, {scale: 0.25});
+   docpdf.image(imageBase64, 75, 20, {scale: 0.25});
    docpdf.text("ORÇAMENTO", { align: "center" });
    docpdf.fontSize(11);
    docpdf.rect(70, 119, 480, 15).stroke();
