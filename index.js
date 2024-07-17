@@ -95,7 +95,7 @@ app.post("/send-mail", async (req,res) => {
    var docpdf = new PDFDocument();
    docpdf.fontSize(18);
    docpdf.image(imageBase64, 72, 50, {width: 150, height: 50});
-   docpdf.text("ORÇAMENTO", { align: "right" });
+   docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
    docpdf.fontSize(11);
    docpdf.rect(70, 119, 480, 15).stroke();
    docpdf.rect(70, 134, 240, 15).stroke();
