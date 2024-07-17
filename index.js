@@ -84,19 +84,29 @@ app.post("/send-mail", async (req,res) => {
   myArrayOfItems2.push("TRANSPORTE DE "+origem+" PARA "+ destino);
 
 
-  const b64 = await fetch('https://scontent-gru2-1.cdninstagram.com/v/t51.2885-19/296477577_428755949187751_5501916957594122246_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_cat=107&_nc_ohc=6pgBUqRlz_wQ7kNvgFSP6lU&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYAoTBd6x02wN-amkJhW9FPdHFJKg7CZ9cQekbT6oBLMdg&oe=669D8186&_nc_sid=8b3546')
-      .then((response) => response.buffer())
-      .then((buffer) => {
-        const b64 = buffer.toString('base64');
-        return b64;
-      })
-      .catch(console.error);
+  //const b64 = await fetch('https://scontent-gru2-1.cdninstagram.com/v/t51.2885-19/296477577_428755949187751_5501916957594122246_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_cat=107&_nc_ohc=6pgBUqRlz_wQ7kNvgFSP6lU&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYAoTBd6x02wN-amkJhW9FPdHFJKg7CZ9cQekbT6oBLMdg&oe=669D8186&_nc_sid=8b3546')
+  //    .then((response) => response.buffer())
+  //    .then((buffer) => {
+  //      const b64 = buffer.toString('base64');
+  //      return b64;
+  //    })
+  //    .catch(console.error);
+
+  const imageUrl = "https://scontent-gru2-1.cdninstagram.com/v/t51.2885-19/296477577_428755949187751_5501916957594122246_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_cat=107&_nc_ohc=6pgBUqRlz_wQ7kNvgFSP6lU&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYAoTBd6x02wN-amkJhW9FPdHFJKg7CZ9cQekbT6oBLMdg&oe=669D8186&_nc_sid=8b3546";
+  const imageUrlData = await fetch(imageUrl);
+  const buffer = await imageUrlData.arrayBuffer();
+  const stringifiedBuffer = Buffer.from(buffer).toString('base64');
+  const contentType = imageUrlData.headers.get('content-type');
+  const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
+
+       
+    
 
 
 
    var docpdf = new PDFDocument();
    docpdf.fontSize(20);
-   docpdf.font("Helvetica-Bold").text("Base64:"+b64, 75, 5);
+   docpdf.font("Helvetica-Bold").text("Base64:"+imageBase64, 75, 5);
    //docpdf.image(data64, 10, 10, {scale: 0.25});
    docpdf.text("ORÇAMENTO", { align: "center" });
    docpdf.fontSize(11);
