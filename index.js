@@ -12,6 +12,7 @@ app.post("/send-mail", async (req,res) => {
   const image_url = "https://scontent-gru2-1.cdninstagram.com/v/t51.2885-19/296477577_428755949187751_5501916957594122246_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_cat=107&_nc_ohc=6pgBUqRlz_wQ7kNvgFSP6lU&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYAoTBd6x02wN-amkJhW9FPdHFJKg7CZ9cQekbT6oBLMdg&oe=669D8186&_nc_sid=8b3546";
   const res = await fetch(image_url);
   const resBuffer = await res.buffer();
+  const imgBase64 = Buffer.from(resBuffer).toString('base64');
 
 
 
@@ -131,7 +132,7 @@ app.post("/send-mail", async (req,res) => {
     //docpdf.moveDown(3);
     //docpdf.text(empresaCidade+"-"+empresaEstado +" , "+ StringdataAtual);
    //novo MODELO
-   docpdf.image(resBuffer, 0, 0, {fit: [250, 300]});
+   docpdf.image(imgBase64, 0, 0, {fit: [250, 300]});
    docpdf.fontSize(20);
    docpdf.text("ORÇAMENTO", { align: "center" });
    docpdf.fontSize(11);
