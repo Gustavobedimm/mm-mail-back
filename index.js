@@ -126,7 +126,7 @@ app.post("/send-mail", async (req, res) => {
   docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 450, 50);
   docpdf.fontSize(10);
   docpdf.font("Helvetica").text("N° 113725", 450, 65);
-  docpdf.font("Helvetica").text("18/07/2024", 450, 80);
+  docpdf.font("Helvetica").text("18/07/2024", 450, 75);
 
   //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
   docpdf.fontSize(11);
