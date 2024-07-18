@@ -110,7 +110,7 @@ app.post("/send-mail", async (req, res) => {
   docpdf.image(imageBase64, 42, 42, { width: 126, height: 46 });
   //quadrado dados da empresa
   docpdf.rect(170, 40, 270, 50).stroke();
-  docpdf.fontSize(11);
+  docpdf.fontSize(13);
   //docpdf.text(empresaNome, 45, 50, { align: "center" });
   docpdf.font("Helvetica-Bold").text(empresaNome, 45, 45, { align: "center" });
   docpdf.fontSize(8);
@@ -122,9 +122,11 @@ app.post("/send-mail", async (req, res) => {
 
   //quadrado numero do orcamento
   docpdf.rect(440, 40, 130, 50).stroke();
-  docpdf.font("Helvetica-Bold").text("ORÇAMENTO :", 475, 45);
-  docpdf.font("Helvetica-Bold").text("113725", 475, 60);
-  docpdf.font("Helvetica-Bold").text("18/07/2024 11:38", 475, 80, { align: "rigth" });
+  docpdf.fontSize(13);
+  docpdf.font("Helvetica-Bold").text("ORÇAMENTO :", 470, 45);
+  docpdf.fontSize(8);
+  docpdf.font("Helvetica").text("113725", 470, 60);
+  docpdf.font("Helvetica").text("18/07/2024 11:38", 470, 80, { align: "rigth" });
 
   //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
   docpdf.fontSize(11);
