@@ -151,17 +151,15 @@ app.post("/send-mail", async (req, res) => {
   docpdf.rect(40, 110, 530, 18).fillAndStroke("#ddd", "#fff");
   docpdf.rect(40, 137, 530, 18).fillAndStroke("#ddd", "#fff");
   docpdf.rect(40, 211, 530, 18).fillAndStroke("#ddd", "#fff");
+  docpdf.rect(40, 366, 530, 18).fillAndStroke("#ddd", "#fff");
 
   docpdf.fillColor("#000");
   docpdf.strokeColor("#000");
 
   docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 115, { align: "center" });
-  docpdf
-    .font("Helvetica-Bold")
-    .text("DADOS DO CLIENTE", 40, 142, { align: "center" });
-  docpdf
-    .font("Helvetica-Bold")
-    .text("RELAÇÃO DOS SERVIÇOS", 40, 216, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 142, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("RELAÇÃO DOS SERVIÇOS", 40, 216, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("OBSERVAÇÕES", 40, 371, { align: "center" });
 
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
@@ -182,7 +180,7 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.rect(40, 254, 530, 15).stroke();
   docpdf.rect(370, 419, 180, 15).stroke();
   docpdf.fontSize(11);
-  docpdf.font("Helvetica-Bold").text("VALOR TOTAL : R$ " + valor, 380, 423);
+  docpdf.font("Helvetica-Bold").text("VALOR TOTAL : R$ " + valor, 380, 500);
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
   docpdf.rect(40, 449, 530, 100).stroke();
