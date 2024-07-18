@@ -102,7 +102,9 @@ app.post("/send-mail", async (req,res) => {
    //docpdf.text(empresaNome, 45, 50, { align: "center" });
    docpdf.font("Helvetica-Bold").text(empresaNome, 45, 50, {align: "center"});
    docpdf.fontSize(8);
-   docpdf.text(empresaEndereco, 45, 55, {align: "center"});
+   docpdf.font("Helvetica").text(empresaEndereco, 45, 60, {align: "center"});
+   docpdf.font("Helvetica").text("CASCAVEL - PR", 45, 70, {align: "center"});
+   docpdf.font("Helvetica").text("CNPJ : " + empresaCnpj, 45, 80, {align: "center"});
 
    //quadrado numero do orcamento
    docpdf.rect(440, 40, 130, 50).stroke();
