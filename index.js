@@ -125,8 +125,8 @@ app.post("/send-mail", async (req, res) => {
   docpdf.fontSize(11);
   docpdf.font("Helvetica-Bold").text("ORÇAMENTO :", 450, 45);
   docpdf.fontSize(8);
-  docpdf.font("Helvetica").text("113725", 450, 60);
-  docpdf.font("Helvetica").text("Data Emissão : 18/07/2024 11:38", 450, 70, { align: "rigth" });
+  docpdf.font("Helvetica").text("Numero : 113725", 450, 60);
+  docpdf.font("Helvetica").text("Emissão : 18/07/2024", 450, 70, { align: "rigth" });
 
   //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
   docpdf.fontSize(11);
