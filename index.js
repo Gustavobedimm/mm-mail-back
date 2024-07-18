@@ -122,7 +122,7 @@ app.post("/send-mail", async (req, res) => {
 
   //quadrado numero do orcamento
   docpdf.rect(440, 40, 130, 50).stroke();
-  docpdf.font("Helvetica-Bold").text("ORÇAMENTO N°:", 475, 45);
+  docpdf.font("Helvetica-Bold").text("ORÇAMENTO :", 475, 45);
   docpdf.font("Helvetica-Bold").text("180720241137", 475, 60);
   docpdf.font("Helvetica-Bold").text("18/07/2024 11:38", 475, 80);
 
