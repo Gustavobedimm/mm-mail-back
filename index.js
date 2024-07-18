@@ -3,7 +3,6 @@ const cors = require('cors');
 const PDFDocument = require('pdfkit');
 const app = express();
 
-
 app.use(cors('*'));
 app.use(express.json());
 
@@ -19,6 +18,7 @@ app.post("/send-mail", async (req,res) => {
   const StringdataAtual = dia + " de " + month + " de " + ano;
 
 //PEGANDO DADOS DA REQUISICAO ENVIADA PELO FORMULARIO
+
   const nome = req.body.nome;
   const doc = req.body.doc;
   const email = req.body.email;
@@ -28,7 +28,6 @@ app.post("/send-mail", async (req,res) => {
   const valor = req.body.valor;
   const obs = req.body.obs;
   const envia = req.body.enviaEmail;
-  //const cb0 = req.body.cb0;
   const cb1 = req.body.cb1;
   const cb2 = req.body.cb2;
   const cb3 = req.body.cb3;
@@ -51,7 +50,6 @@ app.post("/send-mail", async (req,res) => {
   const empresaImagem= req.body.empresaImagem;
   const empresaResponsavel=req.body.empresaResponsavel;
   const empresaSite = req.body.empresaSite;
-  //const imagemBase64 = req.body.imagemBase64;
 
   let myArrayOfItems2 = [];
   if(cb1 === true){
@@ -67,16 +65,16 @@ app.post("/send-mail", async (req,res) => {
     myArrayOfItems2.push("MATERIAL PARA EMBALAGEM");
   } 
   if(cb5 === true){
-    myArrayOfItems2.push("EMBALAGEM DE LOUCAS");
+    myArrayOfItems2.push("EMBALAGEM DE LOUÇAS");
   }
   if(cb6 === true){
-    myArrayOfItems2.push("EMBALAGEM DE MOVEIS");
+    myArrayOfItems2.push("EMBALAGEM DE MÓVEIS");
   }
   if(cb7 === true){
-    myArrayOfItems2.push("DESMONTAGEM DE MOVEIS");
+    myArrayOfItems2.push("DESMONTAGEM DE MÓVEIS");
   }
   if(cb8 === true){
-    myArrayOfItems2.push("MONTAGEM DE MOVEIS");
+    myArrayOfItems2.push("MONTAGEM DE MÓVEIS");
   }
   if(cb9 === true){
     myArrayOfItems2.push("SERVICO DE PERSONAL ORGANIZER");
@@ -93,9 +91,11 @@ app.post("/send-mail", async (req,res) => {
 
 
    var docpdf = new PDFDocument();
-   docpdf.fontSize(18);
-   docpdf.image(imageBase64, 72, 50, {width: 150, height: 50});
-   docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
+   //docpdf.fontSize(18);
+   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
+   docpdf.rect(25, 25, 600, 150).stroke();
+   docpdf.image(imageBase64, 25, 25, {width: 150, height: 50});
+   //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
    docpdf.fontSize(11);
    docpdf.rect(70, 119, 480, 15).stroke();
    docpdf.rect(70, 134, 240, 15).stroke();
