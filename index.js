@@ -148,7 +148,8 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.text("Celular : " + empresaCelular, 315, 168);
   docpdf.fontSize(11);
   //docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 183);
-  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 188, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 183, { align: "center" });
+  docpdf.rect(45, 165, 240, 22).fillAndStroke('#ddd', '#000');
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
   //docpdf.rect(70, 179, 480, 15).stroke();
