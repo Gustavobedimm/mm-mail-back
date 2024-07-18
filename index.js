@@ -158,9 +158,9 @@ app.post("/send-mail", async (req, res) => {
   docpdf.strokeColor("#000");
 
   
-  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 115, { align: "center" });
-  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 142, { align: "center" });
-  docpdf.font("Helvetica-Bold").text("SERVIÇOS", 40, 216, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 118, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 145, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("RELAÇÃO DOS SERVIÇOS", 40, 219, { align: "center" });
   
   
   docpdf.fontSize(10);
@@ -174,7 +174,7 @@ app.post("/send-mail", async (req, res) => {
   docpdf.text("E-mail : " + email, 40, 178);
   docpdf.text("Documento : Não informado", 40, 192);
 
-  docpdf.list(myArrayOfItems2, 40, 234);
+  docpdf.list(myArrayOfItems2, 40, 245);
   //docpdf.font("Helvetica-Bold").text("SERVIÇOS", 270, 258);
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
