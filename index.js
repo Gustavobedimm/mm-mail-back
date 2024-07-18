@@ -98,8 +98,11 @@ app.post("/send-mail", async (req,res) => {
    docpdf.image(imageBase64, 42, 42, {width: 126, height: 46});
   //quadrado dados da empresa
    docpdf.rect(170, 40, 270, 50).stroke();
-   
-   docpdf.text(empresaNome, 45, 50, { align: "center" });
+   docpdf.fontSize(11);
+   //docpdf.text(empresaNome, 45, 50, { align: "center" });
+   docpdf.font("Helvetica-Bold").text(empresaNome, 45, 50, {align: "center"});
+   docpdf.fontSize(8);
+   docpdf.text(empresaEndereco, 45, 55, {align: "center"});
 
    //quadrado numero do orcamento
    docpdf.rect(440, 40, 130, 50).stroke();
