@@ -100,7 +100,7 @@ app.post("/send-mail", async (req,res) => {
    docpdf.rect(170, 40, 270, 50).stroke();
    const containerWidth = 270; // as an example
    var appendedText = empresaNome;
-   docpdf.text(empresaNome, xOffset + (containerWidth / 2) - (doc.widthOfString(appendedText) / 2), 50, { continued: true })
+   docpdf.text(empresaNome, xOffset + (containerWidth / 2) - (doc.widthOfString(appendedText) / 2), 50, { continued: true });
 
    //quadrado numero do orcamento
    docpdf.rect(440, 40, 130, 50).stroke();
