@@ -148,14 +148,15 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.text("Celular : " + empresaCelular, 315, 168);
   docpdf.fontSize(11);
   //docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 183);
-  docpdf.rect(40, 150, 530, 22).fillAndStroke('#ddd', '#fff');
-  docpdf.rect(40, 178, 530, 22).fillAndStroke('#ddd', '#fff');
+  docpdf.rect(40, 137, 530, 22).fillAndStroke('#ddd', '#fff');
+  docpdf.rect(40, 110, 530, 22).fillAndStroke('#ddd', '#fff');
+  
 
   docpdf.fillColor("#000");
   docpdf.strokeColor("#000");
 
-  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 183, { align: "center" });
-  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 155, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 137, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 110, { align: "center" });
   
   
   
