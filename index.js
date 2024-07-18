@@ -123,10 +123,12 @@ app.post("/send-mail", async (req, res) => {
   //quadrado numero do orcamento
   docpdf.rect(440, 40, 130, 50).stroke();
   docpdf.fontSize(11);
-  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 450, 50,{ align: "center" });
+  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 450, 50, { align: "center" });
   docpdf.fontSize(8);
   docpdf.font("Helvetica").text("Numero : 113725", 450, 60);
-  docpdf.font("Helvetica").text("Emissão : 18/07/2024", 450, 70, { align: "rigth" });
+  docpdf
+    .font("Helvetica")
+    .text("Emissão : 18/07/2024", 450, 70, { align: "rigth" });
 
   //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
   docpdf.fontSize(11);
@@ -136,7 +138,7 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.rect(70, 149, 480, 15).stroke();
   //docpdf.rect(70, 164, 240, 15).stroke();
   //docpdf.rect(310, 164, 240, 15).stroke();
-  
+
   docpdf.fontSize(11);
   //docpdf.font("Helvetica-Bold").text("DADOS DA EMPRESA", 75, 123);
   //docpdf.fontSize(10);
@@ -148,33 +150,33 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.text("Celular : " + empresaCelular, 315, 168);
   docpdf.fontSize(10);
   //docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 183);
-  docpdf.rect(40, 110, 530, 18).fillAndStroke('#ddd', '#fff');
-  docpdf.rect(40, 137, 530, 18).fillAndStroke('#ddd', '#fff');
-  docpdf.rect(40, 211, 530, 18).fillAndStroke('#ddd', '#fff');
-  
-  
+  docpdf.rect(40, 110, 530, 18).fillAndStroke("#ddd", "#fff");
+  docpdf.rect(40, 137, 530, 18).fillAndStroke("#ddd", "#fff");
+  docpdf.rect(40, 211, 530, 18).fillAndStroke("#ddd", "#fff");
 
   docpdf.fillColor("#000");
   docpdf.strokeColor("#000");
 
-  
-  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 118, { align: "center" });
-  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 145, { align: "center" });
-  docpdf.font("Helvetica-Bold").text("RELAÇÃO DOS SERVIÇOS", 40, 219, { align: "center" });
-  
-  
+  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 115, { align: "center" });
+  docpdf
+    .font("Helvetica-Bold")
+    .text("DADOS DO CLIENTE", 40, 142, { align: "center" });
+  docpdf
+    .font("Helvetica-Bold")
+    .text("RELAÇÃO DOS SERVIÇOS", 40, 216, { align: "center" });
+
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
   //docpdf.rect(70, 179, 480, 15).stroke();
   //docpdf.rect(70, 194, 480, 15).stroke();
   //docpdf.rect(70, 209, 480, 15).stroke();
   //docpdf.rect(70, 224, 480, 15).stroke();
-  docpdf.fontSize(11);
+  docpdf.fontSize(10);
   docpdf.text("Nome : " + nome, 40, 164);
   docpdf.text("E-mail : " + email, 40, 178);
   docpdf.text("Documento : Não informado", 40, 192);
 
-  docpdf.list(myArrayOfItems2, 40, 245);
+  docpdf.list(myArrayOfItems2, 40, 240);
   //docpdf.font("Helvetica-Bold").text("SERVIÇOS", 270, 258);
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
