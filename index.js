@@ -100,7 +100,7 @@ app.post("/send-mail", async (req,res) => {
    docpdf.rect(170, 40, 270, 50).stroke();
    docpdf.fontSize(11);
    //docpdf.text(empresaNome, 45, 50, { align: "center" });
-   docpdf.font("Helvetica-Bold").text(empresaNome, 45, 47, {align: "center"});
+   docpdf.font("Helvetica-Bold").text(empresaNome, 45, 45, {align: "center"});
    docpdf.fontSize(8);
    docpdf.font("Helvetica").text(empresaEndereco, 45, 60, {align: "center"});
    docpdf.font("Helvetica").text("CASCAVEL - PR", 45, 70, {align: "center"});
@@ -108,7 +108,9 @@ app.post("/send-mail", async (req,res) => {
 
    //quadrado numero do orcamento
    docpdf.rect(440, 40, 130, 50).stroke();
-   docpdf.font("Helvetica").text("ORÇAMENTO N°:", 45, 60, {align: "center"});
+   docpdf.font("Helvetica-Bold").text("ORÇAMENTO N°:", 460, 45);
+   docpdf.font("Helvetica-Bold").text("180720241137", 460, 60);
+   docpdf.font("Helvetica-Bold").text("18/07/2024 11:38", 460, 70);
    
    //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
    docpdf.fontSize(11);
