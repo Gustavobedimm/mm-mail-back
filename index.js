@@ -146,11 +146,11 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.text("Endereço : " + empresaEndereco, 75, 153);
   //docpdf.text("Responsavel : " + empresaResponsavel, 75, 168);
   //docpdf.text("Celular : " + empresaCelular, 315, 168);
-  docpdf.fontSize(11);
+  docpdf.fontSize(10);
   //docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 183);
-  docpdf.rect(40, 110, 530, 22).fillAndStroke('#ddd', '#fff');
-  docpdf.rect(40, 137, 530, 22).fillAndStroke('#ddd', '#fff');
-  docpdf.rect(40, 211, 530, 22).fillAndStroke('#ddd', '#fff');
+  docpdf.rect(40, 110, 530, 18).fillAndStroke('#ddd', '#fff');
+  docpdf.rect(40, 137, 530, 18).fillAndStroke('#ddd', '#fff');
+  docpdf.rect(40, 211, 530, 18).fillAndStroke('#ddd', '#fff');
   
   
 
