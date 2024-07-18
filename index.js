@@ -122,11 +122,11 @@ app.post("/send-mail", async (req, res) => {
 
   //quadrado numero do orcamento
   docpdf.rect(440, 40, 130, 50).stroke();
-  docpdf.fontSize(13);
-  docpdf.font("Helvetica-Bold").text("ORÇAMENTO :", 470, 45);
+  docpdf.fontSize(11);
+  docpdf.font("Helvetica-Bold").text("ORÇAMENTO N° :", 450, 45);
   docpdf.fontSize(8);
-  docpdf.font("Helvetica").text("113725", 470, 60);
-  docpdf.font("Helvetica").text("18/07/2024 11:38", 470, 80, { align: "rigth" });
+  docpdf.font("Helvetica").text("113725", 450, 60);
+  docpdf.font("Helvetica").text("Data Emissão : 18/07/2024 11:38", 450, 80, { align: "rigth" });
 
   //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
   docpdf.fontSize(11);
