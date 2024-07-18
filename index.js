@@ -107,7 +107,7 @@ app.post("/send-mail", async (req, res) => {
   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
   //quadrado logo
   docpdf.rect(40, 40, 130, 50).stroke();
-  docpdf.image(imageBase64, 42, 42, { width: 126, height: 46 });
+  docpdf.image(imageBase64, 40, 40, { width: 130, height: 50 });
   //quadrado dados da empresa
   docpdf.rect(170, 40, 270, 50).stroke();
   docpdf.fontSize(15);
@@ -126,7 +126,6 @@ app.post("/send-mail", async (req, res) => {
   docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 450, 50);
   docpdf.fontSize(10);
   docpdf.font("Helvetica").text("N° 113725", 450, 65);
-  docpdf.fontSize(8);
   docpdf.font("Helvetica").text("18/07/2024", 450, 80);
 
   //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
