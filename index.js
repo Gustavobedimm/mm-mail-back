@@ -174,12 +174,12 @@ app.post("/send-mail", async (req, res) => {
   docpdf.text("E-mail : " + email, 40, 178);
   docpdf.text("Documento : Não informado", 40, 192);
 
-  docpdf.list(myArrayOfItems2, 40, 275);
-  docpdf.font("Helvetica-Bold").text("SERVIÇOS", 270, 258);
+  docpdf.list(myArrayOfItems2, 40, 219);
+  //docpdf.font("Helvetica-Bold").text("SERVIÇOS", 270, 258);
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
-  docpdf.rect(40, 254, 530, 150).stroke();
-  docpdf.rect(40, 254, 530, 15).stroke();
+  //docpdf.rect(40, 254, 530, 150).stroke();
+  //docpdf.rect(40, 254, 530, 15).stroke();
   docpdf.rect(370, 419, 180, 15).stroke();
   docpdf.fontSize(11);
   docpdf.font("Helvetica-Bold").text("VALOR TOTAL : R$ " + valor, 380, 423);
