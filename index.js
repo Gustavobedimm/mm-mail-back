@@ -181,7 +181,7 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.rect(40, 254, 530, 15).stroke();
   //docpdf.rect(370, 419, 180, 15).stroke();
   docpdf.fontSize(13);
-  docpdf.font("Helvetica-Bold").text("TOTAL : R$ " + valor, 40, 434);
+  docpdf.font("Helvetica-Bold").text("TOTAL : R$ " + valor, 40, 454);
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
   //docpdf.rect(40, 449, 530, 100).stroke();
@@ -194,8 +194,11 @@ app.post("/send-mail", async (req, res) => {
   docpdf.text(obs, 40, 414);
   docpdf.fontSize(11);
   docpdf.moveDown(7);
-  docpdf.text("_______________________________");
+  docpdf.text("_________________________________");
   docpdf.text(empresaNome +" - " + empresaCnpj);
+  docpdf.moveDown(3);
+  docpdf.text("_________________________________");
+  docpdf.text( nome);
 
   //------------------------------------------------------------
   docpdf.end();
