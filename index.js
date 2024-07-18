@@ -110,7 +110,7 @@ app.post("/send-mail", async (req, res) => {
   docpdf.image(imageBase64, 42, 42, { width: 126, height: 46 });
   //quadrado dados da empresa
   docpdf.rect(170, 40, 270, 50).stroke();
-  docpdf.fontSize(13);
+  docpdf.fontSize(15);
   //docpdf.text(empresaNome, 45, 50, { align: "center" });
   docpdf.font("Helvetica-Bold").text(empresaNome, 45, 45, { align: "center" });
   docpdf.fontSize(8);
