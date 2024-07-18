@@ -94,9 +94,9 @@ app.post("/send-mail", async (req,res) => {
    //docpdf.fontSize(18);
    //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
    docpdf.rect(40, 40, 130, 50).stroke();
-   docpdf.rect(170, 40, 260, 50).stroke();
-   docpdf.rect(200, 40, 130, 50).stroke();
-   docpdf.image(imageBase64, 42, 42, {width: 128, height: 48});
+   docpdf.rect(170, 40, 270, 50).stroke();
+   docpdf.rect(440, 40, 130, 50).stroke();
+   docpdf.image(imageBase64, 41, 41, {width: 128, height: 48});
    //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
    docpdf.fontSize(11);
    docpdf.rect(70, 119, 480, 15).stroke();
