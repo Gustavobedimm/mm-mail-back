@@ -124,9 +124,10 @@ app.post("/send-mail", async (req, res) => {
   docpdf.rect(440, 40, 130, 50).stroke();
   docpdf.fontSize(11);
   docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 450, 50);
+  docpdf.fontSize(10);
+  docpdf.font("Helvetica").text("N° 113725", 450, 65);
   docpdf.fontSize(8);
-  docpdf.font("Helvetica").text("Numero : 113725", 450, 60);
-  docpdf.font("Helvetica").text("Emissão : 18/07/2024", 450, 70);
+  docpdf.font("Helvetica").text("18/07/2024", 450, 80);
 
   //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
   docpdf.fontSize(11);
@@ -179,8 +180,8 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.rect(40, 254, 530, 150).stroke();
   //docpdf.rect(40, 254, 530, 15).stroke();
   //docpdf.rect(370, 419, 180, 15).stroke();
-  docpdf.fontSize(11);
-  docpdf.font("Helvetica-Bold").text("VALOR TOTAL : R$ " + valor, 380, 500);
+  docpdf.fontSize(13);
+  docpdf.font("Helvetica-Bold").text("TOTAL : R$ " + valor, 40, 434);
   docpdf.fontSize(10);
   docpdf.font("Helvetica");
   //docpdf.rect(40, 449, 530, 100).stroke();
@@ -192,17 +193,9 @@ app.post("/send-mail", async (req, res) => {
   docpdf.text("Orçamento válido por 15 dias, após a data de emissão.", 40, 394);
   docpdf.text(obs, 40, 414);
   docpdf.fontSize(11);
-  docpdf.moveDown(5);
-  docpdf.text("________________________________________________________");
-  docpdf.text(
-    empresaNome +
-      " - " +
-      empresaCidade +
-      "-" +
-      empresaEstado +
-      " , " +
-      StringdataAtual
-  );
+  docpdf.moveDown(7);
+  docpdf.text("_______________________________");
+  docpdf.text(empresaNome +" - " + empresaCnpj);
 
   //------------------------------------------------------------
   docpdf.end();
