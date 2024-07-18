@@ -148,16 +148,19 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.text("Celular : " + empresaCelular, 315, 168);
   docpdf.fontSize(11);
   //docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 183);
-  docpdf.rect(40, 137, 530, 22).fillAndStroke('#ddd', '#fff');
   docpdf.rect(40, 110, 530, 22).fillAndStroke('#ddd', '#fff');
+  docpdf.rect(40, 137, 530, 22).fillAndStroke('#ddd', '#fff');
+  docpdf.rect(40, 211, 530, 22).fillAndStroke('#ddd', '#fff');
+  
   
 
   docpdf.fillColor("#000");
   docpdf.strokeColor("#000");
 
-  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 137, { align: "center" });
-  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 110, { align: "center" });
   
+  docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 40, 110, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("DADOS DO CLIENTE", 40, 137, { align: "center" });
+  docpdf.font("Helvetica-Bold").text("SERVIÇOS", 40, 211, { align: "center" });
   
   
   docpdf.fontSize(10);
@@ -167,9 +170,10 @@ app.post("/send-mail", async (req, res) => {
   //docpdf.rect(70, 209, 480, 15).stroke();
   //docpdf.rect(70, 224, 480, 15).stroke();
   docpdf.fontSize(11);
-  docpdf.text("Nome : " + nome, 40, 198);
-  docpdf.text("E-mail : " + email, 40, 214);
-  docpdf.text("Documento : Não informado", 40, 228);
+  docpdf.text("Nome : " + nome, 40, 164);
+  docpdf.text("E-mail : " + email, 40, 178);
+  docpdf.text("Documento : Não informado", 40, 192);
+
   docpdf.list(myArrayOfItems2, 40, 275);
   docpdf.font("Helvetica-Bold").text("SERVIÇOS", 270, 258);
   docpdf.fontSize(10);
