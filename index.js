@@ -93,10 +93,18 @@ app.post("/send-mail", async (req,res) => {
    var docpdf = new PDFDocument();
    //docpdf.fontSize(18);
    //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
+   //quadrado logo
    docpdf.rect(40, 40, 130, 50).stroke();
+   docpdf.image(imageBase64, 42, 42, {width: 126, height: 46});
+  //quadrado dados da empresa
    docpdf.rect(170, 40, 270, 50).stroke();
+   const containerWidth = 270; // as an example
+   var appendedText = empresaNome;
+   docpdf.text(empresaNome, xOffset + (containerWidth / 2) - (doc.widthOfString(appendedText) / 2), 50, { continued: true })
+
+   //quadrado numero do orcamento
    docpdf.rect(440, 40, 130, 50).stroke();
-   docpdf.image(imageBase64, 41, 41, {width: 128, height: 48});
+   
    //docpdf.text("ORÇAMENTO DE SERVIÇO", { align: "right" });
    docpdf.fontSize(11);
    docpdf.rect(70, 119, 480, 15).stroke();
