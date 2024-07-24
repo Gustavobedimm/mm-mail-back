@@ -94,8 +94,7 @@ app.post("/send-mail", async (req, res) => {
   myArrayOfItems2.push("TRANSPORTE DE " + origem + " PARA " + destino);
 
   //pega o link da imagem e tranforma em base64
-  const imageUrl =
-    "https://scontent-gru2-1.cdninstagram.com/v/t51.2885-19/296477577_428755949187751_5501916957594122246_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_cat=107&_nc_ohc=6pgBUqRlz_wQ7kNvgFSP6lU&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYAoTBd6x02wN-amkJhW9FPdHFJKg7CZ9cQekbT6oBLMdg&oe=669D8186&_nc_sid=8b3546";
+  const imageUrl = "https://scontent-gru2-2.xx.fbcdn.net/v/t39.30808-6/292144575_501011975272755_4032545509857822416_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=ZTYQjGBKjAYQ7kNvgGRLYFh&_nc_ht=scontent-gru2-2.xx&oh=00_AYD2gJRkxeFWS_dx3JIMdKzUSf8Y3hz4HeDx1Rb6ocWiIA&oe=66A724C4";
   const imageUrlData = await fetch(imageUrl);
   const buffer = await imageUrlData.arrayBuffer();
   const stringifiedBuffer = Buffer.from(buffer).toString("base64");
