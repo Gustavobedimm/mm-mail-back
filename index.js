@@ -104,18 +104,24 @@ app.post("/send-mail", async (req, res) => {
   myArrayOfItems2.push("TRANSPORTE DE " + origem + " PARA " + destino);
 
   //pega o link da imagem e tranforma em base64
-  const imageUrl = "https://thumbs2.imgbox.com/94/dc/WeBkm1sF_t.jpg";
+  const imageUrl = empresaImagem;
+  //const imageUrl = "https://live.staticflickr.com/65535/53907540152_131cb7eecb_m.jpg";
   const imageUrlData = await fetch(imageUrl);
-  const buffer = await imageUrlData.arrayBuffer();
-  const stringifiedBuffer = Buffer.from(buffer).toString("base64");
-  const contentType = imageUrlData.headers.get("content-type");
-  const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
+  
+    const buffer = await imageUrlData.arrayBuffer();
+    const stringifiedBuffer = Buffer.from(buffer).toString("base64");
+    const contentType = imageUrlData.headers.get("content-type");
+    const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
+  
+ 
 
   var docpdf = new PDFDocument();
   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
   //quadrado logo
   docpdf.rect(40, 40, 130, 50).stroke();
-  docpdf.image(imageBase64, 40, 40, { width: 130, height: 50 });
+  if(imageUrlData.ok){
+    docpdf.image(imageBase64, 41, 41, { width: 128, height: 48 });
+  }
   //quadrado dados da empresa
   docpdf.rect(170, 40, 270, 50).stroke();
   docpdf.fontSize(15);
