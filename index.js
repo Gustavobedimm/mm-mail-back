@@ -6,6 +6,61 @@ const app = express();
 app.use(cors("*"));
 app.use(express.json());
 
+app.post("/send-mail-odonto", async (req, res) => {
+  const nome = req.body.nome;
+  const email = req.body.email;
+  const valorTotal = req.body.valorTotal;
+  const obs = req.body.obs;
+  const procedimentos = req.body.procedimentos;
+  const envia = req.body.enviaEmail;
+  const empresaNome = req.body.empresaNome;
+  const empresaCelular = req.body.empresaCelular;
+  const empresaTelefone = req.body.empresaTelefone;
+  const empresaCnpj = req.body.empresaCnpj;
+  const empresaEmail = req.body.empresaEmail;
+  const empresaEndereco = req.body.empresaEndereco;
+  const empresaEstado = req.body.empresaEstado;
+  const empresaCidade = req.body.empresaCidade;
+  const empresaMensagem = req.body.empresaMensagem;
+  const empresaCodigo = req.body.empresaCodigo;
+  const empresaImagem = req.body.empresaImagem;
+  const empresaResponsavel = req.body.empresaResponsavel;
+  const empresaSite = req.body.empresaSite;
+
+  //montaPDF 
+  var docpdf = new PDFDocument();
+  //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
+  //quadrado logo
+  //------------------------------------------------------------
+  docpdf.rect(40, 40, 130, 50).stroke();
+  docpdf.text("_________________________________",70,675);
+  docpdf.moveDown(3);
+  docpdf.text("_________________________________",330,675);
+  //------------------------------------------------------------
+  docpdf.end();
+  const data = docpdf.read();
+  const pdf64 = data.toString("base64");
+
+  if (envia) {
+    require("./mailService")(
+      empresaNome,
+      nome,
+      "",
+      email,
+      "",
+      "",
+      "",
+      valorTotal,
+      pdf64
+    )
+      .then((response) => res.status(200).json({ pdfBase64: pdf64 }))
+      .catch((error) => res.status(400).json(error));
+  } else {
+    return res.status(200).json({ pdfBase64: pdf64 });
+  }
+
+});
+
 app.post("/send-mail", async (req, res) => {
   //monta data
   const months = [
