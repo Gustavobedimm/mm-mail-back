@@ -11,7 +11,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   const email = req.body.email;
   const valorTotal = req.body.valorTotal;
   const obs = req.body.obs;
-  const procedimentos = req.body.procedimentos;
+  const listaProcedimentos = req.body.procedimentos;
   const envia = req.body.enviaEmail;
   const empresaNome = req.body.empresaNome;
   const empresaCelular = req.body.empresaCelular;
@@ -32,10 +32,36 @@ app.post("/send-mail-odonto", async (req, res) => {
   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
   //quadrado logo
   //------------------------------------------------------------
-  docpdf.rect(40, 40, 130, 50).stroke();
-  docpdf.text("_________________________________",70,675);
-  docpdf.moveDown(3);
-  docpdf.text("_________________________________",330,675);
+  docpdf.font("Helvetica-Bold").text("Orçamento");
+  docpdf.moveDown(1);
+  docpdf.font("Helvetica").text("Paciente : " + nome)
+  docpdf.moveDown(1);
+  docpdf.text(empresaNome);
+  docpdf.moveDown(1);
+  docpdf.text("Endereço : " + empresaEndereco);
+  docpdf.text("Email : " + empresaEmail);
+  docpdf.moveDown(1);
+  docpdf.font("Helvetica-Bold").text("Lista de Procedimentos ")
+  docpdf.moveDown(1);
+  
+  let mt = 220;
+  docpdf.rect(40,40,530, 710).stroke();
+  //margin left - margin top - width - height
+  listaProcedimentos.map((doc) => {
+    docpdf.rect(65, mt, 485, 35).fillAndStroke("#ddd", "#fff");
+    docpdf.fillColor("#000");
+    docpdf.strokeColor("#000");
+    //docpdf.rect(55,mt,500, 35).stroke(); linha em volta do procedimento
+    docpdf.font("Helvetica").text("Procedimento : " + doc.label);
+    docpdf.text("Valor : " + doc.valor);
+    
+    docpdf.moveDown(1);
+    mt = mt + 41.5;
+  })
+ 
+  docpdf.moveDown(1);
+  docpdf.font("Helvetica-Bold").text("Valor Total : R$ " + valorTotal)
+
   //------------------------------------------------------------
   docpdf.end();
   const data = docpdf.read();
