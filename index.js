@@ -27,6 +27,14 @@ app.post("/send-mail-odonto", async (req, res) => {
   const empresaResponsavel = req.body.empresaResponsavel;
   const empresaSite = req.body.empresaSite;
 
+  const imageUrl = "https://i0.wp.com/www.cloudia.com.br/wp-content/uploads/odontograma.jpg?fit=1024%2C538&ssl=1";
+  const imageUrlData = await fetch(imageUrl);
+  
+    const buffer = await imageUrlData.arrayBuffer();
+    const stringifiedBuffer = Buffer.from(buffer).toString("base64");
+    const contentType = imageUrlData.headers.get("content-type");
+    const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
+
   //montaPDF 
   var docpdf = new PDFDocument();
   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
@@ -36,7 +44,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   docpdf.moveDown(1);
   docpdf.font("Helvetica").text("Paciente : " + nome)
   docpdf.moveDown(1);
-  docpdf.text(empresaNome);
+  docpdf.text(empresaNome + " CRO : 172733" );
   docpdf.moveDown(1);
   docpdf.text("Endereço : " + empresaEndereco);
   docpdf.text("Email : " + empresaEmail);
@@ -54,13 +62,21 @@ app.post("/send-mail-odonto", async (req, res) => {
     //docpdf.rect(55,mt,500, 35).stroke(); linha em volta do procedimento
     docpdf.font("Helvetica").text("Procedimento : " + doc.label);
     docpdf.text("Valor : " + doc.valor);
-    
     docpdf.moveDown(1);
     mt = mt + 41.5;
   })
  
   docpdf.moveDown(1);
-  docpdf.font("Helvetica-Bold").text("Valor Total : R$ " + valorTotal)
+  docpdf.font("Helvetica-Bold").text("Valor Total : R$ " + valorTotal);
+  docpdf.moveDown(1);
+  if(imageUrlData.ok){
+    //docpdf.image(imageBase64, { width: 300, height: 200 });
+    docpdf.image(imageBase64, {
+      fit: [460, 200], align: 'center', valign:
+        'center'
+    }).stroke();
+  
+  }
 
   //------------------------------------------------------------
   docpdf.end();
