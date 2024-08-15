@@ -10,73 +10,95 @@ app.post("/send-mail-odonto", async (req, res) => {
   const nome = req.body.nome;
   const email = req.body.email;
   const valorTotal = req.body.valorTotal;
-  const obs = req.body.obs;
+  //const obs = req.body.obs;
   const listaProcedimentos = req.body.procedimentos;
   const envia = req.body.enviaEmail;
   const empresaNome = req.body.empresaNome;
-  const empresaCelular = req.body.empresaCelular;
-  const empresaTelefone = req.body.empresaTelefone;
-  const empresaCnpj = req.body.empresaCnpj;
+  //const empresaCelular = req.body.empresaCelular;
+  //const empresaTelefone = req.body.empresaTelefone;
+  //const empresaCnpj = req.body.empresaCnpj;
   const empresaEmail = req.body.empresaEmail;
   const empresaEndereco = req.body.empresaEndereco;
-  const empresaEstado = req.body.empresaEstado;
-  const empresaCidade = req.body.empresaCidade;
-  const empresaMensagem = req.body.empresaMensagem;
-  const empresaCodigo = req.body.empresaCodigo;
-  const empresaImagem = req.body.empresaImagem;
+  //const empresaEstado = req.body.empresaEstado;
+  //const empresaCidade = req.body.empresaCidade;
+  //const empresaMensagem = req.body.empresaMensagem;
+  //const empresaCodigo = req.body.empresaCodigo;
+  //const empresaImagem = req.body.empresaImagem;
   const empresaResponsavel = req.body.empresaResponsavel;
-  const empresaSite = req.body.empresaSite;
+  //const empresaSite = req.body.empresaSite;
 
-  const imageUrl = "https://i0.wp.com/www.cloudia.com.br/wp-content/uploads/odontograma.jpg?fit=1024%2C538&ssl=1";
-  const imageUrlData = await fetch(imageUrl);
-  
-    const buffer = await imageUrlData.arrayBuffer();
-    const stringifiedBuffer = Buffer.from(buffer).toString("base64");
-    const contentType = imageUrlData.headers.get("content-type");
-    const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
+  //const imageUrl = "https://i0.wp.com/www.cloudia.com.br/wp-content/uploads/odontograma.jpg?fit=1024%2C538&ssl=1";
+  //const imageUrlData = await fetch(imageUrl);
 
-  //montaPDF 
+  //const buffer = await imageUrlData.arrayBuffer();
+  //const stringifiedBuffer = Buffer.from(buffer).toString("base64");
+  //const contentType = imageUrlData.headers.get("content-type");
+  //const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
+
+  //montaPDF
   var docpdf = new PDFDocument();
+  const date = new Date();
+  const dia = date.getDate();
+  const diaFormatado = dia.toString().padStart(2, "0");
+  const mes = date.getMonth() + 1;
+  const mesFormatado = mes.toString().padStart(2, "0");
+  const ano = date.getFullYear();
   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
   //quadrado logo
   //------------------------------------------------------------
-  docpdf.font("Helvetica-Bold").text("Orçamento");
-  docpdf.moveDown(1);
-  docpdf.font("Helvetica").text("Paciente : " + nome)
-  docpdf.moveDown(1);
-  docpdf.text(empresaNome + " CRO : 172733" );
-  docpdf.moveDown(1);
-  docpdf.text("Endereço : " + empresaEndereco);
-  docpdf.text("Email : " + empresaEmail);
-  docpdf.moveDown(1);
-  docpdf.font("Helvetica-Bold").text("Lista de Procedimentos ")
-  docpdf.moveDown(1);
+  let left = 70;
+  let top = 80;
+  docpdf.fontSize(15);
+  docpdf.font("Helvetica-Bold").text("Orçamento", left, top , {align: 'center'});
+  docpdf.fontSize(11);
+  top = top + 50;
+  docpdf.font("Helvetica-Bold").text("Paciente : ", left, top);
+  docpdf.font("Helvetica").text(nome, left + 60, top);
   
-  let mt = 220;
-  docpdf.rect(40,40,530, 710).stroke();
+  top = top + 30;
+  docpdf.font("Helvetica-Bold").text(empresaNome, left, top);
+  top = top + 12;
+  docpdf.font("Helvetica").text("Cirurgiã-Dentista " + empresaResponsavel + " CRO | 36799", left, top);
+  top = top + 20;
+
+  docpdf.font("Helvetica-Bold").text("Endereço : " , left, top);
+  docpdf.font("Helvetica").text( empresaEndereco, left + 60, top);
+  top = top + 12;
+  docpdf.font("Helvetica-Bold").text("Email : " , left, top);
+  docpdf.font("Helvetica").text( empresaEmail, left + 40, top);
+  top = top + 30;
+  docpdf.font("Helvetica-Bold").text("Lista de Procedimentos ", left, top);
+  top = top + 30;
+
   //margin left - margin top - width - height
   listaProcedimentos.map((doc) => {
-    docpdf.rect(65, mt, 485, 35).fillAndStroke("#ddd", "#fff");
-    docpdf.fillColor("#000");
-    docpdf.strokeColor("#000");
+    //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
+    //docpdf.fillColor("#000");
+    //docpdf.strokeColor("#000");
     //docpdf.rect(55,mt,500, 35).stroke(); linha em volta do procedimento
-    docpdf.font("Helvetica").text("Procedimento : " + doc.label);
-    docpdf.text("Valor : " + doc.valor);
-    docpdf.moveDown(1);
-    mt = mt + 41.5;
-  })
- 
-  docpdf.moveDown(1);
-  docpdf.font("Helvetica-Bold").text("Valor Total : R$ " + valorTotal);
-  docpdf.moveDown(1);
-  if(imageUrlData.ok){
-    //docpdf.image(imageBase64, { width: 300, height: 200 });
-    docpdf.image(imageBase64, {
-      fit: [460, 200], align: 'center', valign:
-        'center'
-    }).stroke();
-  
-  }
+    docpdf.font("Helvetica-Bold").text("Procedimento : ", left, top);
+    docpdf.font("Helvetica").text( doc.label, left + 85, top);
+    top = top + 12;
+    docpdf.font("Helvetica-Bold").text("Valor : ", left, top);
+    docpdf.font("Helvetica").text(doc.valor, left + 40, top);
+    top = top + 25;
+  });
+  top = top + 20;
+  docpdf
+    .font("Helvetica-Bold")
+    .text("Valor Total : R$ " + valorTotal, left, top);
+
+  //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
+  docpdf.font("Helvetica").text(diaFormatado+"/"+mesFormatado+"/"+ano,  480, 705);
+  docpdf.rect(40, 40, 530, 710).stroke("#E9ECEF");
+  //if(imageUrlData.ok){
+  //docpdf.image(imageBase64, { width: 300, height: 200 });
+  //docpdf.image(imageBase64, {
+  //  fit: [460, 200], align: 'center', valign:
+  //    'center'
+  //}).stroke();
+
+  //}
 
   //------------------------------------------------------------
   docpdf.end();
@@ -100,7 +122,6 @@ app.post("/send-mail-odonto", async (req, res) => {
   } else {
     return res.status(200).json({ pdfBase64: pdf64 });
   }
-
 });
 
 app.post("/send-mail", async (req, res) => {
@@ -121,17 +142,17 @@ app.post("/send-mail", async (req, res) => {
   ];
   const date = new Date();
   const dia = date.getDate();
-  const diaFormatado = dia.toString().padStart(2, '0');
+  const diaFormatado = dia.toString().padStart(2, "0");
   const mes = date.getMonth() + 1;
-  const mesFormatado = mes.toString().padStart(2, '0');
+  const mesFormatado = mes.toString().padStart(2, "0");
   const ano = date.getFullYear();
 
   const hora = date.getHours();
-  const horaFormatado = hora.toString().padStart(2, '0');
+  const horaFormatado = hora.toString().padStart(2, "0");
   const minutos = date.getMinutes();
-  const minutosFormatado = minutos.toString().padStart(2, '0');
+  const minutosFormatado = minutos.toString().padStart(2, "0");
   const segundos = date.getSeconds();
-  const segundosFormatado = segundos.toString().padStart(2, '0');
+  const segundosFormatado = segundos.toString().padStart(2, "0");
 
   const month = months[date.getMonth()];
   const StringdataAtual = dia + " de " + month + " de " + ano;
@@ -204,19 +225,17 @@ app.post("/send-mail", async (req, res) => {
   const imageUrl = empresaImagem;
   //const imageUrl = "https://live.staticflickr.com/65535/53907540152_131cb7eecb_m.jpg";
   const imageUrlData = await fetch(imageUrl);
-  
-    const buffer = await imageUrlData.arrayBuffer();
-    const stringifiedBuffer = Buffer.from(buffer).toString("base64");
-    const contentType = imageUrlData.headers.get("content-type");
-    const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
-  
- 
+
+  const buffer = await imageUrlData.arrayBuffer();
+  const stringifiedBuffer = Buffer.from(buffer).toString("base64");
+  const contentType = imageUrlData.headers.get("content-type");
+  const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
 
   var docpdf = new PDFDocument();
   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
   //quadrado logo
   docpdf.rect(40, 40, 130, 50).stroke();
-  if(imageUrlData.ok){
+  if (imageUrlData.ok) {
     docpdf.image(imageBase64, 41, 41, { width: 128, height: 48 });
   }
   //quadrado dados da empresa
@@ -236,12 +255,19 @@ app.post("/send-mail", async (req, res) => {
   docpdf.fontSize(11);
   docpdf.font("Helvetica-Bold").text("ORÇAMENTO", 465, 50);
   docpdf.fontSize(10);
-  docpdf.font("Helvetica").text("N° "+horaFormatado+minutosFormatado+segundosFormatado, 475, 65);
-  docpdf.font("Helvetica").text(diaFormatado + "/" + mesFormatado + "/" + ano, 475, 74);
+  docpdf
+    .font("Helvetica")
+    .text(
+      "N° " + horaFormatado + minutosFormatado + segundosFormatado,
+      475,
+      65
+    );
+  docpdf
+    .font("Helvetica")
+    .text(diaFormatado + "/" + mesFormatado + "/" + ano, 475, 74);
   docpdf.fontSize(11);
-  docpdf.rect(40,630, 530, 25).stroke();
-  docpdf.rect(40,655, 530, 50).stroke();
- 
+  docpdf.rect(40, 630, 530, 25).stroke();
+  docpdf.rect(40, 655, 530, 50).stroke();
 
   docpdf.fontSize(11);
   docpdf.fontSize(10);
@@ -289,10 +315,10 @@ app.post("/send-mail", async (req, res) => {
   docpdf.text(obs, 40, 414);
   docpdf.fontSize(11);
   docpdf.moveDown(7);
-  docpdf.text("_________________________________",70,675);
+  docpdf.text("_________________________________", 70, 675);
   docpdf.text(empresaNome + " - " + empresaCnpj);
   docpdf.moveDown(3);
-  docpdf.text("_________________________________",330,675);
+  docpdf.text("_________________________________", 330, 675);
   docpdf.text(nome + " - Não informado");
 
   //------------------------------------------------------------
