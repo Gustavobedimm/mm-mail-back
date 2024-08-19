@@ -36,7 +36,11 @@ app.post("/send-mail-odonto", async (req, res) => {
   //const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
 
   //montaPDF
-  var docpdf = new PDFDocument();
+  var docpdf = new PDFDocument({ autoFirstPage: false });
+  docpdf.addPage({
+    margins: { top: 0, left: 0, right: 0, bottom: 0 },
+    size: 'A4',
+  });
   const date = new Date();
   const dia = date.getDate();
   const diaFormatado = dia.toString().padStart(2, "0");
@@ -46,51 +50,82 @@ app.post("/send-mail-odonto", async (req, res) => {
   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
   //quadrado logo
   //------------------------------------------------------------
-  let left = 70;
-  let top = 80;
-  docpdf.fontSize(15);
-  docpdf.font("Helvetica-Bold").text("Orçamento", left, top , {align: 'center'});
+  let left = 50;
+  let top = 50;
+  //docpdf.fontSize(15);
+  //docpdf.font("Helvetica-Bold").text("Orçamento", left, top , {align: 'center'});
+  docpdf.fontSize(13);
+  //top = top + 50;
+  
+  docpdf.font("Helvetica-Bold").text(empresaNome, left, top);
   docpdf.fontSize(11);
-  top = top + 50;
+  top = top + 14;
+  docpdf.font("Helvetica").text("Cirurgiã-Dentista " + empresaResponsavel + " CRO | 36799", left, top);
+  top = top + 40;
+
   docpdf.font("Helvetica-Bold").text("Paciente : ", left, top);
   docpdf.font("Helvetica").text(nome, left + 60, top);
+  top = top + 14;
+  docpdf.font("Helvetica-Bold").text("Celular : ", left, top);
+  docpdf.font("Helvetica").text("45 999951445", left + 60, top);
   
-  top = top + 30;
-  docpdf.font("Helvetica-Bold").text(empresaNome, left, top);
-  top = top + 12;
-  docpdf.font("Helvetica").text("Cirurgiã-Dentista " + empresaResponsavel + " CRO | 36799", left, top);
-  top = top + 20;
-
-  docpdf.font("Helvetica-Bold").text("Endereço : " , left, top);
-  docpdf.font("Helvetica").text( empresaEndereco, left + 60, top);
-  top = top + 12;
-  docpdf.font("Helvetica-Bold").text("Email : " , left, top);
-  docpdf.font("Helvetica").text( empresaEmail, left + 40, top);
-  top = top + 30;
-  docpdf.font("Helvetica-Bold").text("Lista de Procedimentos ", left, top);
-  top = top + 30;
+  top = top + 40;
+  //docpdf.font("Helvetica-Bold").text("Endereço : " , left, top);
+  //docpdf.font("Helvetica").text( empresaEndereco, left + 60, top);
+  //top = top + 12;
+  //docpdf.font("Helvetica-Bold").text("Email : " , left, top);
+  //docpdf.font("Helvetica").text( empresaEmail, left + 40, top);
+  //top = top + 30;
+  docpdf.rect(40, top -13 , 520, 35).fillAndStroke("#36C2CE", "#fff");
+  docpdf.fillColor("#000");
+  docpdf.strokeColor("#000");
+  docpdf.font("Helvetica-Bold").text("Procedimentos ", left, top);
+  docpdf.font("Helvetica-Bold").text("Valor ", left + 470, top);
+  
+  top = top + 35;
 
   //margin left - margin top - width - height
   listaProcedimentos.map((doc) => {
-    //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
+    //docpdf.rect(65, top, 485, 35).fillAndStroke("#E9ECEF", "#fff");
     //docpdf.fillColor("#000");
     //docpdf.strokeColor("#000");
-    //docpdf.rect(55,mt,500, 35).stroke(); linha em volta do procedimento
-    docpdf.font("Helvetica-Bold").text("Procedimento : ", left, top);
-    docpdf.font("Helvetica").text( doc.label, left + 85, top);
+    
+    //docpdf.font("Helvetica-Bold").text("Procedimento : ", left, top);
+    docpdf.font("Helvetica").text( doc.label, left, top);
+    //docpdf.font("Helvetica").text(doc.valor, left + 460, top);
+    docpdf.text(doc.valor,left + 450,top, {
+      width: 50,
+      align: 'right'
+     });
+     
     top = top + 12;
-    docpdf.font("Helvetica-Bold").text("Valor : ", left, top);
-    docpdf.font("Helvetica").text(doc.valor, left + 40, top);
-    top = top + 25;
+    //docpdf.fontSize(9);
+    docpdf.font("Helvetica").text("Dente : 15", left, top);
+    //docpdf.fontSize(11);
+    top = top + 15;
+    //docpdf.rect(40,top,535, .5).stroke();
+    docpdf.lineWidth(.5);
+    docpdf.lineCap('butt')
+    .moveTo(40, top)
+    .lineTo(560, top)
+    .stroke();
+    top = top + 10;
   });
-  top = top + 20;
+  top = top + 30;
+  docpdf.rect(left + 350, top -13 , 160, 35).fillAndStroke("#36C2CE", "#fff");
+  docpdf.fillColor("#000");
+  docpdf.strokeColor("#000");
   docpdf
     .font("Helvetica-Bold")
-    .text("Valor Total : R$ " + valorTotal, left, top);
+    .text("TOTAL : R$ " , left + 365, top);
+    docpdf.text(valorTotal,left + 450,top, {
+      width: 50,
+      align: 'right'
+     });
 
   //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
   docpdf.font("Helvetica").text(diaFormatado+"/"+mesFormatado+"/"+ano,  480, 705);
-  docpdf.rect(40, 40, 530, 710).stroke("#E9ECEF");
+  //docpdf.rect(40, 40, 530, 710).stroke("#E9ECEF");
   //if(imageUrlData.ok){
   //docpdf.image(imageBase64, { width: 300, height: 200 });
   //docpdf.image(imageBase64, {
