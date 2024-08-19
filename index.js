@@ -39,7 +39,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   var docpdf = new PDFDocument({ autoFirstPage: false });
   docpdf.addPage({
     margins: { top: 0, left: 0, right: 0, bottom: 0 },
-    size: 'A4',
+    size: "A4",
   });
   const date = new Date();
   const dia = date.getDate();
@@ -56,19 +56,39 @@ app.post("/send-mail-odonto", async (req, res) => {
   //docpdf.font("Helvetica-Bold").text("Orçamento", left, top , {align: 'center'});
   docpdf.fontSize(13);
   //top = top + 50;
-  
+
   docpdf.font("Helvetica-Bold").text(empresaNome, left, top);
   docpdf.fontSize(11);
+  docpdf.font("Helvetica").text("19 de Agosto de 2024", left + 370, top);
+  
   top = top + 14;
-  docpdf.font("Helvetica").text("Cirurgiã-Dentista " + empresaResponsavel + " CRO | 36799", left, top);
-  top = top + 40;
+  //docpdf.font("Helvetica").text("Orçamento 123456", left + 370, top);
+  docpdf
+    .font("Helvetica")
+    .text(
+      "Cirurgiã-Dentista ",
+      left,
+      top
+    );
+    top = top + 14;
+  docpdf
+    .font("Helvetica")
+    .text(
+      "CRO | 36799",
+      left,
+      top
+    );
+  top = top + 23;
+  docpdf.lineWidth(0.5);
+    docpdf.lineCap("butt").moveTo(40, top).lineTo(555, top).stroke();
+    top = top + 15;
 
   docpdf.font("Helvetica-Bold").text("Paciente : ", left, top);
   docpdf.font("Helvetica").text(nome, left + 60, top);
   top = top + 14;
   docpdf.font("Helvetica-Bold").text("Celular : ", left, top);
   docpdf.font("Helvetica").text("45 999951445", left + 60, top);
-  
+
   top = top + 40;
   //docpdf.font("Helvetica-Bold").text("Endereço : " , left, top);
   //docpdf.font("Helvetica").text( empresaEndereco, left + 60, top);
@@ -76,55 +96,78 @@ app.post("/send-mail-odonto", async (req, res) => {
   //docpdf.font("Helvetica-Bold").text("Email : " , left, top);
   //docpdf.font("Helvetica").text( empresaEmail, left + 40, top);
   //top = top + 30;
-  docpdf.rect(40, top -13 , 520, 35).fillAndStroke("#36C2CE", "#fff");
-  docpdf.fillColor("#000");
-  docpdf.strokeColor("#000");
+  docpdf.rect(40, top - 13, 520, 35).fillAndStroke("#000", "#fff");
+  docpdf.fillColor("#FFF");
+  docpdf.strokeColor("#FFF");
   docpdf.font("Helvetica-Bold").text("Procedimentos ", left, top);
   docpdf.font("Helvetica-Bold").text("Valor ", left + 470, top);
-  
-  top = top + 35;
-
-  //margin left - margin top - width - height
-  listaProcedimentos.map((doc) => {
-    //docpdf.rect(65, top, 485, 35).fillAndStroke("#E9ECEF", "#fff");
-    //docpdf.fillColor("#000");
-    //docpdf.strokeColor("#000");
-    
-    //docpdf.font("Helvetica-Bold").text("Procedimento : ", left, top);
-    docpdf.font("Helvetica").text( doc.label, left, top);
-    //docpdf.font("Helvetica").text(doc.valor, left + 460, top);
-    docpdf.text(doc.valor,left + 450,top, {
-      width: 50,
-      align: 'right'
-     });
-     
-    top = top + 12;
-    //docpdf.fontSize(9);
-    docpdf.font("Helvetica").text("Dente : 15", left, top);
-    //docpdf.fontSize(11);
-    top = top + 15;
-    //docpdf.rect(40,top,535, .5).stroke();
-    docpdf.lineWidth(.5);
-    docpdf.lineCap('butt')
-    .moveTo(40, top)
-    .lineTo(560, top)
-    .stroke();
-    top = top + 10;
-  });
-  top = top + 30;
-  docpdf.rect(left + 350, top -13 , 160, 35).fillAndStroke("#36C2CE", "#fff");
   docpdf.fillColor("#000");
   docpdf.strokeColor("#000");
-  docpdf
-    .font("Helvetica-Bold")
-    .text("TOTAL : R$ " , left + 365, top);
-    docpdf.text(valorTotal,left + 450,top, {
+
+  top = top + 28;
+
+  //margin left - margin top - width - height
+  
+  
+  
+  listaProcedimentos.map((doc, index) => {
+    if (index % 2 === 1) {
+      docpdf.rect(40, top -6 , 520, 35).fillAndStroke("#f8f9fa", "#fff");
+    } else {
+      docpdf.rect(40, top -6, 520, 35).fillAndStroke("#e9ecef", "#fff");
+    }
+    docpdf.fillColor("#000");
+    docpdf.strokeColor("#000");
+    docpdf.fontSize(12);
+    docpdf.font("Helvetica").text(doc.label, left, top);
+    docpdf.fontSize(11);
+    docpdf.text(doc.valor, left + 450, top + 5, {
       width: 50,
-      align: 'right'
-     });
+      align: "right",
+    });
+    top = top + 10;
+    docpdf.fontSize(10);
+    docpdf.font("Helvetica").text("Dente : 15", left, top);
+    top = top + 20;
+    docpdf.fontSize(11);
+  });
+
+
+
+  top = top + 20;
+  
+  docpdf.rect(left + 355, top - 15, 155, 25).fillAndStroke("#000", "#fff");
+  docpdf.fillColor("#FFF");
+  docpdf.strokeColor("#FFF");
+  docpdf.font("Helvetica-Bold").text("Valor Total : ", left + 365, top - 6);
+  docpdf.text("R$ "+valorTotal, left + 400, top -6 , {
+    width: 100,
+    align: "right",
+  });
+  docpdf.fillColor("#000");
+    docpdf.strokeColor("#000");
+    docpdf.lineWidth(0.5);
+    const line = 730;
+    docpdf.lineCap("butt").moveTo(40, line).lineTo(300, line).stroke();
+    docpdf.font("Helvetica").text("Dra. "+empresaNome + ", CRO 36799", left, line + 5);
+    //docpdf.rect(40,top,515, .5).stroke();
+    docpdf.lineWidth(0.5);
+    docpdf.lineCap("butt").moveTo(40, 780).lineTo(555, 780).stroke();
+    docpdf.fontSize(9);
+    docpdf.font("Helvetica-Bold").text("Dados para contato ", left, 795);
+    docpdf.font("Helvetica-Bold").text("Endereço  ", left + 200, 795);
+    docpdf.font("Helvetica-Bold").text(empresaNome , left + 400, 795);
+    docpdf.font("Helvetica").text("thaynapenga@gmail.com ", left, 805);
+    docpdf.font("Helvetica").text("Rua Parcis 1699, Santo Onofre ", left + 200, 805);
+    docpdf.font("Helvetica").text("Cirurgiã-Dentista ", left + 400, 805);
+    docpdf.font("Helvetica").text("45 99995 1445 ", left, 815);
+    docpdf.font("Helvetica").text("Cascavel - PR ", left + 200, 815);
+    docpdf.font("Helvetica").text("CRO | 27199 ", left + 400, 815);
 
   //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
-  docpdf.font("Helvetica").text(diaFormatado+"/"+mesFormatado+"/"+ano,  480, 705);
+  //docpdf
+  //  .font("Helvetica")
+  //  .text(diaFormatado + "/" + mesFormatado + "/" + ano, 480, 705);
   //docpdf.rect(40, 40, 530, 710).stroke("#E9ECEF");
   //if(imageUrlData.ok){
   //docpdf.image(imageBase64, { width: 300, height: 200 });
