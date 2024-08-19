@@ -7,20 +7,38 @@ app.use(cors("*"));
 app.use(express.json());
 
 app.post("/send-mail-odonto", async (req, res) => {
+  const months = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
+  ];
+  
+
   const nome = req.body.nome;
   const email = req.body.email;
   const valorTotal = req.body.valorTotal;
+  const telefone = req.body.telefone;
+  const documento = req.body.documento;
   //const obs = req.body.obs;
   const listaProcedimentos = req.body.procedimentos;
   const envia = req.body.enviaEmail;
   const empresaNome = req.body.empresaNome;
-  //const empresaCelular = req.body.empresaCelular;
+  const empresaCelular = req.body.empresaCelular;
   //const empresaTelefone = req.body.empresaTelefone;
-  //const empresaCnpj = req.body.empresaCnpj;
+  const empresaCnpj = req.body.empresaCnpj;
   const empresaEmail = req.body.empresaEmail;
   const empresaEndereco = req.body.empresaEndereco;
-  //const empresaEstado = req.body.empresaEstado;
-  //const empresaCidade = req.body.empresaCidade;
+  const empresaEstado = req.body.empresaEstado;
+  const empresaCidade = req.body.empresaCidade;
   //const empresaMensagem = req.body.empresaMensagem;
   //const empresaCodigo = req.body.empresaCodigo;
   //const empresaImagem = req.body.empresaImagem;
@@ -47,6 +65,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   const mes = date.getMonth() + 1;
   const mesFormatado = mes.toString().padStart(2, "0");
   const ano = date.getFullYear();
+  const month = months[date.getMonth()];
   //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
   //quadrado logo
   //------------------------------------------------------------
@@ -59,7 +78,7 @@ app.post("/send-mail-odonto", async (req, res) => {
 
   docpdf.font("Helvetica-Bold").text(empresaNome, left, top);
   docpdf.fontSize(11);
-  docpdf.font("Helvetica").text("19 de Agosto de 2024", left + 370, top);
+  docpdf.font("Helvetica").text(dia+" de "+ month + " de " + ano, left + 370, top);
   
   top = top + 14;
   //docpdf.font("Helvetica").text("Orçamento 123456", left + 370, top);
@@ -74,7 +93,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   docpdf
     .font("Helvetica")
     .text(
-      "CRO | 36799",
+      "CRO | " + empresaCnpj,
       left,
       top
     );
@@ -86,15 +105,14 @@ app.post("/send-mail-odonto", async (req, res) => {
   docpdf.font("Helvetica-Bold").text("Paciente : ", left, top);
   docpdf.font("Helvetica").text(nome, left + 60, top);
   docpdf.font("Helvetica-Bold").text("Documento : ", left + 240, top);
-  docpdf.font("Helvetica").text("089.168.219-83", left + 310, top);
+  docpdf.font("Helvetica").text(documento, left + 310, top);
   top = top + 14;
   docpdf.font("Helvetica-Bold").text("Celular : ", left, top);
-  docpdf.font("Helvetica").text("45 999951445", left + 60, top);
-  docpdf.font("Helvetica-Bold").text("Endereço : ", left + 240, top);
-  docpdf.font("Helvetica").text("Rua Parecis 1699, Santo Onofre", left + 310, top);
+  docpdf.font("Helvetica").text(telefone, left + 60, top);
+  
   top = top + 14;
   docpdf.font("Helvetica-Bold").text("Email : ", left, top);
-  docpdf.font("Helvetica").text("gustavo_bmazutti@hotmail.com", left + 60, top);
+  docpdf.font("Helvetica").text(email, left + 60, top);
 
   top = top + 40;
   //docpdf.font("Helvetica-Bold").text("Endereço : " , left, top);
@@ -166,10 +184,10 @@ app.post("/send-mail-odonto", async (req, res) => {
     docpdf.fontSize(9);
     docpdf.font("Helvetica-Bold").text("Dados para contato ", left, 795);
     docpdf.font("Helvetica-Bold").text("Endereço  ", left + 150, 795);
-    docpdf.font("Helvetica").text("thaynapenga@gmail.com ", left, 805);
-    docpdf.font("Helvetica").text("Rua Parcis 1699, Santo Onofre, Cascavel - PR", left + 150, 805);
-    docpdf.font("Helvetica").text("45 99995 1445 ", left, 815);
-    docpdf.font("Helvetica").text("CEP 85806410", left + 150, 815);
+    docpdf.font("Helvetica").text(empresaEmail, left, 805);
+    docpdf.font("Helvetica").text(empresaEndereco  , left + 150, 805);
+    docpdf.font("Helvetica").text(empresaCelular, left, 815);
+    docpdf.font("Helvetica").text(empresaCidade + " - " + empresaEstado, left + 150, 815);
     
 
   //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
