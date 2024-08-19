@@ -85,9 +85,16 @@ app.post("/send-mail-odonto", async (req, res) => {
 
   docpdf.font("Helvetica-Bold").text("Paciente : ", left, top);
   docpdf.font("Helvetica").text(nome, left + 60, top);
+  docpdf.font("Helvetica-Bold").text("Documento : ", left + 240, top);
+  docpdf.font("Helvetica").text("089.168.219-83", left + 310, top);
   top = top + 14;
   docpdf.font("Helvetica-Bold").text("Celular : ", left, top);
   docpdf.font("Helvetica").text("45 999951445", left + 60, top);
+  docpdf.font("Helvetica-Bold").text("Endereço : ", left + 240, top);
+  docpdf.font("Helvetica").text("Rua Parecis 1699, Santo Onofre", left + 310, top);
+  top = top + 14;
+  docpdf.font("Helvetica-Bold").text("Email : ", left, top);
+  docpdf.font("Helvetica").text("gustavo_bmazutti@hotmail.com", left + 60, top);
 
   top = top + 40;
   //docpdf.font("Helvetica-Bold").text("Endereço : " , left, top);
@@ -100,6 +107,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   docpdf.fillColor("#FFF");
   docpdf.strokeColor("#FFF");
   docpdf.font("Helvetica-Bold").text("Procedimentos ", left, top);
+  docpdf.font("Helvetica-Bold").text("Dente ", left + 410, top);
   docpdf.font("Helvetica-Bold").text("Valor ", left + 470, top);
   docpdf.fillColor("#000");
   docpdf.strokeColor("#000");
@@ -119,15 +127,17 @@ app.post("/send-mail-odonto", async (req, res) => {
     docpdf.fillColor("#000");
     docpdf.strokeColor("#000");
     docpdf.fontSize(12);
-    docpdf.font("Helvetica").text(doc.label, left, top);
+    docpdf.font("Helvetica").text(doc.label, left, top +5);
     docpdf.fontSize(11);
+    docpdf.text(doc.dente, left + 410, top + 5, {
+      width: 30,
+      align: "right",
+    });
     docpdf.text(doc.valor, left + 450, top + 5, {
       width: 50,
       align: "right",
     });
     top = top + 10;
-    docpdf.fontSize(10);
-    docpdf.font("Helvetica").text("Dente : 15", left, top);
     top = top + 20;
     docpdf.fontSize(11);
   });
@@ -148,21 +158,19 @@ app.post("/send-mail-odonto", async (req, res) => {
     docpdf.strokeColor("#000");
     docpdf.lineWidth(0.5);
     const line = 730;
-    docpdf.lineCap("butt").moveTo(40, line).lineTo(300, line).stroke();
-    docpdf.font("Helvetica").text("Dra. "+empresaNome + ", CRO 36799", left, line + 5);
+    docpdf.lineCap("butt").moveTo(300, line).lineTo(555, line).stroke();
+    docpdf.font("Helvetica").text("Dra. "+empresaNome , left + 350, line + 5);
     //docpdf.rect(40,top,515, .5).stroke();
     docpdf.lineWidth(0.5);
     docpdf.lineCap("butt").moveTo(40, 780).lineTo(555, 780).stroke();
     docpdf.fontSize(9);
     docpdf.font("Helvetica-Bold").text("Dados para contato ", left, 795);
-    docpdf.font("Helvetica-Bold").text("Endereço  ", left + 200, 795);
-    docpdf.font("Helvetica-Bold").text(empresaNome , left + 400, 795);
+    docpdf.font("Helvetica-Bold").text("Endereço  ", left + 150, 795);
     docpdf.font("Helvetica").text("thaynapenga@gmail.com ", left, 805);
-    docpdf.font("Helvetica").text("Rua Parcis 1699, Santo Onofre ", left + 200, 805);
-    docpdf.font("Helvetica").text("Cirurgiã-Dentista ", left + 400, 805);
+    docpdf.font("Helvetica").text("Rua Parcis 1699, Santo Onofre, Cascavel - PR", left + 150, 805);
     docpdf.font("Helvetica").text("45 99995 1445 ", left, 815);
-    docpdf.font("Helvetica").text("Cascavel - PR ", left + 200, 815);
-    docpdf.font("Helvetica").text("CRO | 27199 ", left + 400, 815);
+    docpdf.font("Helvetica").text("CEP 85806410", left + 150, 815);
+    
 
   //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
   //docpdf
