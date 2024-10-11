@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const PDFDocument = require("pdfkit");
+const createPDF = require("./src/services/createPDF");
 const app = express();
 
 app.use(cors("*"));
@@ -21,7 +22,6 @@ app.post("/send-mail-odonto", async (req, res) => {
     "Novembro",
     "Dezembro",
   ];
-  
 
   const nome = req.body.nome;
   const email = req.body.email;
@@ -78,29 +78,19 @@ app.post("/send-mail-odonto", async (req, res) => {
 
   docpdf.font("Helvetica-Bold").text(empresaNome, left, top);
   docpdf.fontSize(11);
-  docpdf.font("Helvetica").text(dia+" de "+ month + " de " + ano, left + 370, top);
-  
+  docpdf
+    .font("Helvetica")
+    .text(dia + " de " + month + " de " + ano, left + 370, top);
+
   top = top + 14;
   //docpdf.font("Helvetica").text("Orçamento 123456", left + 370, top);
-  docpdf
-    .font("Helvetica")
-    .text(
-      "Cirurgiã-Dentista ",
-      left,
-      top
-    );
-    top = top + 14;
-  docpdf
-    .font("Helvetica")
-    .text(
-      "CRO | " + empresaCnpj,
-      left,
-      top
-    );
+  docpdf.font("Helvetica").text("Cirurgiã-Dentista ", left, top);
+  top = top + 14;
+  docpdf.font("Helvetica").text("CRO | " + empresaCnpj, left, top);
   top = top + 23;
   docpdf.lineWidth(0.5);
-    docpdf.lineCap("butt").moveTo(40, top).lineTo(555, top).stroke();
-    top = top + 15;
+  docpdf.lineCap("butt").moveTo(40, top).lineTo(555, top).stroke();
+  top = top + 15;
 
   docpdf.font("Helvetica-Bold").text("Paciente : ", left, top);
   docpdf.font("Helvetica").text(nome, left + 60, top);
@@ -109,7 +99,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   top = top + 14;
   docpdf.font("Helvetica-Bold").text("Celular : ", left, top);
   docpdf.font("Helvetica").text(telefone, left + 60, top);
-  
+
   top = top + 14;
   docpdf.font("Helvetica-Bold").text("Email : ", left, top);
   docpdf.font("Helvetica").text(email, left + 60, top);
@@ -133,19 +123,17 @@ app.post("/send-mail-odonto", async (req, res) => {
   top = top + 28;
 
   //margin left - margin top - width - height
-  
-  
-  
+
   listaProcedimentos.map((doc, index) => {
     if (index % 2 === 1) {
-      docpdf.rect(40, top -6 , 520, 35).fillAndStroke("#f8f9fa", "#fff");
+      docpdf.rect(40, top - 6, 520, 35).fillAndStroke("#f8f9fa", "#fff");
     } else {
-      docpdf.rect(40, top -6, 520, 35).fillAndStroke("#e9ecef", "#fff");
+      docpdf.rect(40, top - 6, 520, 35).fillAndStroke("#e9ecef", "#fff");
     }
     docpdf.fillColor("#000");
     docpdf.strokeColor("#000");
     docpdf.fontSize(12);
-    docpdf.font("Helvetica").text(doc.label, left, top +5);
+    docpdf.font("Helvetica").text(doc.label, left, top + 5);
     docpdf.fontSize(11);
     docpdf.text(doc.dente, left + 410, top + 5, {
       width: 30,
@@ -160,35 +148,34 @@ app.post("/send-mail-odonto", async (req, res) => {
     docpdf.fontSize(11);
   });
 
-
-
   top = top + 20;
-  
+
   docpdf.rect(left + 355, top - 15, 155, 25).fillAndStroke("#000", "#fff");
   docpdf.fillColor("#FFF");
   docpdf.strokeColor("#FFF");
   docpdf.font("Helvetica-Bold").text("Valor Total : ", left + 365, top - 6);
-  docpdf.text("R$ "+valorTotal, left + 400, top -6 , {
+  docpdf.text("R$ " + valorTotal, left + 400, top - 6, {
     width: 100,
     align: "right",
   });
   docpdf.fillColor("#000");
-    docpdf.strokeColor("#000");
-    docpdf.lineWidth(0.5);
-    const line = 730;
-    docpdf.lineCap("butt").moveTo(300, line).lineTo(555, line).stroke();
-    docpdf.font("Helvetica").text("Dra. "+empresaNome , left + 350, line + 5);
-    //docpdf.rect(40,top,515, .5).stroke();
-    docpdf.lineWidth(0.5);
-    docpdf.lineCap("butt").moveTo(40, 780).lineTo(555, 780).stroke();
-    docpdf.fontSize(9);
-    docpdf.font("Helvetica-Bold").text("Dados para contato ", left, 795);
-    docpdf.font("Helvetica-Bold").text("Endereço  ", left + 150, 795);
-    docpdf.font("Helvetica").text(empresaEmail, left, 805);
-    docpdf.font("Helvetica").text(empresaEndereco  , left + 150, 805);
-    docpdf.font("Helvetica").text(empresaCelular, left, 815);
-    docpdf.font("Helvetica").text(empresaCidade + " - " + empresaEstado, left + 150, 815);
-    
+  docpdf.strokeColor("#000");
+  docpdf.lineWidth(0.5);
+  const line = 730;
+  docpdf.lineCap("butt").moveTo(300, line).lineTo(555, line).stroke();
+  docpdf.font("Helvetica").text("Dra. " + empresaNome, left + 350, line + 5);
+  //docpdf.rect(40,top,515, .5).stroke();
+  docpdf.lineWidth(0.5);
+  docpdf.lineCap("butt").moveTo(40, 780).lineTo(555, 780).stroke();
+  docpdf.fontSize(9);
+  docpdf.font("Helvetica-Bold").text("Dados para contato ", left, 795);
+  docpdf.font("Helvetica-Bold").text("Endereço  ", left + 150, 795);
+  docpdf.font("Helvetica").text(empresaEmail, left, 805);
+  docpdf.font("Helvetica").text(empresaEndereco, left + 150, 805);
+  docpdf.font("Helvetica").text(empresaCelular, left, 815);
+  docpdf
+    .font("Helvetica")
+    .text(empresaCidade + " - " + empresaEstado, left + 150, 815);
 
   //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
   //docpdf
@@ -448,6 +435,28 @@ app.post("/send-mail", async (req, res) => {
   } else {
     return res.status(200).json({ pdfBase64: pdf64 });
   }
+});
+
+app.post("/build", (req, res) => {
+  return res.status(200).json({ pdfBase64: createPDF(req.body) });
+});
+
+app.post("/send", async (req, res) => {
+  const pdf = createPDF(req.body);
+
+  require("./mailService")(
+    req.body.company.nome,
+    req.body.customer.customerName,
+    "",
+    req.body.customer.customerEmail,
+    "",
+    "",
+    "",
+    req.body.customer.totalValue,
+    pdf
+  )
+    .then((response) => res.status(200).json({ message: "E-mail enviado" }))
+    .catch((error) => res.status(400).json(error));
 });
 
 app.listen(3000, () => {
