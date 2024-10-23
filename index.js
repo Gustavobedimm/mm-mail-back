@@ -458,8 +458,9 @@ app.post("/send", async (req, res) => {
     .then((response) => res.status(200).json({ message: "E-mail enviado" }))
     .catch((error) => res.status(400).json(error));
 });
-
-app.listen(3000, () => {   produção
-//  app.listen(3010, () => {
+//produtoção
+app.listen(3000, () => {   
+//homologação  
+  //app.listen(3010, () => {
   console.log("Servidor Iniciado");
 });
