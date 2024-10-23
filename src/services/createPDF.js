@@ -106,13 +106,7 @@ module.exports = (body) => {
   docpdf.font("Helvetica-Bold").text(`Observação:`, left, top);
   docpdf.font("Helvetica").text(body.customer.obs, left + 80, top);
 
-  extra?.map((doc, index) => {
-    top = top + 20;
-    const key = Object.keys(doc)[0];
-
-    docpdf.font("Helvetica-Bold").text(`${key}:`, left, top);
-    docpdf.font("Helvetica").text(doc[key], left + 80, top);
-  });
+  
 
   top = top + 40;
   //docpdf.font("Helvetica-Bold").text("Endereço : " , left, top);
@@ -149,14 +143,16 @@ module.exports = (body) => {
     //   width: 30,
     //   align: "right",
     // });
-    docpdf.text("R$ " + doc.value, left + 450, top + 5, {
-      width: 50,
+    docpdf.text("R$ " + doc.value, left + 400, top + 5, {
+      width: 100,
       align: "right",
     });
     top = top + 10;
     top = top + 20;
     docpdf.fontSize(11);
   });
+
+  
 
   top = top + 20;
 
@@ -170,6 +166,15 @@ module.exports = (body) => {
   });
   docpdf.fillColor("#000");
   docpdf.strokeColor("#000");
+
+  top = top + 20;
+  extra?.map((doc, index) => {
+    top = top + 20;
+    const key = Object.keys(doc)[0];
+
+    docpdf.font("Helvetica-Bold").text(`${key}:`, left, top);
+    docpdf.font("Helvetica").text(doc[key], left + 80, top);
+  });
 
   // Complement
 
