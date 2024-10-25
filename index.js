@@ -459,8 +459,8 @@ app.post("/send", async (req, res) => {
     .catch((error) => res.status(400).json(error));
 });
 //produtoção
-//app.listen(3000, () => {   
+app.listen(3000, () => {   
 //homologação  
-  app.listen(3010, () => {
+  //app.listen(3010, () => {
   console.log("Servidor Iniciado");
 });
