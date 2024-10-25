@@ -39,8 +39,11 @@ function getExtraFields(body) {
   return keys
     .map((key) => {
       if (!STANDARD_FIELDS.includes(key)) {
+        const foundedLabel =
+          body.customFields?.find((item) => item.field === key)?.label || key;
+
         return {
-          [key]: body.customer[key],
+          [foundedLabel]: body.customer[key],
         };
       }
 
@@ -55,7 +58,7 @@ module.exports = (body) => {
 
   let pages = 1;
   let actualPage = 1;
-  const servicesPerPage = 15;
+  const servicesPerPage = 17;
   const totalServices = body.customer.services.length;
   if (totalServices > servicesPerPage) {
     pages = Math.ceil(totalServices / 15);
@@ -77,59 +80,87 @@ module.exports = (body) => {
     let lineWidth = 520;
     let fontSize = 11;
 
+    const txtCliente = "Cliente : ";
+    const txtClienteWidth = docpdf.widthOfString(txtCliente);
+    const txtDocumento = "Documento : ";
+    const txtDocumentoWidth = docpdf.widthOfString(txtDocumento);
+    const txtCelular = "Celular : ";
+    const txtCelularWidth = docpdf.widthOfString(txtCelular);
+    const txtEmail = "Email : ";
+    const txtEmailWidth = docpdf.widthOfString(txtEmail);
+
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
 
     // DADOS DA EMPRESA
+
+    docpdf.fontSize(18);
+    docpdf.font("Times-Bold").text("ORÇAMENTO", left + 380, top);
+    docpdf.fontSize(11);
+    docpdf
+      .font("Times-Roman")
+      .text(dia + " de " + month + " de " + ano, left + 300, top + 20, {
+        width: 200,
+        align: "right",
+      });
+
     docpdf.fontSize(13);
     docpdf.font("Helvetica-Bold").text(body.company.nome, left, top);
     docpdf.fontSize(11);
-    docpdf
-      .font("Helvetica")
-      .text(dia + " de " + month + " de " + ano, left + 370, top);
     top = top + 14;
-    docpdf
-      .font("Helvetica")
-      .text("Documento: " + body.company.documento, left, top);
+    docpdf.font("Helvetica").text(body.company.documento, left, top);
 
-    //linha divisoria
-    top = top + 23;
-    docpdf.lineWidth(0.5);
-    docpdf.lineCap("butt").moveTo(40, top).lineTo(555, top).stroke();
-    top = top + 15;
+    //ESPAÇAMENTO ENTRE EMPRESA E DADOS DO CLIENTE
+    top = top + 45;
+    //DADOS DO CLIENTE APARECE SOMENTE NA PAGINA 1
+    if (actualPage === 1) {
+      docpdf.font("Helvetica-Bold").text(txtCliente, left, top);
+      docpdf
+        .font("Helvetica")
+        .text(body.customer.customerName, left + txtClienteWidth, top);
+      docpdf.font("Helvetica-Bold").text("Documento: ", left + 300, top);
+      docpdf
+        .font("Helvetica")
+        .text(
+          body.customer.customerDocument,
+          left + 300 + txtDocumentoWidth,
+          top
+        );
+      top = top + 14;
+      docpdf.font("Helvetica-Bold").text(txtCelular, left + 300, top);
+      docpdf
+        .font("Helvetica")
+        .text(
+          body.customer.customerCellphone,
+          left + 300 + txtCelularWidth,
+          top
+        );
 
-    //dados do cliente
-    docpdf.font("Helvetica-Bold").text("Cliente: ", left, top);
-    docpdf.font("Helvetica").text(body.customer.customerName, left + 60, top);
-    docpdf.font("Helvetica-Bold").text("Documento: ", left + 240, top);
-    docpdf
-      .font("Helvetica")
-      .text(body.customer.customerDocument, left + 310, top);
-    top = top + 14;
-    docpdf.font("Helvetica-Bold").text("Celular: ", left, top);
-    docpdf
-      .font("Helvetica")
-      .text(body.customer.customerCellphone, left + 60, top);
+      docpdf.font("Helvetica-Bold").text(txtEmail, left, top);
+      docpdf
+        .font("Helvetica")
+        .text(body.customer.customerEmail, left + txtEmailWidth, top);
 
-    top = top + 14;
-    docpdf.font("Helvetica-Bold").text("Email: ", left, top);
-    docpdf.font("Helvetica").text(body.customer.customerEmail, left + 60, top);
+      //LINHA DIVISORIA
+      docpdf.fillColor("#6c757d");
+      docpdf.strokeColor("#6c757d");
+      top = top + 23;
+      docpdf.lineWidth(0.5);
+      docpdf.lineCap("butt").moveTo(40, top).lineTo(555, top).stroke();
+      docpdf.fillColor("#000");
+      docpdf.strokeColor("#000");
 
-    //linha divisoria
-    top = top + 23;
-    docpdf.lineWidth(0.5);
-    docpdf.lineCap("butt").moveTo(40, top).lineTo(555, top).stroke();
+      //OBS E CAMPOS PERSONALIZADOS
+      extra?.map((doc, index) => {
+        top = top + 15;
+        const key = Object.keys(doc)[0];
+        docpdf.font("Helvetica-Bold").text(`${key}:`, left, top);
+        docpdf.font("Helvetica").text(doc[key], left + 100, top);
+      });
 
-    //OBS E CAMPOS PERSONALIZADOS
-    extra?.map((doc, index) => {
       top = top + 15;
-      const key = Object.keys(doc)[0];
-      docpdf.font("Helvetica-Bold").text(`${key}:`, left, top);
-      docpdf.font("Helvetica").text(doc[key], left + 80, top);
-    });
-
-    top = top + 15;
-    docpdf.font("Helvetica-Bold").text(`Observação:`, left, top);
-    docpdf.font("Helvetica").text(body.customer.obs, left + 80, top);
+      docpdf.font("Helvetica-Bold").text(`Observação:`, left, top);
+      docpdf.font("Helvetica").text(body.customer.obs, left + 80, top);
+    }
 
     //CABEÇALHO TABELA SERVICOS
     top = top + 30;
@@ -151,7 +182,7 @@ module.exports = (body) => {
     body.customer.services
       .slice(startIndex, startIndex + servicesPerPage)
       .forEach((doc, index) => {
-        // Desenhe o retângulo alternado
+        // LINHAS DE SERVICOS
         if (index % 2 === 1) {
           docpdf
             .rect(40, top, lineWidth, lineHeight)
@@ -180,7 +211,7 @@ module.exports = (body) => {
         top = top + lineHeight; // Move para a próxima linha
       });
 
-    //TOTALIZADOR
+    //TOTALIZADOR VALOR
     if (startIndex + servicesPerPage >= totalServices) {
       top = top + 20;
       docpdf
@@ -190,7 +221,7 @@ module.exports = (body) => {
       docpdf.strokeColor("#FFF");
       docpdf
         .font("Helvetica-Bold")
-        .text("Valor Total: ", left + 365, top + (lineHeight - fontSize) / 2);
+        .text("TOTAL : ", left + 365, top + (lineHeight - fontSize) / 2);
       docpdf.text(
         "R$ " + body.customer.totalValue,
         left + 400,
@@ -202,32 +233,67 @@ module.exports = (body) => {
       );
       docpdf.fillColor("#000");
       docpdf.strokeColor("#000");
+
+      //TERMO DE CONDICOES
+      docpdf.font("Helvetica-Bold").text("Termos e condições ", left, top);
+      docpdf
+        .font("Helvetica")
+        .text("Orçamento válido por 10 dias.", left, top + 13);
     }
     // ASSINATURA DO CLIENTE
 
-    docpdf.lineWidth(0.5);
-    const line = 730;
-
-    docpdf.lineCap("butt").moveTo(300, line).lineTo(555, line).stroke();
-    docpdf.font("Helvetica").text(body.company.nome, left + 350, line + 5);
-
-    //RODAPE
-
-    docpdf.lineWidth(0.5);
-    docpdf.lineCap("butt").moveTo(40, 780).lineTo(555, 780).stroke();
-    docpdf.fontSize(9);
-    docpdf.font("Helvetica-Bold").text("Dados para contato ", left, 795);
-    docpdf.font("Helvetica-Bold").text("Endereço  ", left + 150, 795);
-    docpdf.font("Helvetica").text(body.company.email, left, 805);
-    docpdf.font("Helvetica").text(body.company.endereco, left + 150, 805);
-    docpdf.font("Helvetica").text(body.company.celular, left, 815);
-    docpdf
-      .font("Helvetica")
-      .text(body.company.cidade + " - " + body.company.estado, left + 150, 815);
+    if (startIndex + servicesPerPage >= totalServices) {
+      docpdf.lineWidth(0.5);
+      const line = 750;
+      docpdf.lineCap("butt").moveTo(300, line).lineTo(555, line).stroke();
+      docpdf.font("Helvetica").text(body.company.nome, left + 350, line + 5);
+    }
+    //RODAPE PRETO ==1 || BRANCO ==2
+    let tipoRodape = 1;
+    if (tipoRodape === 1) {
+      top = top + 30;
+      docpdf.rect(-1, 795, 600, 50).fillAndStroke("#000", "#fff");
+      docpdf.fillColor("#FFF");
+      docpdf.strokeColor("#FFF");
+      docpdf.fontSize(9);
+      docpdf.font("Helvetica-Bold").text("Dados para contato ", left, 805);
+      docpdf.font("Helvetica-Bold").text("Endereço  ", left + 150, 805);
+      docpdf.font("Helvetica").text(body.company.email, left, 815);
+      docpdf.font("Helvetica").text(body.company.endereco, left + 150, 815);
+      docpdf.font("Helvetica").text(body.company.celular, left, 825);
+      docpdf
+        .font("Helvetica")
+        .text(
+          body.company.cidade + " - " + body.company.estado,
+          left + 150,
+          825
+        );
+    } else {
+      docpdf.fillColor("#6c757d");
+      docpdf.strokeColor("#6c757d");
+      docpdf.lineWidth(0.5);
+      docpdf.lineCap("butt").moveTo(40, 780).lineTo(555, 780).stroke();
+      docpdf.fillColor("#000");
+      docpdf.strokeColor("#000");
+      docpdf.fontSize(9);
+      docpdf.font("Helvetica-Bold").text("Dados para contato ", left, 795);
+      docpdf.font("Helvetica-Bold").text("Endereço  ", left + 150, 795);
+      docpdf.font("Helvetica").text(body.company.email, left, 805);
+      docpdf.font("Helvetica").text(body.company.endereco, left + 150, 805);
+      docpdf.font("Helvetica").text(body.company.celular, left, 815);
+      docpdf
+        .font("Helvetica")
+        .text(
+          body.company.cidade + " - " + body.company.estado,
+          left + 150,
+          815
+        );
+    }
+    //MARCAÇÃO DA PAGINA ATUAL
     docpdf
       .font("Helvetica")
       .text("Página " + actualPage + " de " + pages, left + 450, 815);
-      actualPage++;
+    actualPage++;
     //------------------------------------------------------------
   }
   docpdf.end();
