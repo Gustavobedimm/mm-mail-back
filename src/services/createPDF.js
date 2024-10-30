@@ -1,5 +1,4 @@
 const PDFDocument = require("pdfkit");
-const convertImage = require("./convertImage");
 
 const STANDARD_FIELDS = [
   "companyId",
@@ -110,8 +109,15 @@ module.exports = async (body) => {
 
     if (body.company.urlImage) {
       top = top + 65;
-      const base64Image = await convertImage(body.company.urlImage);
+
+      const imageUrl = body.company.urlImage;
+      const imageUrlData = await fetch(imageUrl);
+      const buffer = await imageUrlData.arrayBuffer();
+      const stringifiedBuffer = Buffer.from(buffer).toString("base64");
+      const contentType = imageUrlData.headers.get("content-type");
+      const base64Image = `data:${contentType};base64,${stringifiedBuffer}`;
       const cleanBase64Image = base64Image.replace(/^data:image\/\w+;base64,/,"");
+
       docpdf.image(Buffer.from(cleanBase64Image, "base64"), 50, 50, {
         width: 250,
         height: 50,
