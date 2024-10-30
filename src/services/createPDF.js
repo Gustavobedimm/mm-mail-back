@@ -1,5 +1,5 @@
-const doc = require("pdfkit");
 const PDFDocument = require("pdfkit");
+const convertImage = require("./convertImage");
 
 const STANDARD_FIELDS = [
   "companyId",
@@ -10,6 +10,7 @@ const STANDARD_FIELDS = [
   "customerName",
   "obs",
   "totalValue",
+  "createdAt",
 ];
 
 const months = [
@@ -52,13 +53,17 @@ function getExtraFields(body) {
     .filter((item) => item);
 }
 
-module.exports = (body) => {
+module.exports = async (body) => {
   const extra = getExtraFields(body);
   var docpdf = new PDFDocument({ autoFirstPage: false });
 
+  //vendo se a empresa tem imagem
+  //const urlImage = body.company.urlImage;
+  //console.log(urlImage);
+
   let pages = 1;
   let actualPage = 1;
-  const servicesPerPage = 17;
+  const servicesPerPage = 15;
   const totalServices = body.customer.services.length;
   if (totalServices > servicesPerPage) {
     pages = Math.ceil(totalServices / 15);
@@ -103,6 +108,16 @@ module.exports = (body) => {
         align: "right",
       });
 
+    if (body.company.urlImage) {
+      top = top + 65;
+      const base64Image = await convertImage(body.company.urlImage);
+      const cleanBase64Image = base64Image.replace(/^data:image\/\w+;base64,/,"");
+      docpdf.image(Buffer.from(cleanBase64Image, "base64"), 50, 50, {
+        width: 250,
+        height: 50,
+      });
+    }
+
     docpdf.fontSize(13);
     docpdf.font("Helvetica-Bold").text(body.company.nome, left, top);
     docpdf.fontSize(11);
@@ -110,9 +125,10 @@ module.exports = (body) => {
     docpdf.font("Helvetica").text(body.company.documento, left, top);
 
     //ESPAÇAMENTO ENTRE EMPRESA E DADOS DO CLIENTE
-    top = top + 45;
+    
     //DADOS DO CLIENTE APARECE SOMENTE NA PAGINA 1
     if (actualPage === 1) {
+      top = top + 45;
       docpdf.font("Helvetica-Bold").text(txtCliente, left, top);
       docpdf
         .font("Helvetica")
@@ -169,7 +185,10 @@ module.exports = (body) => {
     docpdf.strokeColor("#FFF");
     docpdf
       .font("Helvetica-Bold")
-      .text("Serviços", left, top + (lineHeight - fontSize) / 2);
+      .text("Descrição", left, top + (lineHeight - fontSize) / 2);
+    docpdf
+      .font("Helvetica-Bold")
+      .text("Quantidade ", left + 315, top + (lineHeight - fontSize) / 2);
     docpdf
       .font("Helvetica-Bold")
       .text("Valor ", left + 470, top + (lineHeight - fontSize) / 2);
@@ -197,6 +216,15 @@ module.exports = (body) => {
         docpdf
           .font("Helvetica")
           .text(doc.label, left, top + (lineHeight - fontSize) / 2);
+        docpdf.text(
+          doc.quantity,
+          left + 250,
+          top + (lineHeight - fontSize) / 2,
+          {
+            width: 100,
+            align: "right",
+          }
+        );
 
         docpdf.text(
           "R$ " + doc.value,

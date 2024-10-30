@@ -437,8 +437,14 @@ app.post("/send-mail", async (req, res) => {
   }
 });
 
-app.post("/build", (req, res) => {
-  return res.status(200).json({ pdfBase64: createPDF(req.body) });
+app.post("/build", async (req, res) => {
+  try {
+    const pdfBase64 = await createPDF(req.body);
+    return res.status(200).json({ pdfBase64 });
+  } catch (error) {
+    console.error("Erro ao criar o PDF:", error);
+    return res.status(500).json({ error: "Erro ao criar o PDF" });
+  }
 });
 
 app.post("/send", async (req, res) => {
