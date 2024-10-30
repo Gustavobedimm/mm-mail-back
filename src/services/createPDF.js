@@ -1,5 +1,5 @@
 const PDFDocument = require("pdfkit");
-const convertImage = require("./src/services/convertImage");
+const convertImage = require("./convertImage");
 
 const STANDARD_FIELDS = [
   "companyId",
