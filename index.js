@@ -428,7 +428,8 @@ app.post("/send-mail", async (req, res) => {
       origem,
       destino,
       valor,
-      pdf64
+      pdf64,
+      "",
     )
       .then((response) => res.status(200).json({ pdfBase64: pdf64 }))
       .catch((error) => res.status(400).json(error));
@@ -448,8 +449,7 @@ app.post("/build", async (req, res) => {
 });
 
 app.post("/send", async (req, res) => {
-  const pdf = createPDF(req.body);
-
+  const pdf = await createPDF(req.body);
   require("./mailService")(
     req.body.company.nome,
     req.body.customer.customerName,
@@ -459,11 +459,14 @@ app.post("/send", async (req, res) => {
     "",
     "",
     req.body.customer.totalValue,
-    pdf
+    pdf,
+    req.body.budgetId
   )
     .then((response) => res.status(200).json({ message: "E-mail enviado" }))
     .catch((error) => res.status(400).json(error));
 });
+
+
 //produtoção
 app.listen(3000, () => {   
 //homologação  
