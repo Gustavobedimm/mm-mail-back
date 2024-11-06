@@ -45,7 +45,6 @@ module.exports = (
         return resolve(response);
       })
       .catch((error) => {
-        console.log("nao consegui enviar");
         console.log(error);
         return reject(error);
       });

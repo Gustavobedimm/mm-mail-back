@@ -10,6 +10,7 @@ const STANDARD_FIELDS = [
   "obs",
   "totalValue",
   "createdAt",
+  "viewed",
 ];
 
 const months = [
@@ -119,7 +120,7 @@ module.exports = async (body) => {
       const cleanBase64Image = base64Image.replace(/^data:image\/\w+;base64,/,"");
 
       docpdf.image(Buffer.from(cleanBase64Image, "base64"), 50, 50, {
-        width: 250,
+        width: 150,
         height: 50,
       });
     }
