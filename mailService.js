@@ -1,3 +1,4 @@
+require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 module.exports = (
@@ -17,8 +18,8 @@ module.exports = (
     port: 587,
     secure: false,
     auth: {
-      user: "mudancasmazutti@gmail.com",
-      pass: "pjri hows xcwl iqzr",
+      user: process.env.MAIL_SERVICE_USER_AUTH,
+      pass: process.env.MAIL_SERVICE_USER_PASSWORD,
     },
   });
 
@@ -28,7 +29,7 @@ module.exports = (
     subject: "Orçamento ", // Subject line
     text: `Não responder este E-Mail. 
         Arquivo em anexo.`, // plain text body
-    html: `<img src="https://budget-app-sigma-ruby.vercel.app/api/rastreamento-email?budgetId=${budgetId}" width="1" height="1" alt=""/>`,
+    html: `<img src="${process.env.API_URL}/api/rastreamento-email?budgetId=${budgetId}" width="1" height="1" alt=""/>`,
     attachments: [
       {
         // encoded string as an attachment

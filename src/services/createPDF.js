@@ -1,5 +1,7 @@
 const PDFDocument = require("pdfkit");
 
+const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended"];
+
 const STANDARD_FIELDS = [
   "companyId",
   "services",
@@ -39,7 +41,7 @@ function getExtraFields(body) {
 
   return keys
     .map((key) => {
-      if (!STANDARD_FIELDS.includes(key)) {
+      if (!STANDARD_FIELDS.includes(key) && !EXCLUDED_FIELDS.includes(key)) {
         const foundedLabel =
           body.customFields?.find((item) => item.field === key)?.label || key;
 
@@ -117,7 +119,10 @@ module.exports = async (body) => {
       const stringifiedBuffer = Buffer.from(buffer).toString("base64");
       const contentType = imageUrlData.headers.get("content-type");
       const base64Image = `data:${contentType};base64,${stringifiedBuffer}`;
-      const cleanBase64Image = base64Image.replace(/^data:image\/\w+;base64,/,"");
+      const cleanBase64Image = base64Image.replace(
+        /^data:image\/\w+;base64,/,
+        ""
+      );
 
       docpdf.image(Buffer.from(cleanBase64Image, "base64"), 50, 50, {
         width: 150,
@@ -132,7 +137,7 @@ module.exports = async (body) => {
     docpdf.font("Helvetica").text(body.company.documento, left, top);
 
     //ESPAÇAMENTO ENTRE EMPRESA E DADOS DO CLIENTE
-    
+
     //DADOS DO CLIENTE APARECE SOMENTE NA PAGINA 1
     if (actualPage === 1) {
       top = top + 45;

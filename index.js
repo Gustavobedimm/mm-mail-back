@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const PDFDocument = require("pdfkit");
 const createPDF = require("./src/services/createPDF");
+const createContactMail = require("./src/services/createContactMail");
+const sendMail = require("./src/services/sendMail");
 const app = express();
 
 app.use(cors("*"));
@@ -429,7 +431,7 @@ app.post("/send-mail", async (req, res) => {
       destino,
       valor,
       pdf64,
-      "",
+      ""
     )
       .then((response) => res.status(200).json({ pdfBase64: pdf64 }))
       .catch((error) => res.status(400).json(error));
@@ -466,10 +468,17 @@ app.post("/send", async (req, res) => {
     .catch((error) => res.status(400).json(error));
 });
 
+app.post("/send-contact-mail", async (req, res) => {
+  const info = createContactMail(req.body);
+
+  return sendMail(info)
+    .then((response) => res.status(200).json({ message: "E-mail enviado" }))
+    .catch((error) => res.status(400).json(error));
+});
 
 //produtoção
-app.listen(3000, () => {   
-//homologação  
+app.listen(3000, () => {
+  //homologação
   //app.listen(3010, () => {
   console.log("Servidor Iniciado");
 });
