@@ -1,6 +1,6 @@
 const PDFDocument = require("pdfkit");
 
-const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended"];
+const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended" , "statusBudget" ];
 
 const STANDARD_FIELDS = [
   "companyId",
@@ -289,7 +289,7 @@ module.exports = async (body) => {
       docpdf.font("Helvetica").text(body.company.nome, left + 350, line + 5);
     }
     //RODAPE PRETO ==1 || BRANCO ==2
-    let tipoRodape = 1;
+    let tipoRodape = 2;
     if (tipoRodape === 1) {
       top = top + 30;
       docpdf.rect(-1, 795, 600, 50).fillAndStroke("#000", "#fff");
