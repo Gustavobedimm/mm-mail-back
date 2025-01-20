@@ -101,10 +101,10 @@ module.exports = async (body) => {
     // DADOS DA EMPRESA
 
     docpdf.fontSize(18);
-    docpdf.font("Times-Bold").text("ORÇAMENTO", left + 380, top);
+    docpdf.font("Helvetica-Bold").text("ORÇAMENTO", left + 380, top);
     docpdf.fontSize(11);
     docpdf
-      .font("Times-Roman")
+      .font("Helvetica")
       .text(dia + " de " + month + " de " + ano, left + 300, top + 20, {
         width: 200,
         align: "right",
