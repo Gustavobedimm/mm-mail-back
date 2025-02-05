@@ -105,6 +105,12 @@ module.exports = async (body) => {
     const txtEmail = "Email : ";
     const txtEmailWidth = docpdf.widthOfString(txtEmail);
 
+    const clienteDocumento = body.customer.customerDocument.trim() || "Não informado";
+    const clienteNome = body.customer.customerName.trim() || "Não informado";
+    const clienteCelular = body.customer.customerCellphone.trim() || "Não informado";
+    const clienteEmail = body.customer.customerEmail.trim() || "Não informado";
+
+
 
 
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
@@ -155,12 +161,12 @@ module.exports = async (body) => {
       docpdf.font("Helvetica-Bold").text(txtCliente, left, top);
       docpdf
         .font("Helvetica")
-        .text(body.customer.customerName ?? "Não informado", left + txtClienteWidth, top);
-      docpdf.font("Helvetica-Bold").text("Documento: ", left + 300, top);
+        .text(clienteNome, left + txtClienteWidth, top);
+      docpdf.font("Helvetica-Bold").text("Documento : ", left + 300, top);
       docpdf
         .font("Helvetica")
         .text(
-          body.customer.customerDocument ?? "Não informado",
+          clienteDocumento,
           left + 300 + txtDocumentoWidth,
           top
         );
@@ -169,7 +175,7 @@ module.exports = async (body) => {
       docpdf
         .font("Helvetica")
         .text(
-          body.customer.customerCellphone ?? "Não informado",
+          clienteCelular,
           left + 300 + txtCelularWidth,
           top
         );
@@ -177,7 +183,7 @@ module.exports = async (body) => {
       docpdf.font("Helvetica-Bold").text(txtEmail, left, top);
       docpdf
         .font("Helvetica")
-        .text(body.customer.customerEmail ?? "Não informado", left + txtEmailWidth, top);
+        .text(clienteEmail, left + txtEmailWidth, top);
 
       //LINHA DIVISORIA
       docpdf.fillColor("#6c757d");
