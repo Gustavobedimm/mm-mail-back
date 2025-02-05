@@ -55,8 +55,17 @@ function getExtraFields(body) {
     .filter((item) => item);
 }
 
+
+
+
 module.exports = async (body) => {
   const extra = getExtraFields(body);
+
+  const numeroFormatado = new Intl.NumberFormat('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(body.customer.totalValue);
+
   var docpdf = new PDFDocument({ autoFirstPage: false });
 
   //vendo se a empresa tem imagem
@@ -95,6 +104,8 @@ module.exports = async (body) => {
     const txtCelularWidth = docpdf.widthOfString(txtCelular);
     const txtEmail = "Email : ";
     const txtEmailWidth = docpdf.widthOfString(txtEmail);
+
+
 
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
 
@@ -144,12 +155,12 @@ module.exports = async (body) => {
       docpdf.font("Helvetica-Bold").text(txtCliente, left, top);
       docpdf
         .font("Helvetica")
-        .text(body.customer.customerName, left + txtClienteWidth, top);
+        .text(body.customer.customerName ?? "Não informado", left + txtClienteWidth, top);
       docpdf.font("Helvetica-Bold").text("Documento: ", left + 300, top);
       docpdf
         .font("Helvetica")
         .text(
-          body.customer.customerDocument,
+          body.customer.customerDocument ?? "Não informado",
           left + 300 + txtDocumentoWidth,
           top
         );
@@ -158,7 +169,7 @@ module.exports = async (body) => {
       docpdf
         .font("Helvetica")
         .text(
-          body.customer.customerCellphone,
+          body.customer.customerCellphone ?? "Não informado",
           left + 300 + txtCelularWidth,
           top
         );
@@ -166,7 +177,7 @@ module.exports = async (body) => {
       docpdf.font("Helvetica-Bold").text(txtEmail, left, top);
       docpdf
         .font("Helvetica")
-        .text(body.customer.customerEmail, left + txtEmailWidth, top);
+        .text(body.customer.customerEmail ?? "Não informado", left + txtEmailWidth, top);
 
       //LINHA DIVISORIA
       docpdf.fillColor("#6c757d");
@@ -263,7 +274,7 @@ module.exports = async (body) => {
         .font("Helvetica-Bold")
         .text("TOTAL : ", left + 365, top + (lineHeight - fontSize) / 2);
       docpdf.text(
-        "R$ " + body.customer.totalValue,
+        "R$ " + numeroFormatado,
         left + 400,
         top + (lineHeight - fontSize) / 2,
         {
