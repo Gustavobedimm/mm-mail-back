@@ -1,6 +1,6 @@
 const PDFDocument = require("pdfkit");
 
-const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended" , "statusBudget" ];
+const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended", "statusBudget"];
 
 const STANDARD_FIELDS = [
   "companyId",
@@ -55,13 +55,10 @@ function getExtraFields(body) {
     .filter((item) => item);
 }
 
-
-
-
 module.exports = async (body) => {
   const extra = getExtraFields(body);
 
-  const numeroFormatado = new Intl.NumberFormat('pt-BR', {
+  const numeroFormatado = new Intl.NumberFormat("pt-BR", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(body.customer.totalValue);
@@ -105,13 +102,12 @@ module.exports = async (body) => {
     const txtEmail = "Email : ";
     const txtEmailWidth = docpdf.widthOfString(txtEmail);
 
-    const clienteDocumento = body.customer.customerDocument.trim() || "Não informado";
+    const clienteDocumento =
+      body.customer.customerDocument.trim() || "Não informado";
     const clienteNome = body.customer.customerName.trim() || "Não informado";
-    const clienteCelular = body.customer.customerCellphone.trim() || "Não informado";
+    const clienteCelular =
+      body.customer.customerCellphone.trim() || "Não informado";
     const clienteEmail = body.customer.customerEmail.trim() || "Não informado";
-
-
-
 
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
 
@@ -128,23 +124,20 @@ module.exports = async (body) => {
       });
 
     if (body.company.urlImage) {
-      top = top + 65;
+      try {
+        const imageUrl = body.company.urlImage;
+        const imageUrlData = await fetch(imageUrl);
+        const buffer = await imageUrlData.arrayBuffer();
 
-      const imageUrl = body.company.urlImage;
-      const imageUrlData = await fetch(imageUrl);
-      const buffer = await imageUrlData.arrayBuffer();
-      const stringifiedBuffer = Buffer.from(buffer).toString("base64");
-      const contentType = imageUrlData.headers.get("content-type");
-      const base64Image = `data:${contentType};base64,${stringifiedBuffer}`;
-      const cleanBase64Image = base64Image.replace(
-        /^data:image\/\w+;base64,/,
-        ""
-      );
+        docpdf.image(buffer, 50, 50, {
+          width: 150,
+          height: 50,
+        });
 
-      docpdf.image(Buffer.from(cleanBase64Image, "base64"), 50, 50, {
-        width: 150,
-        height: 50,
-      });
+        top = top + 65;
+      } catch (e) {
+        console.log("Não foi possivel adicionar a imagem no documento");
+      }
     }
 
     docpdf.fontSize(13);
@@ -159,31 +152,19 @@ module.exports = async (body) => {
     if (actualPage === 1) {
       top = top + 45;
       docpdf.font("Helvetica-Bold").text(txtCliente, left, top);
-      docpdf
-        .font("Helvetica")
-        .text(clienteNome, left + txtClienteWidth, top);
+      docpdf.font("Helvetica").text(clienteNome, left + txtClienteWidth, top);
       docpdf.font("Helvetica-Bold").text("Documento : ", left + 300, top);
       docpdf
         .font("Helvetica")
-        .text(
-          clienteDocumento,
-          left + 300 + txtDocumentoWidth,
-          top
-        );
+        .text(clienteDocumento, left + 300 + txtDocumentoWidth, top);
       top = top + 14;
       docpdf.font("Helvetica-Bold").text(txtCelular, left + 300, top);
       docpdf
         .font("Helvetica")
-        .text(
-          clienteCelular,
-          left + 300 + txtCelularWidth,
-          top
-        );
+        .text(clienteCelular, left + 300 + txtCelularWidth, top);
 
       docpdf.font("Helvetica-Bold").text(txtEmail, left, top);
-      docpdf
-        .font("Helvetica")
-        .text(clienteEmail, left + txtEmailWidth, top);
+      docpdf.font("Helvetica").text(clienteEmail, left + txtEmailWidth, top);
 
       //LINHA DIVISORIA
       docpdf.fillColor("#6c757d");
