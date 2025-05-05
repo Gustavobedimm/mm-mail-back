@@ -4,6 +4,7 @@ const PDFDocument = require("pdfkit");
 const createPDF = require("./src/services/createPDF");
 const createContactMail = require("./src/services/createContactMail");
 const sendMail = require("./src/services/sendMail");
+const validateHash = require("./src/services/validateHash");
 const app = express();
 
 app.use(cors("*"));
@@ -441,6 +442,14 @@ app.post("/send-mail", async (req, res) => {
 });
 
 app.post("/build", async (req, res) => {
+  const isAuth = await validateHash(req);
+
+  if (!isAuth) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
   try {
     const pdfBase64 = await createPDF(req.body);
     return res.status(200).json({ pdfBase64 });
@@ -451,6 +460,14 @@ app.post("/build", async (req, res) => {
 });
 
 app.post("/send", async (req, res) => {
+  const isAuth = await validateHash(req);
+
+  if (!isAuth) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
   const pdf = await createPDF(req.body);
   require("./mailService")(
     req.body.company.nome,
@@ -469,6 +486,14 @@ app.post("/send", async (req, res) => {
 });
 
 app.post("/send-contact-mail", async (req, res) => {
+  const isAuth = await validateHash(req);
+
+  if (!isAuth) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
   const info = createContactMail(req.body);
 
   return sendMail(info)

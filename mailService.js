@@ -1,5 +1,6 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
+const budgetTemplate = require("./src/utils/budgetTemplate");
 
 module.exports = (
   empresaNome,
@@ -13,23 +14,29 @@ module.exports = (
   var64,
   budgetId
 ) => {
+  const EMAIL = process.env.MAIL_SERVICE_USER_AUTH;
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: process.env.MAIL_SERVICE_HOST,
     port: 587,
     secure: false,
     auth: {
-      user: process.env.MAIL_SERVICE_USER_AUTH,
+      user: EMAIL,
       pass: process.env.MAIL_SERVICE_USER_PASSWORD,
     },
   });
 
   const info = {
-    from: `"${empresaNome}" <central.defretes@hotmail.com>`, // sender address
+    from: `"${empresaNome}" <${EMAIL}>`, // sender address
     to: email, // list of receivers
     subject: "Orçamento ", // Subject line
     text: `Não responder este E-Mail. 
         Arquivo em anexo.`, // plain text body
-    html: `<img src="${process.env.API_URL}/api/rastreamento-email?budgetId=${budgetId}" width="1" height="1" alt=""/>`,
+    // html: `<img src="${process.env.API_URL}/api/rastreamento-email?budgetId=${budgetId}" width="1" height="1" alt=""/>`,
+    html: budgetTemplate({
+      nome,
+      empresaNome,
+      budgetId,
+    }),
     attachments: [
       {
         // encoded string as an attachment
