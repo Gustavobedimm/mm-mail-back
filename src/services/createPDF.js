@@ -190,7 +190,7 @@ module.exports = async (body) => {
 
     //CABEÇALHO TABELA SERVICOS
     top = top + 30;
-    docpdf.rect(40, top, lineWidth, lineHeight).fillAndStroke("#000", "#fff");
+    docpdf.rect(40, top, lineWidth, lineHeight).fillAndStroke(primaryColor, "#fff");
     docpdf.fillColor("#FFF");
     docpdf.strokeColor("#FFF");
     docpdf
@@ -222,7 +222,7 @@ module.exports = async (body) => {
             .fillAndStroke("#e9ecef", "#fff");
         }
 
-        docpdf.fillColor(primaryColor).strokeColor(primaryColor).fontSize(11);
+        docpdf.fillColor("#000").strokeColor("#000").fontSize(11);
         docpdf
           .font("Helvetica")
           .text(doc.label, left, top + (lineHeight - fontSize) / 2);
