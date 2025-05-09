@@ -1,6 +1,6 @@
 const PDFDocument = require("pdfkit");
 
-const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended", "statusBudget"];
+const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended", "statusBudget", "primaryColor"];
 
 const STANDARD_FIELDS = [
   "companyId",
@@ -101,7 +101,7 @@ module.exports = async (body) => {
     const txtCelularWidth = docpdf.widthOfString(txtCelular);
     const txtEmail = "Email : ";
     const txtEmailWidth = docpdf.widthOfString(txtEmail);
-
+    const primaryColor = body.company.primaryColor || "#000000";
     const clienteDocumento =
       body.customer.customerDocument.trim() || "Não informado";
     const clienteNome = body.customer.customerName.trim() || "Não informado";
@@ -222,7 +222,7 @@ module.exports = async (body) => {
             .fillAndStroke("#e9ecef", "#fff");
         }
 
-        docpdf.fillColor("#000").strokeColor("#000").fontSize(11);
+        docpdf.fillColor(primaryColor).strokeColor(primaryColor).fontSize(11);
         docpdf
           .font("Helvetica")
           .text(doc.label, left, top + (lineHeight - fontSize) / 2);
@@ -254,7 +254,7 @@ module.exports = async (body) => {
       top = top + 20;
       docpdf
         .rect(left + 355, top, 155, lineHeight)
-        .fillAndStroke("#000", "#fff");
+        .fillAndStroke(primaryColor, "#fff");
       docpdf.fillColor("#FFF");
       docpdf.strokeColor("#FFF");
       docpdf
