@@ -1,6 +1,6 @@
 const PDFDocument = require("pdfkit");
 
-const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended", "statusBudget", "primaryColor"];
+const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended", "statusBudget", "primaryColor", "expirationDate"];
 
 const STANDARD_FIELDS = [
   "companyId",
@@ -109,7 +109,7 @@ module.exports = async (body) => {
       body.customer.customerCellphone.trim() || "Não informado";
     const clienteEmail = body.customer.customerEmail.trim() || "Não informado";
     
-    const expirationDate = body.expirationDate ? new Date(body.expirationDate) : new Date();
+    const expirationDate = body.custumer.expirationDate ? new Date(body.expirationDate) : new Date();
     const expirationDateFormatted = expirationDate.toLocaleDateString('pt-BR');
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
 
