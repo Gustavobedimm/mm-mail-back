@@ -108,7 +108,9 @@ module.exports = async (body) => {
     const clienteCelular =
       body.customer.customerCellphone.trim() || "Não informado";
     const clienteEmail = body.customer.customerEmail.trim() || "Não informado";
-
+    
+    const expirationDate = body.expirationDate ? new Date(body.expirationDate) : new Date();
+    const expirationDateFormatted = expirationDate.toLocaleDateString('pt-BR');
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
 
     // DADOS DA EMPRESA
@@ -276,7 +278,7 @@ module.exports = async (body) => {
       docpdf.font("Helvetica-Bold").text("Termos e condições ", left, top);
       docpdf
         .font("Helvetica")
-        .text("Orçamento válido por 10 dias.", left, top + 13);
+        .text("Orçamento válido até " + expirationDateFormatted, left, top + 13);
     }
     // ASSINATURA DO CLIENTE
 
