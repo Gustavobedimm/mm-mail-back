@@ -30,11 +30,11 @@ const months = [
   "Dezembro",
 ];
 
-const date = new Date();
-const dia = date.getDate();
-const mes = date.getMonth() + 1;
-const ano = date.getFullYear();
-const month = months[date.getMonth()];
+// const date = new Date();
+// const dia = date.getDate();
+// const mes = date.getMonth() + 1;
+// const ano = date.getFullYear();
+// const month = months[date.getMonth()];
 
 function getExtraFields(body) {
   const keys = Object.keys(body.customer);
@@ -108,9 +108,23 @@ module.exports = async (body) => {
     const clienteCelular =
       body.customer.customerCellphone.trim() || "Não informado";
     const clienteEmail = body.customer.customerEmail.trim() || "Não informado";
-    
-    const expirationDate = body.custumer.expirationDate ? new Date(body.expirationDate) : new Date();
+
+    //data expiracao
+    const expirationDateObj = body.customer.expirationDate;
+    const expirationDate = expirationDateObj ? new Date(expirationDateObj.seconds * 1000) : new Date();
     const expirationDateFormatted = expirationDate.toLocaleDateString('pt-BR');
+    //data criacao
+    const createdAtObj = body.customer.createdAt;
+    const createdAt = createdAtObj ? new Date(createdAtObj.seconds * 1000) : new Date();
+    //const createdAtFormatted = createdAt.toLocaleDateString('pt-BR');
+
+    const dia = createdAt.getDate();
+    const mes = createdAt.getMonth() + 1;
+    const ano = createdAt.getFullYear();
+    const month = months[createdAt.getMonth()];
+
+    console.log(body.customer.services)
+
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
 
     // DADOS DA EMPRESA
