@@ -1,6 +1,13 @@
 const PDFDocument = require("pdfkit");
 
-const EXCLUDED_FIELDS = ["sendedAt", "viewedAt", "sended", "statusBudget", "primaryColor", "expirationDate"];
+const EXCLUDED_FIELDS = [
+  "sendedAt",
+  "viewedAt",
+  "sended",
+  "statusBudget",
+  "primaryColor",
+  "expirationDate",
+];
 
 const STANDARD_FIELDS = [
   "companyId",
@@ -111,11 +118,15 @@ module.exports = async (body) => {
 
     //data expiracao
     const expirationDateObj = body.customer.expirationDate;
-    const expirationDate = expirationDateObj ? new Date(expirationDateObj.seconds * 1000) : new Date();
-    const expirationDateFormatted = expirationDate.toLocaleDateString('pt-BR');
+    const expirationDate = expirationDateObj
+      ? new Date(expirationDateObj.seconds * 1000)
+      : new Date();
+    const expirationDateFormatted = expirationDate.toLocaleDateString("pt-BR");
     //data criacao
     const createdAtObj = body.customer.createdAt;
-    const createdAt = createdAtObj ? new Date(createdAtObj.seconds * 1000) : new Date();
+    const createdAt = createdAtObj
+      ? new Date(createdAtObj.seconds * 1000)
+      : new Date();
     //const createdAtFormatted = createdAt.toLocaleDateString('pt-BR');
 
     const dia = createdAt.getDate();
@@ -123,7 +134,7 @@ module.exports = async (body) => {
     const ano = createdAt.getFullYear();
     const month = months[createdAt.getMonth()];
 
-    console.log(body.customer.services)
+    // console.log(body.customer.services);
 
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
 
@@ -206,7 +217,9 @@ module.exports = async (body) => {
 
     //CABEÇALHO TABELA SERVICOS
     top = top + 30;
-    docpdf.rect(40, top, lineWidth, lineHeight).fillAndStroke(primaryColor, "#fff");
+    docpdf
+      .rect(40, top, lineWidth, lineHeight)
+      .fillAndStroke(primaryColor, "#fff");
     docpdf.fillColor("#FFF");
     docpdf.strokeColor("#FFF");
     docpdf
@@ -241,14 +254,18 @@ module.exports = async (body) => {
         docpdf.fillColor("#000").strokeColor("#000").fontSize(11);
         docpdf
           .font("Helvetica")
-          .text(doc.label, left, top + (lineHeight - fontSize) / 2);
+          .text(
+            (doc.name || doc.label).slice(0, 43),
+            left,
+            top + (lineHeight - fontSize) / 2
+          );
         docpdf.text(
-          doc.quantity,
-          left + 250,
+          `${doc.quantity} x ${doc.unit?.toUpperCase() || 'UNIDADE'}`,
+          left + 315,
           top + (lineHeight - fontSize) / 2,
           {
-            width: 100,
-            align: "right",
+            width: 200,
+            align: "left",
           }
         );
 
@@ -292,7 +309,11 @@ module.exports = async (body) => {
       docpdf.font("Helvetica-Bold").text("Termos e condições ", left, top);
       docpdf
         .font("Helvetica")
-        .text("Orçamento válido até " + expirationDateFormatted, left, top + 13);
+        .text(
+          "Orçamento válido até " + expirationDateFormatted,
+          left,
+          top + 13
+        );
     }
     // ASSINATURA DO CLIENTE
 
