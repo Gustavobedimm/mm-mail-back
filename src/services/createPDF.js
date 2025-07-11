@@ -260,7 +260,7 @@ module.exports = async (body) => {
             top + (lineHeight - fontSize) / 2
           );
         docpdf.text(
-          `${doc.quantity} x ${doc.unit?.toUpperCase() || 'UNIDADE'}`,
+          `${doc.quantity} x ${doc.unit?.toUpperCase() || "UNIDADE"}`,
           left + 315,
           top + (lineHeight - fontSize) / 2,
           {
@@ -270,7 +270,7 @@ module.exports = async (body) => {
         );
 
         docpdf.text(
-          "R$ " + doc.totalValue ?? doc.value,
+          `R$ ${doc.totalValue ?? doc.value}`,
           left + 400,
           top + (lineHeight - fontSize) / 2,
           {
