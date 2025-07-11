@@ -270,7 +270,7 @@ module.exports = async (body) => {
         );
 
         docpdf.text(
-          "R$ " + doc.value,
+          "R$ " + doc.totalValue ?? doc.value,
           left + 400,
           top + (lineHeight - fontSize) / 2,
           {
