@@ -212,11 +212,19 @@ module.exports = async (body) => {
 
       top = top + 15;
       docpdf.font("Helvetica-Bold").text(`Observação:`, left, top);
-      docpdf.font("Helvetica").text(body.customer.obs, left + 80, top);
+      
+      top = docpdf
+        .font("Helvetica")
+        .text(body.customer.obs, left + 80, top, { width: 400 }).y;
+    }
+    if (actualPage === 1) {
+      top = top + 5;
+    }else {
+      top = top + 50;
     }
 
     //CABEÇALHO TABELA SERVICOS
-    top = top + 30;
+    
     docpdf
       .rect(40, top, lineWidth, lineHeight)
       .fillAndStroke(primaryColor, "#fff");
