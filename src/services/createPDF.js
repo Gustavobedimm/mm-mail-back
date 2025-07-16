@@ -202,29 +202,34 @@ module.exports = async (body) => {
       docpdf.fillColor("#000");
       docpdf.strokeColor("#000");
 
-      //OBS E CAMPOS PERSONALIZADOS
+      //CAMPOS PERSONALIZADOS
       extra?.map((doc, index) => {
-        top = top + 15;
         const key = Object.keys(doc)[0];
-        docpdf.font("Helvetica-Bold").text(`${key}:`, left, top);
-        docpdf.font("Helvetica").text(doc[key], left + 100, top);
+        if (doc[key] && doc[key].length > 0) {
+          top = top + 15;
+          docpdf.font("Helvetica-Bold").text(`${key}:`, left, top);
+          docpdf.font("Helvetica").text(doc[key], left + 100, top);
+        }
       });
+      //CAMPOS PERSONALIZADOS
 
       top = top + 15;
-      docpdf.font("Helvetica-Bold").text(`Observação:`, left, top);
-      
-      top = docpdf
-        .font("Helvetica")
-        .text(body.customer.obs, left + 80, top, { width: 400 }).y;
+      if (body.customer.obs && body.customer.obs.length > 0) {
+        docpdf.font("Helvetica-Bold").text(`Observação:`, left, top);
+        top = docpdf
+          .font("Helvetica")
+          .text(body.customer.obs, left + 80, top, { width: 400 }).y;
+      }
     }
+
     if (actualPage === 1) {
       top = top + 5;
-    }else {
+    } else {
       top = top + 50;
     }
 
     //CABEÇALHO TABELA SERVICOS
-    
+
     docpdf
       .rect(40, top, lineWidth, lineHeight)
       .fillAndStroke(primaryColor, "#fff");
