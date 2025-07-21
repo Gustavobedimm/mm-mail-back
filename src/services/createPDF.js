@@ -7,6 +7,10 @@ const EXCLUDED_FIELDS = [
   "statusBudget",
   "primaryColor",
   "expirationDate",
+  "discountPercentage",
+  "discountValue",
+  "finalValue",
+  "id",
 ];
 
 const STANDARD_FIELDS = [
@@ -42,8 +46,15 @@ const months = [
 // const mes = date.getMonth() + 1;
 // const ano = date.getFullYear();
 // const month = months[date.getMonth()];
+function formatValues(value) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
+}
 
 function getExtraFields(body) {
+  
   const keys = Object.keys(body.customer);
 
   return keys
@@ -65,10 +76,10 @@ function getExtraFields(body) {
 module.exports = async (body) => {
   const extra = getExtraFields(body);
 
-  const numeroFormatado = new Intl.NumberFormat("pt-BR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(body.customer.totalValue);
+  const valorDescontoGeral = formatValues(body.customer.discountValue || 0);
+  const valorTotalGeral = formatValues(body.customer.finalValue || body.customer.totalValue || 0); 
+  const valorTotal = formatValues(body.customer.totalValue || 0);
+  const discountPercentage = body.customer.discountPercentage || 0;
 
   var docpdf = new PDFDocument({ autoFirstPage: false });
 
@@ -78,7 +89,7 @@ module.exports = async (body) => {
 
   let pages = 1;
   let actualPage = 1;
-  const servicesPerPage = 15;
+  const servicesPerPage = 19;
   const totalServices = body.customer.services.length;
   if (totalServices > servicesPerPage) {
     pages = Math.ceil(totalServices / 15);
@@ -297,36 +308,39 @@ module.exports = async (body) => {
 
     //TOTALIZADOR VALOR
     if (startIndex + servicesPerPage >= totalServices) {
-      top = top + 20;
-      docpdf
-        .rect(left + 355, top, 155, lineHeight)
-        .fillAndStroke(primaryColor, "#fff");
-      docpdf.fillColor("#FFF");
-      docpdf.strokeColor("#FFF");
-      docpdf
-        .font("Helvetica-Bold")
-        .text("TOTAL : ", left + 365, top + (lineHeight - fontSize) / 2);
-      docpdf.text(
-        "R$ " + numeroFormatado,
-        left + 400,
-        top + (lineHeight - fontSize) / 2,
-        {
-          width: 100,
-          align: "right",
-        }
-      );
-      docpdf.fillColor("#000");
-      docpdf.strokeColor("#000");
+      top = top + 15;
+
+      //docpdf.rect(left + 355, top, 155, lineHeight).fillAndStroke(primaryColor, "#fff");
+      
+      //docpdf.fillColor("#FFF");
+      //docpdf.strokeColor("#FFF");
+      docpdf.fontSize(10).font("Helvetica").text(`Total Geral : ${(valorTotal)}`, left + 300, top + (lineHeight - fontSize) / 2 , {
+        align: "right",
+        width: 200,
+      });
+      top = top + 12;
+      docpdf.fontSize(10).font("Helvetica").text("Desconto Itens : R$ 0,00", left + 300, top + (lineHeight - fontSize) / 2 , {
+        align: "right",
+        width: 200,
+      });
+      top = top + 12;
+      docpdf.fontSize(10).font("Helvetica").text(`Desconto Geral (${discountPercentage}%) : ${valorDescontoGeral}`, left + 300, top + (lineHeight - fontSize) / 2 ,  {
+        align: "right",
+        width: 200,
+      });
+      top = top + 22;
+      docpdf.fontSize(13).font("Helvetica-Bold").text(`Total do Orçamento: ${(valorTotalGeral)}`, left + 250, top, {
+      align: "right",
+      width: 250,
+    });
+      //docpdf.text("R$ " + valorTotal,left + 400,top + (lineHeight - fontSize) / 2);
+      docpdf.fontSize(fontSize);
+      //docpdf.fillColor("#000");
+      //docpdf.strokeColor("#000");
 
       //TERMO DE CONDICOES
-      docpdf.font("Helvetica-Bold").text("Termos e condições ", left, top);
-      docpdf
-        .font("Helvetica")
-        .text(
-          "Orçamento válido até " + expirationDateFormatted,
-          left,
-          top + 13
-        );
+      docpdf.font("Helvetica-Bold").text("Termos e condições ", left, top - 10);
+      docpdf.font("Helvetica").text("Orçamento válido até " + expirationDateFormatted,left,top + 3);
     }
     // ASSINATURA DO CLIENTE
 
