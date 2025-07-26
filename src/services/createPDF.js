@@ -107,9 +107,9 @@ module.exports = async (body) => {
 
     let left = 50;
     let top = 50;
-    let lineHeight = 25;
+    let lineHeight = 18;
     let lineWidth = 520;
-    let fontSize = 11;
+    let fontSize = 9;
 
     const txtCliente = "Cliente : ";
     const txtClienteWidth = docpdf.widthOfString(txtCliente);
@@ -241,26 +241,25 @@ module.exports = async (body) => {
 
     //CABEÇALHO TABELA SERVICOS
 
-    docpdf
-      .rect(40, top, lineWidth, lineHeight)
-      .fillAndStroke(primaryColor, "#fff");
+    docpdf.rect(40, top, lineWidth, lineHeight).fillAndStroke(primaryColor, "#fff");
+    
     docpdf.fillColor("#FFF");
     docpdf.strokeColor("#FFF");
-    docpdf
-      .font("Helvetica-Bold")
-      .text("Descrição", left, top + (lineHeight - fontSize) / 2);
-    docpdf
-      .font("Helvetica-Bold")
-      .text("Quantidade ", left + 315, top + (lineHeight - fontSize) / 2);
-    docpdf
-      .font("Helvetica-Bold")
-      .text("Valor ", left + 470, top + (lineHeight - fontSize) / 2);
+    
+    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Descrição", left, top + (lineHeight - fontSize) / 2);
+    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Qtde. ", left + 230, top + (lineHeight - fontSize) / 2);
+    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Uni. ", left + 270, top + (lineHeight - fontSize) / 2);
+    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Bruto ", left + 310, top + (lineHeight - fontSize) / 2);
+    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Desconto ", left + 380, top + (lineHeight - fontSize) / 2);
+    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Liquido ", left + 450, top + (lineHeight - fontSize) / 2);
+    
     docpdf.fillColor("#000");
     docpdf.strokeColor("#000");
 
     //SERVICOS
 
     top = top + lineHeight;
+    let discountValue = 0;
     body.customer.services
       .slice(startIndex, startIndex + servicesPerPage)
       .forEach((doc, index) => {
@@ -276,34 +275,38 @@ module.exports = async (body) => {
         }
 
         docpdf.fillColor("#000").strokeColor("#000").fontSize(11);
-        docpdf
-          .font("Helvetica")
-          .text(
-            (doc.name || doc.label).slice(0, 43),
-            left,
-            top + (lineHeight - fontSize) / 2
-          );
-        docpdf.text(
-          `${doc.quantity} x ${doc.unit?.toUpperCase() || "UNIDADE"}`,
-          left + 315,
-          top + (lineHeight - fontSize) / 2,
+        //descricao do produto
+        docpdf.fontSize(fontSize).font("Helvetica").text((doc.name || doc.label).slice(0, 43),left,top + (lineHeight - fontSize) / 2);
+        //quantidade e unidade de medida
+        docpdf.fontSize(fontSize).font("Helvetica").text(`${doc.quantity}`,left + 230,top + (lineHeight - fontSize) / 2);
+        docpdf.fontSize(fontSize).font("Helvetica").text("UNID",left + 270,top + (lineHeight - fontSize) / 2,
           {
-            width: 200,
+            width: 40,
+            align: "left",
+          }
+        );
+        //valor
+        docpdf.fontSize(fontSize).font("Helvetica").text(formatValues(doc.totalValue || doc.value || 0),left + 310, top + (lineHeight - fontSize) / 2,
+          {
+            width: 60,
+            align: "left",
+          }
+        );
+        docpdf.fontSize(fontSize).font("Helvetica").text(formatValues(doc.discountValue || 0),left + 380, top + (lineHeight - fontSize) / 2,
+          {
+            width: 60,
+            align: "left",
+          }
+        );
+        docpdf.fontSize(fontSize).font("Helvetica").text(formatValues(doc.finalValue || doc.totalValue || doc.value || 0),left + 450, top + (lineHeight - fontSize) / 2,
+          {
+            width: 60,
             align: "left",
           }
         );
 
-        docpdf.text(
-          `R$ ${doc.totalValue ?? doc.value}`,
-          left + 400,
-          top + (lineHeight - fontSize) / 2,
-          {
-            width: 100,
-            align: "right",
-          }
-        );
-
         top = top + lineHeight; // Move para a próxima linha
+        discountValue += doc.discountValue || 0;
       });
 
     //TOTALIZADOR VALOR
@@ -319,7 +322,7 @@ module.exports = async (body) => {
         width: 200,
       });
       top = top + 12;
-      docpdf.fontSize(10).font("Helvetica").text("Desconto Itens : R$ 0,00", left + 300, top + (lineHeight - fontSize) / 2 , {
+      docpdf.fontSize(10).font("Helvetica").text(`Desconto Itens : ${formatValues(discountValue)}`, left + 300, top + (lineHeight - fontSize) / 2 , {
         align: "right",
         width: 200,
       });
