@@ -54,7 +54,6 @@ function formatValues(value) {
 }
 
 function getExtraFields(body) {
-  
   const keys = Object.keys(body.customer);
 
   return keys
@@ -76,11 +75,26 @@ function getExtraFields(body) {
 module.exports = async (body) => {
   const extra = getExtraFields(body);
 
-  const valorDescontoGeral = formatValues(body.customer.discountValue || 0);
-  const valorTotalGeral = formatValues(body.customer.finalValue || body.customer.totalValue || 0); 
-  const valorTotal = formatValues(body.customer.totalValue || 0);
-  const discountPercentage = Number((body.customer.discountPercentage || 0).toFixed(2));
+  const valorDescontoGeralRaw = Number(body.customer.discountValue) || 0;
+  const valorDescontoGeral = formatValues(valorDescontoGeralRaw);
 
+  const valorDescontoServicosRaw = body.customer.services.reduce(
+    (acc, service) => {
+      return acc + (Number(service.discountValue) || 0);
+    },
+    0
+  );
+  const valorDescontoServicosFormatted = formatValues(valorDescontoServicosRaw);
+
+  const valorTotalRaw = Number(body.customer.totalValue) || 0;
+  const valorTotal = formatValues(valorTotalRaw);
+
+  const valorTotalGeralRaw =
+    valorTotalRaw - valorDescontoGeralRaw - valorDescontoServicosRaw;
+  const valorTotalGeral = formatValues(valorTotalGeralRaw);
+  const discountPercentage = Number(
+    (body.customer.discountPercentage || 0).toFixed(2)
+  );
 
   var docpdf = new PDFDocument({ autoFirstPage: false });
 
@@ -242,25 +256,45 @@ module.exports = async (body) => {
 
     //CABEÇALHO TABELA SERVICOS
 
-    docpdf.rect(40, top, lineWidth, lineHeight).fillAndStroke(primaryColor, "#fff");
-    
+    docpdf
+      .rect(40, top, lineWidth, lineHeight)
+      .fillAndStroke(primaryColor, "#fff");
+
     docpdf.fillColor("#FFF");
     docpdf.strokeColor("#FFF");
-    
-    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Descrição", left, top + (lineHeight - fontSize) / 2);
-    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Qtde. ", left + 230, top + (lineHeight - fontSize) / 2);
-    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Uni. ", left + 270, top + (lineHeight - fontSize) / 2);
-    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Bruto ", left + 310, top + (lineHeight - fontSize) / 2);
-    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Desconto ", left + 380, top + (lineHeight - fontSize) / 2);
-    docpdf.fontSize(fontSize).font("Helvetica-Bold").text("Liquido ", left + 450, top + (lineHeight - fontSize) / 2);
-    
+
+    docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Descrição", left, top + (lineHeight - fontSize) / 2);
+    docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Qtde. ", left + 230, top + (lineHeight - fontSize) / 2);
+    docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Uni. ", left + 270, top + (lineHeight - fontSize) / 2);
+    docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Bruto ", left + 310, top + (lineHeight - fontSize) / 2);
+    docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Desconto ", left + 380, top + (lineHeight - fontSize) / 2);
+    docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Liquido ", left + 450, top + (lineHeight - fontSize) / 2);
+
     docpdf.fillColor("#000");
     docpdf.strokeColor("#000");
 
     //SERVICOS
 
     top = top + lineHeight;
-    let discountValue = 0;
+    
     body.customer.services
       .slice(startIndex, startIndex + servicesPerPage)
       .forEach((doc, index) => {
@@ -277,37 +311,69 @@ module.exports = async (body) => {
 
         docpdf.fillColor("#000").strokeColor("#000").fontSize(11);
         //descricao do produto
-        docpdf.fontSize(fontSize).font("Helvetica").text((doc.name || doc.label).slice(0, 43),left,top + (lineHeight - fontSize) / 2);
+        docpdf
+          .fontSize(fontSize)
+          .font("Helvetica")
+          .text(
+            (doc.name || doc.label).slice(0, 43),
+            left,
+            top + (lineHeight - fontSize) / 2
+          );
         //quantidade e unidade de medida
-        docpdf.fontSize(fontSize).font("Helvetica").text(`${doc.quantity}`,left + 230,top + (lineHeight - fontSize) / 2);
-        docpdf.fontSize(fontSize).font("Helvetica").text("UNID",left + 270,top + (lineHeight - fontSize) / 2,
-          {
+        docpdf
+          .fontSize(fontSize)
+          .font("Helvetica")
+          .text(
+            `${doc.quantity}`,
+            left + 230,
+            top + (lineHeight - fontSize) / 2
+          );
+        docpdf
+          .fontSize(fontSize)
+          .font("Helvetica")
+          .text("UNID", left + 270, top + (lineHeight - fontSize) / 2, {
             width: 40,
             align: "left",
-          }
-        );
+          });
         //valor
-        docpdf.fontSize(fontSize).font("Helvetica").text(formatValues(doc.totalValue || doc.value || 0),left + 310, top + (lineHeight - fontSize) / 2,
-          {
-            width: 60,
-            align: "left",
-          }
-        );
-        docpdf.fontSize(fontSize).font("Helvetica").text(formatValues(doc.discountValue || 0),left + 380, top + (lineHeight - fontSize) / 2,
-          {
-            width: 60,
-            align: "left",
-          }
-        );
-        docpdf.fontSize(fontSize).font("Helvetica").text(formatValues(doc.finalValue || doc.totalValue || doc.value || 0),left + 450, top + (lineHeight - fontSize) / 2,
-          {
-            width: 60,
-            align: "left",
-          }
-        );
+        docpdf
+          .fontSize(fontSize)
+          .font("Helvetica")
+          .text(
+            formatValues(doc.totalValue || doc.value || 0),
+            left + 310,
+            top + (lineHeight - fontSize) / 2,
+            {
+              width: 60,
+              align: "left",
+            }
+          );
+        docpdf
+          .fontSize(fontSize)
+          .font("Helvetica")
+          .text(
+            formatValues(doc.discountValue || 0),
+            left + 380,
+            top + (lineHeight - fontSize) / 2,
+            {
+              width: 60,
+              align: "left",
+            }
+          );
+        docpdf
+          .fontSize(fontSize)
+          .font("Helvetica")
+          .text(
+            formatValues(doc.finalValue || doc.totalValue || doc.value || 0),
+            left + 450,
+            top + (lineHeight - fontSize) / 2,
+            {
+              width: 60,
+              align: "left",
+            }
+          );
 
         top = top + lineHeight; // Move para a próxima linha
-        discountValue += doc.discountValue || 0;
       });
 
     //TOTALIZADOR VALOR
@@ -315,28 +381,55 @@ module.exports = async (body) => {
       top = top + 15;
 
       //docpdf.rect(left + 355, top, 155, lineHeight).fillAndStroke(primaryColor, "#fff");
-      
+
       //docpdf.fillColor("#FFF");
       //docpdf.strokeColor("#FFF");
-      docpdf.fontSize(10).font("Helvetica").text(`Total Geral : ${(valorTotal)}`, left + 300, top + (lineHeight - fontSize) / 2 , {
-        align: "right",
-        width: 200,
-      });
+      docpdf
+        .fontSize(10)
+        .font("Helvetica")
+        .text(
+          `Total Geral : ${valorTotal}`,
+          left + 300,
+          top + (lineHeight - fontSize) / 2,
+          {
+            align: "right",
+            width: 200,
+          }
+        );
       top = top + 12;
-      docpdf.fontSize(10).font("Helvetica").text(`Desconto Itens : ${formatValues(discountValue)}`, left + 300, top + (lineHeight - fontSize) / 2 , {
-        align: "right",
-        width: 200,
-      });
+      docpdf
+        .fontSize(10)
+        .font("Helvetica")
+        .text(
+          `Desconto Itens : ${valorDescontoServicosFormatted}`,
+          left + 300,
+          top + (lineHeight - fontSize) / 2,
+          {
+            align: "right",
+            width: 200,
+          }
+        );
       top = top + 12;
-      docpdf.fontSize(10).font("Helvetica").text(`Desconto Geral (${discountPercentage}%) : ${valorDescontoGeral}`, left + 300, top + (lineHeight - fontSize) / 2 ,  {
-        align: "right",
-        width: 200,
-      });
+      docpdf
+        .fontSize(10)
+        .font("Helvetica")
+        .text(
+          `Desconto Geral (${discountPercentage}%) : ${valorDescontoGeral}`,
+          left + 300,
+          top + (lineHeight - fontSize) / 2,
+          {
+            align: "right",
+            width: 200,
+          }
+        );
       top = top + 22;
-      docpdf.fontSize(13).font("Helvetica-Bold").text(`Total do Orçamento: ${(valorTotalGeral)}`, left + 250, top, {
-      align: "right",
-      width: 250,
-    });
+      docpdf
+        .fontSize(13)
+        .font("Helvetica-Bold")
+        .text(`Total do Orçamento: ${valorTotalGeral}`, left + 250, top, { 
+          align: "right",
+          width: 250,
+        });
       //docpdf.text("R$ " + valorTotal,left + 400,top + (lineHeight - fontSize) / 2);
       docpdf.fontSize(fontSize);
       //docpdf.fillColor("#000");
@@ -344,7 +437,9 @@ module.exports = async (body) => {
 
       //TERMO DE CONDICOES
       docpdf.font("Helvetica-Bold").text("Termos e condições ", left, top - 10);
-      docpdf.font("Helvetica").text("Orçamento válido até " + expirationDateFormatted,left,top + 3);
+      docpdf
+        .font("Helvetica")
+        .text("Orçamento válido até " + expirationDateFormatted, left, top + 3);
     }
     // ASSINATURA DO CLIENTE
 
