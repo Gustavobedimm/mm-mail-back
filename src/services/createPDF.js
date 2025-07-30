@@ -79,7 +79,8 @@ module.exports = async (body) => {
   const valorDescontoGeral = formatValues(body.customer.discountValue || 0);
   const valorTotalGeral = formatValues(body.customer.finalValue || body.customer.totalValue || 0); 
   const valorTotal = formatValues(body.customer.totalValue || 0);
-  const discountPercentage = body.customer.discountPercentage || 0;
+  const discountPercentage = Number((body.customer.discountPercentage || 0).toFixed(2));
+
 
   var docpdf = new PDFDocument({ autoFirstPage: false });
 
