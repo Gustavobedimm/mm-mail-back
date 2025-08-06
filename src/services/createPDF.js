@@ -52,6 +52,12 @@ function formatValues(value) {
     currency: "BRL",
   }).format(value);
 }
+function formatValuesSemCifrao(value) {
+  return new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
 
 function getExtraFields(body) {
   const keys = Object.keys(body.customer);
@@ -261,31 +267,42 @@ module.exports = async (body) => {
 
     docpdf.fillColor("#FFF");
     docpdf.strokeColor("#FFF");
+    const xuni = 210;
+    const xqtde = 245;
+    const xunitario = 280;
+    const xbruto = 340;
+    const xdesconto = 400;
+    const xliquido = 460;
 
     docpdf
       .fontSize(fontSize)
       .font("Helvetica-Bold")
       .text("Descrição", left, top + (lineHeight - fontSize) / 2);
+      docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Uni", left + xuni, top + (lineHeight - fontSize) / 2);
+      docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Qtde", left + xqtde, top + (lineHeight - fontSize) / 2);
+      docpdf
+      .fontSize(fontSize)
+      .font("Helvetica-Bold")
+      .text("Unitario", left + xunitario, top + (lineHeight - fontSize) / 2);
+    
     docpdf
       .fontSize(fontSize)
       .font("Helvetica-Bold")
-      .text("Qtde. ", left + 230, top + (lineHeight - fontSize) / 2);
+      .text("Bruto ", left + xbruto, top + (lineHeight - fontSize) / 2);
     docpdf
       .fontSize(fontSize)
       .font("Helvetica-Bold")
-      .text("Uni. ", left + 270, top + (lineHeight - fontSize) / 2);
+      .text("Desconto ", left + xdesconto, top + (lineHeight - fontSize) / 2);
     docpdf
       .fontSize(fontSize)
       .font("Helvetica-Bold")
-      .text("Bruto ", left + 310, top + (lineHeight - fontSize) / 2);
-    docpdf
-      .fontSize(fontSize)
-      .font("Helvetica-Bold")
-      .text("Desconto ", left + 380, top + (lineHeight - fontSize) / 2);
-    docpdf
-      .fontSize(fontSize)
-      .font("Helvetica-Bold")
-      .text("Liquido ", left + 450, top + (lineHeight - fontSize) / 2);
+      .text("Liquido ", left + xliquido, top + (lineHeight - fontSize) / 2);
 
     docpdf.fillColor("#000");
     docpdf.strokeColor("#000");
@@ -335,36 +352,50 @@ module.exports = async (body) => {
               width: 215, 
             }
           );
-        //DESCRICAO DO ITEM ******************************************************  
-          
-        //QUANTIDADE DO ITEM *****************************************************
-        docpdf
-          .fontSize(fontSize)
-          .font("Helvetica")
-          .text(
-            `${doc.quantity}`,
-            left + 230,
-            top + (lineHeight - fontSize) / 2
-          );
-          //QUANTIDADE DO ITEM *****************************************************
+        //DESCRICAO DO ITEM ******************************************************
 
         //UNIDADE DO ITEM *******************************************************
         docpdf
           .fontSize(fontSize)
           .font("Helvetica")
-          .text("UNID", left + 270, top + (lineHeight - fontSize) / 2, {
+          .text("UND", left + xuni, top + (lineHeight - fontSize) / 2, {
             width: 40,
             align: "left",
           });
           //UNIDADE DO ITEM *******************************************************
+
+        //QUANTIDADE DO ITEM *****************************************************
+        docpdf
+          .fontSize(fontSize)
+          .font("Helvetica")
+          .text(doc.quantity || 1,
+            left + xqtde,
+            top + (lineHeight - fontSize) / 2
+          );
+          //QUANTIDADE DO ITEM *****************************************************
+
+        //VALOR unitario DO ITEM *******************************************************
+        docpdf
+          .fontSize(fontSize)
+          .font("Helvetica")
+          .text(
+            formatValuesSemCifrao(doc.value || 0),
+            left + xunitario,
+            top + (lineHeight - fontSize) / 2,
+            {
+              width: 60,
+              align: "left",
+            }
+          );
+          //VALOR unitario DO ITEM *******************************************************
 
         //VALOR BRUTO DO ITEM *******************************************************
         docpdf
           .fontSize(fontSize)
           .font("Helvetica")
           .text(
-            formatValues(doc.totalValue || doc.value || 0),
-            left + 310,
+            formatValuesSemCifrao(doc.totalValue || doc.value || 0),
+            left + xbruto,
             top + (lineHeight - fontSize) / 2,
             {
               width: 60,
@@ -378,8 +409,8 @@ module.exports = async (body) => {
           .fontSize(fontSize)
           .font("Helvetica")
           .text(
-            formatValues(doc.discountValue || 0),
-            left + 380,
+            formatValuesSemCifrao(doc.discountValue || 0),
+            left + xdesconto,
             top + (lineHeight - fontSize) / 2,
             {
               width: 60,
@@ -393,8 +424,8 @@ module.exports = async (body) => {
           .fontSize(fontSize)
           .font("Helvetica")
           .text(
-            formatValues(doc.finalValue || doc.totalValue || doc.value || 0),
-            left + 450,
+            formatValuesSemCifrao(doc.finalValue || doc.totalValue || doc.value || 0),
+            left + xliquido,
             top + (lineHeight - fontSize) / 2,
             {
               width: 60,
