@@ -92,9 +92,8 @@ module.exports = async (body) => {
   const valorTotalGeralRaw =
     valorTotalRaw - valorDescontoGeralRaw - valorDescontoServicosRaw;
   const valorTotalGeral = formatValues(valorTotalGeralRaw);
-  const discountPercentage = Number(
-    (body.customer.discountPercentage || 0).toFixed(2)
-  );
+  const rawDiscount = parseFloat(body.customer.discountPercentage) || 0;
+  const discountPercentage = parseFloat(rawDiscount.toFixed(2));
 
   var docpdf = new PDFDocument({ autoFirstPage: false });
 
@@ -294,11 +293,19 @@ module.exports = async (body) => {
     //SERVICOS
 
     top = top + lineHeight;
-    
+
     body.customer.services
       .slice(startIndex, startIndex + servicesPerPage)
       .forEach((doc, index) => {
+
+        const text = doc.name || doc.label;
+        
+
         // LINHAS DE SERVICOS
+        if (text.length > 45) {
+          lineHeight += 15; //
+        }
+
         if (index % 2 === 1) {
           docpdf
             .rect(40, top, lineWidth, lineHeight)
@@ -308,18 +315,29 @@ module.exports = async (body) => {
             .rect(40, top, lineWidth, lineHeight)
             .fillAndStroke("#e9ecef", "#fff");
         }
+        
 
         docpdf.fillColor("#000").strokeColor("#000").fontSize(11);
-        //descricao do produto
-        docpdf
-          .fontSize(fontSize)
-          .font("Helvetica")
-          .text(
-            (doc.name || doc.label).slice(0, 43),
-            left,
-            top + (lineHeight - fontSize) / 2
+        
+        
+        
+        //DESCRICAO DO ITEM ******************************************************
+
+        const maxWidth = 215;
+        const font = "Helvetica";
+        const size = fontSize;
+        docpdf.font(font).fontSize(size); 
+        const textHeight = docpdf.heightOfString(text, { width: maxWidth });
+        const adjustedTop = top + (lineHeight - textHeight) / 2;
+
+        docpdf.fontSize(fontSize).font("Helvetica").text(text ,left, adjustedTop ,
+            {
+              width: 215, 
+            }
           );
-        //quantidade e unidade de medida
+        //DESCRICAO DO ITEM ******************************************************  
+          
+        //QUANTIDADE DO ITEM *****************************************************
         docpdf
           .fontSize(fontSize)
           .font("Helvetica")
@@ -328,6 +346,9 @@ module.exports = async (body) => {
             left + 230,
             top + (lineHeight - fontSize) / 2
           );
+          //QUANTIDADE DO ITEM *****************************************************
+
+        //UNIDADE DO ITEM *******************************************************
         docpdf
           .fontSize(fontSize)
           .font("Helvetica")
@@ -335,7 +356,9 @@ module.exports = async (body) => {
             width: 40,
             align: "left",
           });
-        //valor
+          //UNIDADE DO ITEM *******************************************************
+
+        //VALOR BRUTO DO ITEM *******************************************************
         docpdf
           .fontSize(fontSize)
           .font("Helvetica")
@@ -348,6 +371,9 @@ module.exports = async (body) => {
               align: "left",
             }
           );
+          //VALOR BRUTO DO ITEM *******************************************************
+
+        //DESCONTO DO ITEM *******************************************************
         docpdf
           .fontSize(fontSize)
           .font("Helvetica")
@@ -360,6 +386,9 @@ module.exports = async (body) => {
               align: "left",
             }
           );
+          //DESCONTO DO ITEM *******************************************************
+
+        //VALOR LIQUIDO DO ITEM *******************************************************
         docpdf
           .fontSize(fontSize)
           .font("Helvetica")
@@ -372,18 +401,24 @@ module.exports = async (body) => {
               align: "left",
             }
           );
+          //VALOR LIQUIDO DO ITEM *******************************************************
 
-        top = top + lineHeight; // Move para a próxima linha
+        //AVANCA O TOP para a proxima linha levando em consideracao o tamanho da linha desenhada
+        //se o texto for muito grande, aumenta o lineHeight
+          top = top + lineHeight;
+
+        //volta ao line height original  
+        if (text.length > 45) {
+          lineHeight -= 15; //
+        } 
       });
 
     //TOTALIZADOR VALOR
     if (startIndex + servicesPerPage >= totalServices) {
+
       top = top + 15;
 
-      //docpdf.rect(left + 355, top, 155, lineHeight).fillAndStroke(primaryColor, "#fff");
-
-      //docpdf.fillColor("#FFF");
-      //docpdf.strokeColor("#FFF");
+      //TOTAL GERAL *******************************************************
       docpdf
         .fontSize(10)
         .font("Helvetica")
@@ -396,7 +431,11 @@ module.exports = async (body) => {
             width: 200,
           }
         );
+        //TOTAL GERAL *******************************************************
+
       top = top + 12;
+
+      //TOTAS DESCONTO ITENS *******************************************************
       docpdf
         .fontSize(10)
         .font("Helvetica")
@@ -409,7 +448,11 @@ module.exports = async (body) => {
             width: 200,
           }
         );
+        //TOTAS DESCONTO ITENS *******************************************************
+
       top = top + 12;
+
+      //TOTAS DESCONTO GERAL *******************************************************
       docpdf
         .fontSize(10)
         .font("Helvetica")
@@ -422,18 +465,22 @@ module.exports = async (body) => {
             width: 200,
           }
         );
+        //TOTAS DESCONTO GERAL *******************************************************
+
       top = top + 22;
+
+      //TOTAS ORCAMENTO *******************************************************
       docpdf
         .fontSize(13)
         .font("Helvetica-Bold")
-        .text(`Total do Orçamento: ${valorTotalGeral}`, left + 250, top, { 
+        .text(`Total do Orçamento: ${valorTotalGeral}`, left + 250, top, {
           align: "right",
           width: 250,
         });
-      //docpdf.text("R$ " + valorTotal,left + 400,top + (lineHeight - fontSize) / 2);
+        //TOTAS ORCAMENTO *******************************************************
+
+
       docpdf.fontSize(fontSize);
-      //docpdf.fillColor("#000");
-      //docpdf.strokeColor("#000");
 
       //TERMO DE CONDICOES
       docpdf.font("Helvetica-Bold").text("Termos e condições ", left, top - 10);
@@ -447,7 +494,17 @@ module.exports = async (body) => {
       docpdf.lineWidth(0.5);
       const line = 750;
       docpdf.lineCap("butt").moveTo(300, line).lineTo(555, line).stroke();
-      docpdf.font("Helvetica").text(body.company.nome, left + 350, line + 5);
+      //docpdf.font("Helvetica").text(body.company.nome, left + 350, line + 5);
+
+      const text = body.company.nome;
+      const x = 200; // início da área
+      const width = 355; // largura da área (ex: 555 - 300)
+      const y = line + 5;
+      docpdf.font("Helvetica").fontSize(fontSize) // defina o fontSize se ainda não tiver
+      .text(text, x, y, {
+        width: width,
+        align: 'right',
+      });
     }
     //RODAPE PRETO ==1 || BRANCO ==2
     let tipoRodape = 2;
