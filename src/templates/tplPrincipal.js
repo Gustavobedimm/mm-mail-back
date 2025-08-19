@@ -41,11 +41,6 @@ const months = [
   "Dezembro",
 ];
 
-// const date = new Date();
-// const dia = date.getDate();
-// const mes = date.getMonth() + 1;
-// const ano = date.getFullYear();
-// const month = months[date.getMonth()];
 function formatValues(value) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -103,9 +98,6 @@ module.exports = async (body) => {
 
   var docpdf = new PDFDocument({ autoFirstPage: false });
 
-  //vendo se a empresa tem imagem
-  //const urlImage = body.company.urlImage;
-  //console.log(urlImage);
 
   let pages = 1;
   let actualPage = 1;
@@ -158,14 +150,12 @@ module.exports = async (body) => {
     const createdAt = createdAtObj
       ? new Date(createdAtObj.seconds * 1000)
       : new Date();
-    //const createdAtFormatted = createdAt.toLocaleDateString('pt-BR');
 
     const dia = createdAt.getDate();
     const mes = createdAt.getMonth() + 1;
     const ano = createdAt.getFullYear();
     const month = months[createdAt.getMonth()];
 
-    // console.log(body.customer.services);
 
     //ESPACO DA ESQUERDA , ESPAÇO DO TOPO , WIDTH , HEIGTH
 

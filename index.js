@@ -1,7 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const PDFDocument = require("pdfkit");
-const createPDF = require("./src/services/createPDF");
+const { createPDF } = require("./src/services/pdf/factory");
+
+// IMPORTS dos templates (ou deixe como funções que fazem require dinâmico)
+const tplPrincipal        = require("./src/templates/tplPrincipal");       // 0 (default)
+const tplModernFaixa      = require("./src/templates/tplPrincipal");     // 1
+const tplCompacto         = require("./src/templates/tplPrincipal");    // 2
+const tplArtsy            = require("./src/templates/tplPrincipal");   // 3
+const tplCorporateGreen   = require("./src/templates/tplPrincipal");  // 4
+
+
 const createContactMail = require("./src/services/createContactMail");
 const sendMail = require("./src/services/sendMail");
 const validateHash = require("./src/services/validateHash");
@@ -31,30 +40,17 @@ app.post("/send-mail-odonto", async (req, res) => {
   const valorTotal = req.body.valorTotal;
   const telefone = req.body.telefone;
   const documento = req.body.documento;
-  //const obs = req.body.obs;
   const listaProcedimentos = req.body.procedimentos;
   const envia = req.body.enviaEmail;
   const empresaNome = req.body.empresaNome;
   const empresaCelular = req.body.empresaCelular;
-  //const empresaTelefone = req.body.empresaTelefone;
   const empresaCnpj = req.body.empresaCnpj;
   const empresaEmail = req.body.empresaEmail;
   const empresaEndereco = req.body.empresaEndereco;
   const empresaEstado = req.body.empresaEstado;
   const empresaCidade = req.body.empresaCidade;
-  //const empresaMensagem = req.body.empresaMensagem;
-  //const empresaCodigo = req.body.empresaCodigo;
-  //const empresaImagem = req.body.empresaImagem;
   const empresaResponsavel = req.body.empresaResponsavel;
-  //const empresaSite = req.body.empresaSite;
 
-  //const imageUrl = "https://i0.wp.com/www.cloudia.com.br/wp-content/uploads/odontograma.jpg?fit=1024%2C538&ssl=1";
-  //const imageUrlData = await fetch(imageUrl);
-
-  //const buffer = await imageUrlData.arrayBuffer();
-  //const stringifiedBuffer = Buffer.from(buffer).toString("base64");
-  //const contentType = imageUrlData.headers.get("content-type");
-  //const imageBase64 = `data:${contentType};base64,${stringifiedBuffer}`;
 
   //montaPDF
   var docpdf = new PDFDocument({ autoFirstPage: false });
@@ -74,10 +70,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   //------------------------------------------------------------
   let left = 50;
   let top = 50;
-  //docpdf.fontSize(15);
-  //docpdf.font("Helvetica-Bold").text("Orçamento", left, top , {align: 'center'});
   docpdf.fontSize(13);
-  //top = top + 50;
 
   docpdf.font("Helvetica-Bold").text(empresaNome, left, top);
   docpdf.fontSize(11);
@@ -86,7 +79,6 @@ app.post("/send-mail-odonto", async (req, res) => {
     .text(dia + " de " + month + " de " + ano, left + 370, top);
 
   top = top + 14;
-  //docpdf.font("Helvetica").text("Orçamento 123456", left + 370, top);
   docpdf.font("Helvetica").text("Cirurgiã-Dentista ", left, top);
   top = top + 14;
   docpdf.font("Helvetica").text("CRO | " + empresaCnpj, left, top);
@@ -108,12 +100,7 @@ app.post("/send-mail-odonto", async (req, res) => {
   docpdf.font("Helvetica").text(email, left + 60, top);
 
   top = top + 40;
-  //docpdf.font("Helvetica-Bold").text("Endereço : " , left, top);
-  //docpdf.font("Helvetica").text( empresaEndereco, left + 60, top);
-  //top = top + 12;
-  //docpdf.font("Helvetica-Bold").text("Email : " , left, top);
-  //docpdf.font("Helvetica").text( empresaEmail, left + 40, top);
-  //top = top + 30;
+
   docpdf.rect(40, top - 13, 520, 35).fillAndStroke("#000", "#fff");
   docpdf.fillColor("#FFF");
   docpdf.strokeColor("#FFF");
@@ -179,20 +166,6 @@ app.post("/send-mail-odonto", async (req, res) => {
   docpdf
     .font("Helvetica")
     .text(empresaCidade + " - " + empresaEstado, left + 150, 815);
-
-  //docpdf.rect(65, mt, 485, 35).fillAndStroke("#E9ECEF", "#fff");
-  //docpdf
-  //  .font("Helvetica")
-  //  .text(diaFormatado + "/" + mesFormatado + "/" + ano, 480, 705);
-  //docpdf.rect(40, 40, 530, 710).stroke("#E9ECEF");
-  //if(imageUrlData.ok){
-  //docpdf.image(imageBase64, { width: 300, height: 200 });
-  //docpdf.image(imageBase64, {
-  //  fit: [460, 200], align: 'center', valign:
-  //    'center'
-  //}).stroke();
-
-  //}
 
   //------------------------------------------------------------
   docpdf.end();
@@ -317,7 +290,6 @@ app.post("/send-mail", async (req, res) => {
 
   //pega o link da imagem e tranforma em base64
   const imageUrl = empresaImagem;
-  //const imageUrl = "https://live.staticflickr.com/65535/53907540152_131cb7eecb_m.jpg";
   const imageUrlData = await fetch(imageUrl);
 
   const buffer = await imageUrlData.arrayBuffer();
@@ -443,15 +415,18 @@ app.post("/send-mail", async (req, res) => {
 
 app.post("/build", async (req, res) => {
   const isAuth = await validateHash(req);
-
   if (!isAuth) {
-    return res.status(401).json({
-      message: "Unauthorized",
-    });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   try {
-    const pdfBase64 = await createPDF(req.body);
+    // lê o modelo do query OU do body; default = 0 (normal)
+    const modelParam = req.query.model ?? req.body.model ?? 0;
+
+    // o body que os templates esperam continua sendo req.body
+    // se você mandar model dentro do body, NÃO precisa removê-lo: os templates ignoram.
+    const pdfBase64 = await createPDF(req.body, modelParam);
+
     return res.status(200).json({ pdfBase64 });
   } catch (error) {
     console.error("Erro ao criar o PDF:", error);
@@ -467,8 +442,9 @@ app.post("/send", async (req, res) => {
       message: "Unauthorized",
     });
   }
+  const modelParam = req.query.model ?? req.body.model ?? 0;
 
-  const pdf = await createPDF(req.body);
+  const pdf = await createPDF(req.body, modelParam);
   require("./mailService")(
     req.body.company.nome,
     req.body.customer.customerName,
@@ -503,7 +479,7 @@ app.post("/send-contact-mail", async (req, res) => {
 
 //produtoção
 app.listen(3000, () => {
-  //homologação
-  //app.listen(3010, () => {
+  // //homologação
+  // app.listen(3010, () => {
   console.log("Servidor Iniciado");
 });
