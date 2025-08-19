@@ -1,4 +1,6 @@
 const PDFDocument = require("pdfkit");
+const { finalizePDFToBase64 } = require("../templates/utils");
+
 
 const EXCLUDED_FIELDS = [
   "sendedAt",
@@ -575,8 +577,5 @@ module.exports = async (body) => {
     actualPage++;
     //------------------------------------------------------------
   }
-  docpdf.end();
-  const data = docpdf.read();
-
-  return data.toString("base64");
+  return finalizePDFToBase64(docpdf);
 };

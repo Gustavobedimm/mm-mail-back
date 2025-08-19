@@ -77,6 +77,15 @@ async function loadRemoteImageToBuffer(url) {
     return null;
   }
 }
+function finalizePDFToBase64(doc) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    doc.on("data", (c) => chunks.push(c));
+    doc.on("end", () => resolve(Buffer.concat(chunks).toString("base64")));
+    doc.on("error", reject);
+    doc.end();
+  });
+}
 
 function beginDoc({ size="A4", margin=0, autoFirstPage=false } = {}) {
   return new PDFDocument({ size, margins:{ top:0, left:0, right:0, bottom:0 }, autoFirstPage });
@@ -93,4 +102,5 @@ module.exports = {
   getExtraFields,
   loadRemoteImageToBuffer,
   beginDoc,
+  finalizePDFToBase64,
 };
