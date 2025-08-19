@@ -1,3 +1,12 @@
+try {
+  console.log("[tplPrincipal] __dirname:", __dirname);
+  const fs = require("fs");
+  console.log("[tplPrincipal] files:", fs.readdirSync(__dirname));
+} catch (e) {
+  console.log("[tplPrincipal] list error:", e);
+}
+
+
 const { 
   formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
   tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
