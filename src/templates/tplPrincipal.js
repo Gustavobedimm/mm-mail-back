@@ -1,5 +1,5 @@
 const PDFDocument = require("pdfkit");
-const { finalizePDFToBase64 } = require("../templates/utils");
+const { finalizePDFToBase64 } = require("./utils");
 
 
 const EXCLUDED_FIELDS = [

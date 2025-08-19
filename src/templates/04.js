@@ -2,9 +2,8 @@
 // Requer utils.js conforme sugerido anteriormente.
 const {
     formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
-    tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc
+    tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
   } = require("./utils");
-  const { finalizePDFToBase64 } = require("../templates/utils");
   
   module.exports = async (body) => {
     const doc = beginDoc({ autoFirstPage:false });
