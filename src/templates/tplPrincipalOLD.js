@@ -1,5 +1,5 @@
 const PDFDocument = require("pdfkit");
-const { finalizePDFToBase64, loadRemoteImageToBuffer } = require("./utils.js");
+const { finalizePDFToBase64, loadRemoteImageToBuffer } = require("./funcUtil.js");
 
 
 const EXCLUDED_FIELDS = [
