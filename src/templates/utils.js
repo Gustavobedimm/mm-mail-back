@@ -77,6 +77,7 @@ async function loadRemoteImageToBuffer(url) {
     return null;
   }
 }
+
 function finalizePDFToBase64(doc) {
   return new Promise((resolve, reject) => {
     const chunks = [];

@@ -4,11 +4,11 @@ const PDFDocument = require("pdfkit");
 const { createPDF } = require("./src/services/pdf/factory");
 
 // IMPORTS dos templates (ou deixe como funções que fazem require dinâmico)
-const tplPrincipal        = require("./src/templates/tplPrincipal");       // 0 (default)
-const tplModernFaixa      = require("./src/templates/tplPrincipal");     // 1
-const tplCompacto         = require("./src/templates/tplPrincipal");    // 2
-const tplArtsy            = require("./src/templates/tplPrincipal");   // 3
-const tplCorporateGreen   = require("./src/templates/tplPrincipal");  // 4
+const tplPrincipal        = require("./src/templates/tplPrincipalOLD");       // 0 (default)
+const tplModernFaixa      = require("./src/templates/tplPrincipalOLD");     // 1
+const tplCompacto         = require("./src/templates/tplPrincipalOLD");    // 2
+const tplArtsy            = require("./src/templates/tplPrincipalOLD");   // 3
+const tplCorporateGreen   = require("./src/templates/tplPrincipalOLD");  // 4
 
 
 const createContactMail = require("./src/services/createContactMail");

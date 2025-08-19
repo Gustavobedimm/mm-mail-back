@@ -1,7 +1,7 @@
 const {
     formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
     tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
-  } = equire("./src/templates/utils");
+  } = equire("./utils");
   
   module.exports = async (body) => {
     const doc = beginDoc({ autoFirstPage:false });
