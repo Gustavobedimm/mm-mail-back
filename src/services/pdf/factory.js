@@ -1,11 +1,11 @@
 
 // IMPORTS dos templates (ou deixe como funções que fazem require dinâmico)
-const tplPrincipal        = require("../../templates/tplPrincipal");        // 0 (default)
-const tplModernFaixa      = require("../../templates/01");     // 1
-const tplCompacto        = require("../../templates/02");         // 2
-const tplArtsy           = require("../../templates/03");            // 3
-const tplCorporateGreen   = require("../../templates/04");
-const tplCorporate  = require("../../templates/05");  // 4
+const tplPrincipal        = require("./src/templates/tplPrincipal");        // 0 (default)
+const tplModernFaixa      = require("./src/templates/01");     // 1
+const tplCompacto        = require("./src/templates/02");         // 2
+const tplArtsy           = require("./src/templates/03");            // 3
+const tplCorporateGreen   = require("./src/templates/04");
+const tplCorporate  = require("./src/templates/05");  // 4
 // Se tiver mais, continue mapeando...
 
 // Registry: aceita número ou string

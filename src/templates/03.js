@@ -1,7 +1,7 @@
 const {
     formatCurrencyBRL, formatNumber2, formatDateBR,
     tsToDate, safeStr, beginDoc, finalizePDFToBase64
-  } = require("./utils");
+  } = equire("./src/templates/utils");
   
   module.exports = async (body) => {
     const doc = beginDoc({ autoFirstPage:false });
