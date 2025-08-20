@@ -1,7 +1,7 @@
-const {
-    formatCurrencyBRL, formatNumber2, formatDateBR,
-    tsToDate, safeStr, beginDoc, finalizePDFToBase64
-  } = require("./funcUtil");
+const { 
+  formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
+  tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
+} = require("../utils/buildUtils");
   
   module.exports = async (body) => {
     const doc = beginDoc({ autoFirstPage:false });

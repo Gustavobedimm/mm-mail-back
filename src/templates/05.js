@@ -1,9 +1,7 @@
-// Template "corporate-green" — inspirado no layout com faixa verde e blocos
-// Requer utils.js (formatadores e helpers) conforme já enviado.
-const {
-    formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
-    tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
-  } = require("./funcUtil");
+const { 
+  formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
+  tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
+} = require("../utils/buildUtils");
   
   module.exports = async (body) => {
     const doc = beginDoc({ autoFirstPage: false });
