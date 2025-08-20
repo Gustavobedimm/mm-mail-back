@@ -84,13 +84,13 @@ module.exports = async (body) => {
       top += 23; docpdf.lineCap("butt").moveTo(40, top).lineTo(555, top).stroke();
       docpdf.fillColor("#000").strokeColor("#000");
 
-      // Extras
-      extra?.forEach((obj) => {
-        const key = Object.keys(obj)[0];
-        if (obj[key]) {
-          top += 15;
+      
+      extra?.map((doc, index) => {
+        const key = Object.keys(doc)[0];
+        if (doc[key] && doc[key].length > 0) {
+          top = top + 15;
           docpdf.font("Helvetica-Bold").text(`${key}:`, left, top);
-          docpdf.font("Helvetica").text(String(obj[key]), left + 100, top, { width:400 });
+          docpdf.font("Helvetica").text(doc[key], left + 100, top);
         }
       });
 

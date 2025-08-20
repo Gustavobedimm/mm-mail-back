@@ -53,18 +53,22 @@ function formatLongDate(d) {
 }
 
 function getExtraFields(body) {
-  const obj = body?.customer || {};
-  return Object.keys(obj)
+  const keys = Object.keys(body.customer);
+
+  return keys
     .map((key) => {
       if (!STANDARD_FIELDS.includes(key) && !EXCLUDED_FIELDS.includes(key)) {
-        const label = body.customFields?.find((it) => it.field === key)?.label || key;
-        const value = obj[key];
-        if (value == null || value === "") return null;
-        return { [label]: value };
+        const foundedLabel =
+          body.customFields?.find((item) => item.field === key)?.label || key;
+
+        return {
+          [foundedLabel]: body.customer[key],
+        };
       }
+
       return null;
     })
-    .filter(Boolean);
+    .filter((item) => item);
 }
 
 async function loadRemoteImageToBuffer(url) {
