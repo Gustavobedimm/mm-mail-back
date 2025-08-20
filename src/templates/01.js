@@ -209,5 +209,5 @@ module.exports = async (body) => {
     actualPage++;
   }
 
-  return finalizePDFToBase64(doc);
+  return finalizePDFToBase64(docpdf);
 };
