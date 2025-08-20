@@ -8,7 +8,7 @@ const months = [
 
 const EXCLUDED_FIELDS = [
   "sendedAt","viewedAt","sended","statusBudget","primaryColor","expirationDate",
-  "discountPercentage","discountValue","finalValue","id","updatedAt",
+  "discountPercentage","discountValue","finalValue","id","updateAt",
 ];
 
 const STANDARD_FIELDS = [
