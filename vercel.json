@@ -1,15 +1,23 @@
 {
-    "version" : 2,
-    "builds" : [
-        {
+    "version": 2,
+    "builds": [
+      {
         "src": "index.js",
-        "use" : "@now/node"
-    }
+        "use": "@now/node",
+      "config": {
+        "includeFiles": [
+          "src/templates/**",
+          "src/services/**",
+          "src/utils/**"
+        ]
+      }
+      }
     ],
-    "routes" : [
-        {
-            "src" : "/(.*)",
-            "dest" : "index.js"
-        }
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "index.js"
+      }
     ]
-}
+  }
+  

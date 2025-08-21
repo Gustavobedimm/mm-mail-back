@@ -1,7 +1,7 @@
-const {
-    formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
-    tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc
-  } = require("./utils");
+const { 
+  formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
+  tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
+} = require("../utils/buildUtils");
   
   module.exports = async (body) => {
     const doc = beginDoc({ autoFirstPage:false });
@@ -38,7 +38,7 @@ const {
   
       // Sub-infos topo
       const createdAt = tsToDate(body.customer?.createdAt);
-      doc.font("Helvetica").fontSize(10).text(`Emitido em: ${formatLongDate(createdAt)}`, 50, 52, { width:doc.page.width-100, align:"left" });
+      doc.font("Helvetica").fontSize(10).text(`${formatLongDate(createdAt)}`, 50, 43, { width:doc.page.width-100, align:"left" });
   
       // Blocos empresa/cliente (cartões)
       let y = 90;
@@ -145,7 +145,6 @@ const {
       pageNo++;
     }
   
-    doc.end();
-    return doc.read().toString("base64");
+    return finalizePDFToBase64(doc);
   };
   

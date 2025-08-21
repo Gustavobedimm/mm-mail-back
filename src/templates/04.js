@@ -1,9 +1,7 @@
-// Template "artsy" — inspirado no layout compartilhado (faixas/formas, título forte)
-// Requer utils.js conforme sugerido anteriormente.
-const {
-    formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
-    tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc
-  } = require("./utils");
+const { 
+  formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
+  tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
+} = require("../utils/buildUtils");
   
   module.exports = async (body) => {
     const doc = beginDoc({ autoFirstPage:false });
@@ -258,7 +256,6 @@ const {
       pageNo++;
     }
   
-    doc.end();
-    return doc.read().toString("base64");
+    return finalizePDFToBase64(doc);
   };
   

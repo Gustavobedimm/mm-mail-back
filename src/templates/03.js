@@ -1,9 +1,10 @@
-const {
-    formatCurrencyBRL, formatNumber2, formatDateBR,
-    tsToDate, safeStr, beginDoc
-  } = require("./utils");
+const { 
+  formatCurrencyBRL, formatNumber2, formatDateBR, formatLongDate,
+  tsToDate, safeStr, getExtraFields, loadRemoteImageToBuffer, beginDoc, finalizePDFToBase64
+} = require("../utils/buildUtils");
   
   module.exports = async (body) => {
+    const extra = getExtraFields(body);
     const doc = beginDoc({ autoFirstPage:false });
     const primary = body.company?.primaryColor || "#111827";
   
@@ -36,13 +37,25 @@ const {
         .text(safeStr(body.customer?.customerEmail), 400, 68, { width:160 })
         .text(safeStr(body.customer?.customerCellphone), 400, 82, { width:160 })
         .text(`Validade: ${formatDateBR(exp)}`, 400, 96, { width:160 });
-  
-      // Observação (somente 1ª)
+
       let y = 120;
-      if (pageNo === 1 && body.customer?.obs) {
-        doc.font("Helvetica-Bold").fontSize(10).fillColor("#111").text("Observações", 50, y);
-        y = doc.font("Helvetica").fontSize(9).fillColor("#111").text(body.customer.obs, 50, y+12, { width:510 }).y + 10;
-      }
+          if (pageNo === 1) {
+            const extras = getExtraFields(body);
+            if (extras?.length) {
+              doc.font("Helvetica-Bold").fontSize(10).fillColor("#111").text("Informações adicionais", 50, y);
+              y += 12;
+              doc.font("Helvetica").fontSize(9).fillColor("#111");
+              extras.forEach((o) => {
+                const k = Object.keys(o)[0];
+                doc.text(`${k}: ${o[k]}`, 50, y, { width:500 });
+                y += 12;
+              });
+            }
+            if (body.customer?.obs) {
+              doc.font("Helvetica-Bold").fontSize(10).fillColor("#111").text("Observações", 50, y);
+              y = doc.font("Helvetica").fontSize(9).fillColor("#111").text(body.customer.obs, 50, y+12, { width:500 }).y + 10;
+            }
+          }
   
       // Tabela compacta: Descrição | Qtd | Unit. | Líquido
       // Cabeçalho
@@ -95,7 +108,6 @@ const {
       pageNo++;
     }
   
-    doc.end();
-    return doc.read().toString("base64");
+    return finalizePDFToBase64(doc);
   };
   
