@@ -3,17 +3,7 @@ const cors = require("cors");
 const PDFDocument = require("pdfkit");
 const { createPDF } = require("./src/services/pdf/factory");
 
-<<<<<<< HEAD
-=======
-// IMPORTS dos templates (ou deixe como funções que fazem require dinâmico)
-const tplPrincipal        = require("./src/templates/tplPrincipalOLD");       // 0 (default)
-const tplModernFaixa      = require("./src/templates/tplPrincipalOLD");     // 1
-const tplCompacto         = require("./src/templates/tplPrincipalOLD");    // 2
-const tplArtsy            = require("./src/templates/tplPrincipalOLD");   // 3
-const tplCorporateGreen   = require("./src/templates/tplPrincipalOLD");  // 4
 
-
->>>>>>> fa53897d85401aa0053f160f7ae93b4382d6db1a
 const createContactMail = require("./src/services/createContactMail");
 const sendMail = require("./src/services/sendMail");
 const validateHash = require("./src/services/validateHash");
