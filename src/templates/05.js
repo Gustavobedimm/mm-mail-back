@@ -40,7 +40,7 @@ const {
       // Faixa verde superior
       doc.save()
         .fillColor(primary)
-        .rect(0, 0, doc.page.width, 36)
+        .rect(0, 0, doc.page.width, 30)
         .fill()
       .restore();
   
@@ -65,32 +65,32 @@ const {
         .text(`${safeStr(body.company?.cidade, "")} - ${safeStr(body.company?.estado, "")}`, 50, y + 26)
         .text(`Email: ${safeStr(body.company?.email, "")}`, 50, y + 38)
         .text(`Telefone: ${safeStr(body.company?.celular, "")}`, 50, y + 50)
-        .text(`Website: ${safeStr(body.company?.website, "")}`, 50, y + 62);
   
       // Linha sutil
-      doc.save().strokeColor(gray200).lineWidth(1)
-        .moveTo(50, 150).lineTo(doc.page.width - 50, 150).stroke().restore();
+      // doc.save().strokeColor(gray200).lineWidth(1)
+      //   .moveTo(50, 150).lineTo(doc.page.width - 50, 150).stroke().restore();
   
       // Bloco cinza com Bill to / Ship to / Details
       const boxY = 170;
       doc.save().fillColor(gray100).rect(50, boxY, 500, 88).fill().restore();
   
       // Coluna 1 — Bill to
-      doc.font("Helvetica-Bold").fontSize(10).fillColor(black).text("Bill to", 60, boxY + 10);
+      doc.font("Helvetica-Bold").fontSize(10).fillColor(black).text("Dados do Cliente", 60, boxY + 10);
       doc.font("Helvetica").fontSize(9).fillColor(gray700)
         .text(safeStr(body.customer?.customerName, "Cliente"), 60, boxY + 26)
-        .text(safeStr(body.customer?.endereco, ""), 60, boxY + 38)
-        .text(`${safeStr(body.customer?.cidade, "")} - ${safeStr(body.customer?.estado, "")}`, 60, boxY + 50);
+        .text(safeStr(body.customer?.customerEmail, "Email"), 60, boxY + 38)
+        .text(safeStr(body.customer?.customerCellphone, "Email"), 60, boxY + 50)
+        .text(safeStr(body.customer?.customerDocument, "Documento"), 60, boxY + 62);
   
-      // Coluna 2 — Ship to (opcional)
-      doc.font("Helvetica-Bold").fontSize(10).fillColor(black).text("Ship to", 210, boxY + 10);
-      doc.font("Helvetica").fontSize(9).fillColor(gray700)
-        .text(safeStr(body.customer?.shipToName, ""), 210, boxY + 26)
-        .text(safeStr(body.customer?.shipToAddress, ""), 210, boxY + 38)
-        .text(safeStr(body.customer?.shipToCityState, ""), 210, boxY + 50);
+      // // Coluna 2 — Ship to (opcional)
+      // doc.font("Helvetica-Bold").fontSize(10).fillColor(black).text("Ship to", 210, boxY + 10);
+      // doc.font("Helvetica").fontSize(9).fillColor(gray700)
+      //   .text(safeStr(body.customer?.shipToName, ""), 210, boxY + 26)
+      //   .text(safeStr(body.customer?.shipToAddress, ""), 210, boxY + 38)
+      //   .text(safeStr(body.customer?.shipToCityState, ""), 210, boxY + 50);
   
       // Coluna 3 — Details
-      doc.font("Helvetica-Bold").fontSize(10).fillColor(black).text("Details", 360, boxY + 10);
+      doc.font("Helvetica-Bold").fontSize(10).fillColor(black).text("Detalhes", 360, boxY + 10);
       doc.font("Helvetica").fontSize(9).fillColor(gray700)
         .text(`Nº orçamento: ${safeStr(body.customer?.id || body.customer?.budgetId || body.customer?.budgetNumber, "—")}`, 360, boxY + 26)
         .text(`Data emissão: ${formatLongDate(createdAt)}`, 360, boxY + 38)
@@ -106,7 +106,7 @@ const {
   
       doc.font("Helvetica-Bold").fontSize(9).fillColor(black)
         .text("Produto / Serviço", 60, y + 6, { width: 160 })
-        .text("Descrição", 230, y + 6, { width: 140 })
+        .text("Unidade", 270, y + 6, { width: 55 })
         .text("Qtde", 380, y + 6, { width: 40, align: "right" })
         .text("Unit.", 430, y + 6, { width: 55, align: "right" })
         .text("Total", 490, y + 6, { width: 50, align: "right" });
@@ -122,7 +122,7 @@ const {
       let cursor = y;
       items.forEach((it, i) => {
         const name = String(it.name || it.label || "");
-        const desc = String(it.description || "");
+        const desc = String(it.unit || "");
         const h = Math.max(
           18,
           doc.heightOfString(name, { width: 160, align: "left" }) + 6,
@@ -135,8 +135,8 @@ const {
         }
   
         doc.font("Helvetica").fontSize(9).fillColor(gray700)
-          .text(name, 60, cursor + 4, { width: 160 })
-          .text(desc, 230, cursor + 4, { width: 140 })
+          .text(name, 60, cursor + 4, { width: 190 })
+          .text(desc, 270, cursor + 4, { width: 140 })
           .text(String(it.quantity || 1), 380, cursor + 4, { width: 40, align: "right" })
           .text(formatNumber2(it.value || 0), 430, cursor + 4, { width: 55, align: "right" })
           .text(formatNumber2(it.finalValue || it.totalValue || it.value || 0), 490, cursor + 4, { width: 50, align: "right" });

@@ -1,29 +1,21 @@
-
 // IMPORTS dos templates (ou deixe como funções que fazem require dinâmico)
-const tplPrincipal        = require("../../templates/tplPrincipal");        // 0 (default)
-const tplModernFaixa      = require("../../templates/01");     // 1
-const tplCompacto        = require("../../templates/02");         // 2
-const tplArtsy           = require("../../templates/03");            // 3
-const tplCorporateGreen   = require("../../templates/04");
-const tplCorporate  = require("../../templates/05");  // 4
-// Se tiver mais, continue mapeando...
+const classico = require("../../templates/tplPrincipal"); // 0 (default)
+const moderno = require("../../templates/04"); // 1
+const detalhado = require("../../templates/02"); // 2
+const compacto = require("../../templates/05"); // 3
 
 // Registry: aceita número ou string
 const REGISTRY = {
-  0: tplPrincipal,
-  1: tplModernFaixa,
-  2: tplCompacto,
-  3: tplArtsy,
-  4: tplCorporateGreen,
-  5: tplCorporate,
+  0: classico,
+  1: moderno,
+  2: detalhado,
+  3: compacto,
 
   // aliases por string (opcional)
-  normal: tplPrincipal,
-  modern: tplModernFaixa,
-  compacto: tplCompacto,
-  artsy: tplArtsy,
-  corporate: tplCorporateGreen,
-  corporate2: tplCorporate,
+  classico: classico,
+  moderno: moderno,
+  detalhado: detalhado,
+  compacto: compacto,
 };
 
 function pickRenderer(modelParam) {
@@ -43,12 +35,6 @@ function pickRenderer(modelParam) {
   return REGISTRY[0];
 }
 
-/**
- * Cria o PDF base64 usando o template escolhido.
- * @param {object} body - payload do seu PDF (company, customer, services, etc.)
- * @param {number|string} model - opcional: 0/1/2/3/4... ou "modern"/"compacto"/...
- * @returns {Promise<string>} base64 do PDF
- */
 async function createPDF(body, model) {
   const render = pickRenderer(model);
   return render(body); // cada template retorna base64
