@@ -114,10 +114,10 @@ const {
       if (isLast) {
         const boxY = rowY + 10;
         // Resumo à direita
-        doc.roundedRect(310, boxY, 240, 100, 8).strokeColor("#e2e8f0").lineWidth(1).stroke();
+        doc.roundedRect(310, boxY, 240, 90, 8).strokeColor("#e2e8f0").lineWidth(1).stroke();
         doc.font("Helvetica").fontSize(9).fillColor("#475569")
           .text("Total Geral", 320, boxY + 10)
-          .text("Descontos (itens)", 320, boxY + 28)
+          .text("Descontos itens", 320, boxY + 28)
           .text(`Desconto geral (${descontoPerc}%)`, 320, boxY + 46)
           .text("Total do Orçamento", 320, boxY + 70);
   
